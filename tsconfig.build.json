@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "module": "esnext",
+    "target": "es5",
+    "moduleResolution": "node",
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ESNext"
+    ],
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": false,
+    "isolatedModules": false, // doesn't work with const enums
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "strict": true,
+    "importsNotUsedAsValues": "error",
+    "resolveJsonModule": true,
+    "noImplicitAny": false,
+    "types": [],
+    "declaration": true
+  },
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

@@ -1,0 +1,30 @@
+import type {
+  TransitionRef,
+  TransitionRefCollection,
+  TransitionRefElement,
+} from '../types/Transition.types';
+import type {
+  SignatureElement,
+  SignatureRefCollection,
+  SignatureRefElement,
+} from '@mediamonks/core-transition-component';
+
+export function transitionRefToElement(ref: TransitionRefElement): SignatureRefElement;
+// eslint-disable-next-line no-redeclare
+export function transitionRefToElement(ref: TransitionRefCollection): SignatureRefCollection;
+// eslint-disable-next-line no-redeclare
+export function transitionRefToElement(ref: TransitionRef): SignatureElement {
+  if (ref.type === 'collection') {
+    return [...ref.getElements()];
+  }
+
+  if (ref.type === 'componentCollection') {
+    return [...ref.getComponents().map((component) => component?.element)];
+  }
+
+  if (ref.type === 'component') {
+    return ref.component?.element;
+  }
+
+  return ref?.element;
+}

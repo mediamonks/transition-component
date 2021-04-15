@@ -1,0 +1,23 @@
+{
+  "name": "@mediamonks/muban-transition-component",
+  "version": "1.0.0-alpha.1",
+  "main": "dist/index",
+  "types": "dist/index",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "yarn run clean && yarn run compile",
+    "clean": "rimraf -rf ./dist",
+    "compile": "tsc -p tsconfig.build.json"
+  },
+  "dependencies": {
+    "@mediamonks/core-transition-component": "^1.0.0-alpha.1",
+    "@muban/muban": "^1.0.0-alpha.26",
+    "@muban/template": "^1.0.0-alpha.1",
+    "gsap": "^3.6.1"
+  },
+  "devDependencies": {
+    "rimraf": "^3.0.2"
+  }
+}

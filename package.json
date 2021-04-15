@@ -1,0 +1,28 @@
+{
+  "name": "transition-component",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "examples/*"
+  ],
+  "scripts": {
+    "docs": "doctoc --title '**Table of content**' README.md",
+    "clean": "lerna run clean",
+    "build": "lerna run build",
+    "pub": "lerna publish",
+    "test": "lerna run test",
+    "lint": "eslint --ext .js,.ts ./{packages,examples}/",
+    "fix": "eslint --ext .js,.ts ./{packages,examples}/ --fix --quiet --cache",
+    "prettify": "prettier --write \"packages/**/*.{js,ts,scss,json}\"",
+    "check-types": "tsc --project tsconfig.json --noEmit --noUnusedLocals"
+  },
+  "devDependencies": {
+    "@mediamonks/eslint-config-base": "^1.0.2",
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
+    "eslint": "^7.24.0",
+    "lerna": "^4.0.0",
+    "prettier": "^2.2.1",
+    "typescript": "^4.2.4"
+  }
+}
