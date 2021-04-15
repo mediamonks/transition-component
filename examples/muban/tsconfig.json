@@ -2,7 +2,15 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "declaration": false
+    "baseUrl": ".",
+    "paths": {
+      "@mediamonks/core-transition-component": [
+        "../../packages/core-transition-component/src"
+      ],
+      "@mediamonks/muban-transition-component": [
+        "../../packages/muban-transition-component/src"
+      ]
+    }
   },
   "include": [
     "src/**/*"

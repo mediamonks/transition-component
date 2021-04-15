@@ -1,6 +1,6 @@
+import { AbstractFlowContext } from '@mediamonks/core-transition-component';
 import type { TransitionRefElement } from '../types/Transition.types';
 import { transitionRefToElement } from '../util/Transition.utils';
-import { AbstractFlowContext } from '@mediamonks/core-transition-component';
 
 export class FlowContext extends AbstractFlowContext<TransitionRefElement> {
   public async start(
