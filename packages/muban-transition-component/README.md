@@ -40,7 +40,8 @@ will be added to a parent timeline.
 ```ts
 ...
 setup({ refs }) {
-  useTransitionController(refs.self, {
+  // You can use the returned transition controller to manually trigger `transitionIn` or `transitionOut`
+  const transitionController = useTransitionController(refs.self, {
     // Whether or not you want to be able to access your controller from the transition-context,
     // defaults to `true`.
     registerTransitionController: true, 
