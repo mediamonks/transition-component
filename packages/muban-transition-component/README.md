@@ -41,7 +41,9 @@ will be added to a parent timeline.
 ...
 setup({ refs }) {
   useTransitionController(refs.self, {
-    registerTransitionController: true, // Whether or not you want to be able to access your controller from the transition-context
+    // Whether or not you want to be able to access your controller from the transition-context,
+    // defaults to `true`.
+    registerTransitionController: true, 
     refs: {
       // Any refs that will be forwarded to the `setupTransitionInTimelin` and `setupTransitionOutTimeline` functions
     },
