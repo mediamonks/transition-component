@@ -22,8 +22,7 @@
     "noImplicitAny": false,
     "types": [],
     "skipLibCheck": true,
-    "declaration": true,
-    "composite": true
+    "declaration": true
   },
   "references": [
     { "path": "packages/core-transition-component" },
