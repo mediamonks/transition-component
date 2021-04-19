@@ -4,7 +4,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "dev": "webpack serve -c ./webpack.config.js",
+    "dev": "webpack serve -c webpack.config.js",
     "build": "webpack",
     "clean": "rimraf -rf dist"
   },

@@ -5,7 +5,6 @@
     "declaration": false
   },
   "include": [
-    "src/**/*.ts",
-    "build-tools/*.ts"
+    "./**/*.ts"
   ]
 }

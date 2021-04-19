@@ -1,15 +1,13 @@
 module.exports = {
     extends: [
         '@mediamonks/eslint-config-base',
-        // 'plugin:lit/recommended',
-        // 'plugin:lit-a11y/recommended',
     ],
     parserOptions: {
         project: './tsconfig.eslint.json',
     },
     ignorePatterns: [
-        '**/webpack.config.js',
-        'public'
+        'dist',
+        'webpack.config.js',
     ],
     rules: {
         // Additions
