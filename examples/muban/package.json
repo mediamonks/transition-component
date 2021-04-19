@@ -1,10 +1,11 @@
 {
   "name": "muban",
   "version": "1.0.0",
+  "license": "MIT",
   "private": true,
   "scripts": {
     "dev": "webpack serve -c ./webpack.config.js",
-    "build": "webpack"
+    "clean": "rimraf -rf ./dist"
   },
   "dependencies": {
     "@mediamonks/muban-transition-component": "^1.0.0-alpha.1",

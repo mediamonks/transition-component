@@ -9,11 +9,7 @@ module.exports = {
     },
     ignorePatterns: [
         '**/webpack.config.js',
-        '**/dist',
-        // 'config',
-        // 'src/polyfills.js',
-        // 'scripts',
-        // 'src/utils/transition/storybook-addon/register.js'
+        'dist'
     ],
     rules: {
         // Additions
@@ -45,11 +41,5 @@ module.exports = {
                 format: ['StrictPascalCase'],
             },
         ],
-        // 'lit/no-legacy-template-syntax': 'off',
-        // 'lit/no-private-properties': 'off',
-        // 'lit/no-property-change-update': 'off',
-        // 'lit/no-template-map': 'off',
-        // 'lit/binding-positions': 'off',
-        // 'lit/no-invalid-html': 'off',
     },
 };

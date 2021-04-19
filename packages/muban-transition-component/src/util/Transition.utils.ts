@@ -1,13 +1,13 @@
 import type {
-  TransitionRef,
-  TransitionRefCollection,
-  TransitionRefElement,
-} from '../types/Transition.types';
-import type {
   SignatureElement,
   SignatureRefCollection,
   SignatureRefElement,
 } from '@mediamonks/core-transition-component';
+import type {
+  TransitionRef,
+  TransitionRefCollection,
+  TransitionRefElement,
+} from '../types/Transition.types';
 
 export function transitionRefToElement(ref: TransitionRefElement): SignatureRefElement;
 // eslint-disable-next-line no-redeclare

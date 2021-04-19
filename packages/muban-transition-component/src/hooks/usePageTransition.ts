@@ -1,12 +1,12 @@
 import { onMounted } from '@muban/muban';
+import type { SetupPageTransitionOptions } from '@mediamonks/core-transition-component';
+import { Guard } from '@mediamonks/core-transition-component';
 import { useTransitionController } from './useTransitionController';
 import type {
   SetupSignatureElements,
   TransitionRef,
   TransitionRefElement,
 } from '../types/Transition.types';
-import type { SetupPageTransitionOptions } from '@mediamonks/core-transition-component';
-import { Guard } from '@mediamonks/core-transition-component';
 
 export function usePageTransition<
   T extends Record<string, R>,

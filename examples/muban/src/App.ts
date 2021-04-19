@@ -1,6 +1,6 @@
 import { bind, defineComponent, refComponent } from '@muban/muban';
-import { Foo } from './components/foo/Foo';
 import { useGlobalTransitionContext } from '@mediamonks/muban-transition-component';
+import { Foo } from './components/foo/Foo';
 
 export const App = defineComponent({
   name: 'app',

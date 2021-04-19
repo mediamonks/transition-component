@@ -1,4 +1,9 @@
 import { onMounted, onUnmounted } from '@muban/muban';
+import type {
+  SetupTransitionOptions,
+  TransitionController,
+} from '@mediamonks/core-transition-component';
+import { getTransitionController } from '@mediamonks/core-transition-component';
 import { useTransitionContext } from './useGlobalTransitionContext';
 import type {
   SetupSignatureElements,
@@ -6,11 +11,6 @@ import type {
   TransitionRefElement,
 } from '../types/Transition.types';
 import { transitionRefToElement } from '../util/Transition.utils';
-import type {
-  SetupTransitionOptions,
-  TransitionController,
-} from '@mediamonks/core-transition-component';
-import { getTransitionController } from '@mediamonks/core-transition-component';
 
 /**
  * The core hook that can be used to create a transition timeline for a component, it returns a Ref that should be bound

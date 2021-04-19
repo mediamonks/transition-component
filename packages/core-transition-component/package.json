@@ -1,10 +1,10 @@
 {
   "name": "@mediamonks/core-transition-component",
   "version": "1.0.0-alpha.1",
-  "main": "dist/index",
-  "types": "dist/index",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/esm/index.d.ts",
   "files": [
-    "dist"
+    "dist/**/*"
   ],
   "scripts": {
     "build": "npm-run-all -s clean build:*",

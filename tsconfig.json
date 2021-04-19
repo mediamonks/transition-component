@@ -1,11 +1,13 @@
 {
   "compilerOptions": {
+    "baseUrl": "./",
     "module": "esnext",
     "target": "es5",
     "moduleResolution": "node",
     "lib": [
-      "DOM",
-      "ESNext"
+      "dom",
+      "dom.iterable",
+      "esnext"
     ],
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
@@ -14,14 +16,20 @@
     "emitDecoratorMetadata": false,
     "isolatedModules": false, // doesn't work with const enums
     "esModuleInterop": true,
-    "sourceMap": false,
     "strict": true,
     "importsNotUsedAsValues": "error",
     "resolveJsonModule": true,
     "noImplicitAny": false,
     "types": [],
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "declaration": true,
+    "declarationMap": false,
+    "sourceMap": false
   },
+  "references": [
+    { "path": "packages/core-transition-component" },
+    { "path": "packages/muban-transition-component" }
+  ],
   "exclude": [
     "node_modules",
     "dist"

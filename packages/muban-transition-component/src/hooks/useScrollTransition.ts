@@ -1,6 +1,7 @@
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 
+import type { SetupScrollTransitionOptions } from '@mediamonks/core-transition-component';
 import { useTransitionController } from './useTransitionController';
 import type {
   SetupSignatureElements,
@@ -8,7 +9,6 @@ import type {
   TransitionRefElement,
 } from '../types/Transition.types';
 import { transitionRefToElement } from '../util/Transition.utils';
-import type { SetupScrollTransitionOptions } from '@mediamonks/core-transition-component';
 
 gsap.registerPlugin(ScrollTrigger);
 
