@@ -63,7 +63,7 @@ node_modules/
 
 ### Project
 
-/packages/*/dist/
+dist
 
 tsconfig.tsbuildinfo
-/examples/muban/dist/bundle.js
+/examples/muban/public/bundle.js

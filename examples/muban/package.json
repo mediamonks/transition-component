@@ -5,12 +5,14 @@
   "private": true,
   "scripts": {
     "dev": "webpack serve -c ./webpack.config.js",
-    "clean": "rimraf -rf ./dist"
+    "build": "webpack",
+    "clean": "rimraf -rf dist"
   },
   "dependencies": {
     "@mediamonks/muban-transition-component": "^1.0.0-alpha.1",
     "@muban/muban": "^1.0.0-alpha.26",
-    "@muban/template": "^1.0.0-alpha.1"
+    "@muban/template": "^1.0.0-alpha.1",
+    "html-webpack-plugin": "^5.3.1"
   },
   "devDependencies": {
     "ts-loader": "^8.1.0",

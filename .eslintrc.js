@@ -9,7 +9,7 @@ module.exports = {
     },
     ignorePatterns: [
         '**/webpack.config.js',
-        'dist'
+        'public'
     ],
     rules: {
         // Additions

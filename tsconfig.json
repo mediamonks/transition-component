@@ -23,8 +23,6 @@
     "types": [],
     "skipLibCheck": true,
     "declaration": true,
-    "declarationMap": false,
-    "sourceMap": false
   },
   "references": [
     { "path": "packages/core-transition-component" },
