@@ -8,6 +8,7 @@ module.exports = {
     ignorePatterns: [
         'dist',
         'webpack.config.js',
+        'jest.config.js'
     ],
     rules: {
         // Additions

@@ -20,7 +20,9 @@
     "importsNotUsedAsValues": "error",
     "resolveJsonModule": true,
     "noImplicitAny": false,
-    "types": [],
+    "types": [
+      "jest"
+    ],
     "skipLibCheck": true,
     "declaration": true
   },
@@ -34,6 +36,6 @@
   ],
   "include": [
     "./packages/**/src",
-    "./examples/**/src"
+    "./examples/**/src",
   ]
 }

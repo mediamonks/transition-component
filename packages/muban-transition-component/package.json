@@ -10,7 +10,8 @@
     "build": "npm-run-all -s clean build:*",
     "build:ts": "tsc -p ./tsconfig.build.json",
     "build:ts-esm": "tsc -p ./tsconfig.build.esm.json",
-    "clean": "rimraf -rf ./dist"
+    "clean": "rimraf -rf ./dist",
+    "test": "jest --config ../../jest.config.js --rootDir ./"
   },
   "dependencies": {
     "@mediamonks/core-transition-component": "^1.0.0-alpha.1",

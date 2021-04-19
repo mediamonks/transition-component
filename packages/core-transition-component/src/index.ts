@@ -3,7 +3,7 @@ export { AbstractTransitionContext } from './context/AbstractTransitionContext';
 export { AbstractFlowContext } from './context/AbstractFlowContext';
 
 // Utils
-export { Guard } from './utils/Navigation.utils';
+export { guard } from './utils/Navigation.utils';
 export { getTransitionController } from './utils/Transition.utils';
 export { cloneTimeline, clearTimeline } from './utils/Timeline.utils';
 

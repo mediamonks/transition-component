@@ -9,5 +9,6 @@
     "outDir": "./dist/cjs",
     "declarationDir": "./dist/cjs"
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "exclude": ["src/**/*.test.ts"]
 }
