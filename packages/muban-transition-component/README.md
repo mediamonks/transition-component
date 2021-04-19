@@ -65,6 +65,17 @@ setup({ refs }) {
 ...
 ```
 
+**Nesting a timeline**
+```ts
+...
+setupTransitionInTimeline: (timeline, { someRef }, transitionContext) => { 
+  // Timelines can referenced through the `transitionContext`, use a ref or 
+  // element to find the timeline on the context. 
+  timeline.add(transitionContext.getTimeline(someRef));
+},
+...
+```
+
 #### `usePageTransition`
 This hook can be used when you want to create a page transition, it will automatically trigger the transitionIn when 
 the component is mounted. 
