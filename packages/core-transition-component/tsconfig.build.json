@@ -9,7 +9,5 @@
     "declarationDir": "./dist/cjs",
     "esModuleInterop": true
   },
-  "include": [
-    "src/**/*"
-  ]
+  "include": ["src/**/*"]
 }

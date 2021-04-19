@@ -1,6 +1,4 @@
 {
   "extends": "../../tsconfig.json",
-  "references": [
-    { "path": "../core-transition-component" }
-  ]
+  "references": [{ "path": "../core-transition-component" }]
 }

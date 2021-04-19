@@ -4,5 +4,5 @@
     "module": "ESNext",
     "outDir": "./dist/esm",
     "declarationDir": "./dist/esm"
-  },
+  }
 }

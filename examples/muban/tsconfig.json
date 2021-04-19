@@ -5,6 +5,6 @@
     "declaration": false
   },
   "include": [
-    "./**/*.ts"
+    "./src"
   ]
 }

@@ -23,6 +23,7 @@
     "types": [],
     "skipLibCheck": true,
     "declaration": true,
+    "composite": true
   },
   "references": [
     { "path": "packages/core-transition-component" },
@@ -33,7 +34,7 @@
     "dist"
   ],
   "include": [
-    "./packages/**/*.ts",
-    "./examples/**/*.ts",
+    "./packages/**/src",
+    "./examples/**/src"
   ]
 }
