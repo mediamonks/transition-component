@@ -29,9 +29,13 @@ module.exports = {
                         title: 'Vue',
                         path: '/guide/vue/',
                         collapsable: false,
-                        children: [
-                            // '/guide/vue/examples'
-                        ]
+                        children: []
+                    },
+                    {
+                        title: 'React',
+                        path: '/guide/react/',
+                        collapsable: false,
+                        children: []
                     }
                 ]
             }
