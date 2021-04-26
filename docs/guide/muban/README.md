@@ -154,7 +154,7 @@ const MyComponent = defineComponent({
 ```
 
 ::: warning 
-You loose the transition events when you use the scroll transition hook.
+You lose the transition events when you use the scroll transition hook.
 :::
 
 ### Triggering transitions

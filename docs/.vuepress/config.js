@@ -1,7 +1,7 @@
 module.exports = {
     title: 'Transition Component',
     description: 'A tool to add GSAP transitions to your components',
-    base: '/',
+    base: '/transition-component/',
     themeConfig: {
         nav: [
             { text: 'Home', link: '/' },
