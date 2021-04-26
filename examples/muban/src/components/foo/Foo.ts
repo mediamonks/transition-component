@@ -9,15 +9,13 @@ export const Foo = defineComponent({
     bar: refComponent(Bar, { ref: 'bar', isRequired: true }),
   },
   setup({ refs }) {
-    const transitionController = useTransitionController(refs.self, {
+    useTransitionController(refs.self, {
       setupTransitionInTimeline,
       setupTransitionOutTimeline,
       refs: {
         bar: refs.bar,
       },
     });
-
-    onMounted(() => transitionController.transitionIn());
 
     return [];
   },
