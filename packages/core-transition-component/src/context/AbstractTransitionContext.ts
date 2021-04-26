@@ -38,6 +38,8 @@ export abstract class AbstractTransitionContext<T extends TransitionRef> {
     };
 
     if (index >= 0) {
+      // eslint-disable-next-line no-console
+      console.warn('Overwriting element reference in TransitionContext');
       this.store[index] = reference;
     } else {
       this.store.push(reference);
