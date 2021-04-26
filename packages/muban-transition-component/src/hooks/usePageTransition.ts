@@ -1,6 +1,6 @@
 import { onMounted } from '@muban/muban';
-import type { SetupPageTransitionOptions } from '@mediamonks/core-transition-component';
-import { Guard } from '@mediamonks/core-transition-component';
+import { guard, SetupPageTransitionOptions } from '@mediamonks/core-transition-component';
+
 import { useTransitionController } from './useTransitionController';
 import type {
   SetupSignatureElements,
@@ -19,7 +19,7 @@ export function usePageTransition<
   const transitionController = useTransitionController(ref, options);
   // const flowContext = useFlowContext();
 
-  onMounted(() => Guard(() => transitionController.transitionIn(), options.beforeTransitionIn));
+  onMounted(() => guard(() => transitionController.transitionIn(), options.beforeTransitionIn));
 
   // TODO: re-implement when we have some sort of router?
   // onBeforeRouteLeave((to, from, next) =>
