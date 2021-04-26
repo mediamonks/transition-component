@@ -52,10 +52,11 @@ export function getTransitionController<
   };
 
   // eslint-disable-next-line no-shadow
-  const handleTransitionComplete = (timeline: gsap.core.Timeline) => {
+  const handleTransitionComplete = (timeline: gsap.core.Timeline, callback?: () => void) => {
     removeEventListeners(timeline);
 
     setupOptions.onComplete?.();
+    callback?.();
 
     if (resolveTransitionPromise) {
       resolveTransitionPromise();
@@ -130,13 +131,14 @@ export function getTransitionController<
         const timelineHasChildren = timeline.getChildren(true).length > 0;
 
         setupOptions.onStart?.();
+        options.onStart?.();
 
         if (options.direction === 'in' || (options.direction === 'out' && timelineHasChildren)) {
           // eslint-disable-next-line babel/no-unused-expressions
-          !timelineHasChildren && handleTransitionComplete(timeline);
+          !timelineHasChildren && handleTransitionComplete(timeline, options.onComplete);
 
           timeline
-            .eventCallback('onComplete', handleTransitionComplete, [timeline])
+            .eventCallback('onComplete', handleTransitionComplete, [timeline, options.onComplete])
             .restart(true, false);
         } else {
           const reversedTimeline = transitionTimeline.in;
@@ -144,7 +146,7 @@ export function getTransitionController<
           reversedTimeline
             .eventCallback('onReverseComplete', handleTransitionComplete, [
               reversedTimeline,
-              'reverse',
+              options.onComplete,
             ])
             .reverse();
         }
