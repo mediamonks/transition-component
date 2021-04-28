@@ -4,7 +4,9 @@
   "description": "GreenSock animations for your Muban components.",
   "keywords": [
     "gsap",
+    "greensock",
     "animation",
+    "transition",
     "components",
     "muban"
   ],

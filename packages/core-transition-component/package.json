@@ -4,7 +4,9 @@
   "description": "GreenSock animations for your components.",
   "keywords": [
     "gsap",
+    "greensock",
     "animation",
+    "transition",
     "components"
   ],
   "author": "Lars van Braam <lars@mediamonks.com>",
