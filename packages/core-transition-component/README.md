@@ -1,4 +1,4 @@
-# @mediamonks/muban-transition-component
+# @mediamonks/core-transition-component
 The core package to provide GreenSock transition functionality to components. 
 
 ### 🚀 Getting started
