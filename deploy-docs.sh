@@ -16,7 +16,7 @@ cd docs/.vuepress/dist
 
 git init -b main
 git add -A
-git user-me
+# git user-me
 git commit -m 'deploy'
 
 # if you are deploying to https://<USERNAME>.github.io
