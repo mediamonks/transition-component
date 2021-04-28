@@ -13,7 +13,6 @@ import { html } from '@muban/template';
 import type { TransitionController } from '@mediamonks/core-transition-component';
 import { Foo } from './components/foo/Foo';
 
-
 export const App = defineComponent({
   name: 'app',
   refs: {
