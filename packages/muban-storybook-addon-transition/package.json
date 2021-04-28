@@ -1,0 +1,48 @@
+{
+  "name": "@mediamonks/muban-storybook-addon-transition",
+  "version": "1.0.0-alpha.1",
+  "description": "Control your timelines from Storybook.",
+  "keywords": [
+    "gsap",
+    "greensock",
+    "animation",
+    "transition",
+    "components",
+    "storybook"
+  ],
+  "author": "Lars van Braam <lars@mediamonks.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mediamonks/transition-component.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mediamonks/transition-component/issues"
+  },
+  "homepage": "https://github.com/mediamonks/transition-component/tree/main/packages/muban-storybook-addon-transition#readme",
+  "private": false,
+  "main": "dist/register.js",
+  "types": "dist/register.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rimraf -rf ./dist"
+  },
+  "files": [
+    "dist/**/*",
+    "README.md",
+    "*.js"
+  ],
+  "dependencies": {
+    "@storybook/addons": "^6.2.9",
+    "@storybook/components": "^6.2.9",
+    "@storybook/core-events": "^6.2.9",
+    "@storybook/theming": "^6.2.9"
+  },
+  "devDependencies": {
+    "react": "^17.0.2",
+    "rimraf": "^3.0.2"
+  },
+  "peerDependencies": {
+    "react": "^17.0.2"
+  }
+}

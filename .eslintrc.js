@@ -8,7 +8,8 @@ module.exports = {
     ignorePatterns: [
         'dist',
         'webpack.config.js',
-        'jest.config.js'
+        'jest.config.js',
+        'packages/muban-storybook-addon-transition/register.js',
     ],
     rules: {
         // Additions
