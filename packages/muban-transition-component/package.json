@@ -1,6 +1,7 @@
 {
   "name": "@mediamonks/muban-transition-component",
   "version": "1.0.0-alpha.1",
+  "private": false,
   "module": "./dist/esm/index.js",
   "types": "./dist/esm/index.d.ts",
   "files": [

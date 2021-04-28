@@ -9,7 +9,7 @@
     "docs": "doctoc --title '**Table of content**' README.md",
     "clean": "lerna run clean",
     "build": "lerna run build",
-    "pub": "lerna publish",
+    "publish": "lerna publish",
     "test": "lerna run test",
     "lint": "eslint --ext .js,.ts ./{packages,examples}/",
     "fix": "eslint --ext .js,.ts ./{packages,examples}/ --fix --quiet --cache",
