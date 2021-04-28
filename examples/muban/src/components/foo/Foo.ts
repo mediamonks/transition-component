@@ -1,4 +1,4 @@
-import { defineComponent, onMounted, refComponent } from '@muban/muban';
+import { defineComponent, refComponent } from '@muban/muban';
 import { useTransitionController } from '@mediamonks/muban-transition-component';
 import { Bar } from '../bar/Bar';
 import { setupTransitionInTimeline, setupTransitionOutTimeline } from './Foo.transitions';

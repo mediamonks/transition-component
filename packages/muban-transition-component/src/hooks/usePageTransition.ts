@@ -1,5 +1,6 @@
 import { onMounted } from '@muban/muban';
-import { guard, SetupPageTransitionOptions } from '@mediamonks/core-transition-component';
+import type { SetupPageTransitionOptions } from '@mediamonks/core-transition-component';
+import { guard } from '@mediamonks/core-transition-component';
 
 import { useTransitionController } from './useTransitionController';
 import type {
