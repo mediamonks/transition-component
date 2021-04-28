@@ -1,6 +1,7 @@
 {
   "name": "muban-example",
   "license": "MIT",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "webpack serve -c webpack.config.js",
