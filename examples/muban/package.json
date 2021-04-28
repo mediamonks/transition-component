@@ -1,7 +1,7 @@
 {
   "name": "muban-example",
   "license": "MIT",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "scripts": {
     "dev": "webpack serve -c webpack.config.js",
@@ -9,7 +9,7 @@
     "clean": "rimraf -rf dist"
   },
   "dependencies": {
-    "@mediamonks/muban-transition-component": "^1.0.0-alpha.7",
+    "@mediamonks/muban-transition-component": "^1.0.0-alpha.8",
     "@muban/muban": "^1.0.0-alpha.26",
     "@muban/template": "^1.0.0-alpha.1",
     "html-webpack-plugin": "^5.3.1"
