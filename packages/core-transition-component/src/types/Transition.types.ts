@@ -43,7 +43,8 @@ export type SetupSignatureElements<T extends Record<string, TransitionRef>> = {
 };
 
 export type SetupTransitionSignature<
-  T extends Record<string, R>,
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  T extends Record<string, R> = {},
   R extends TransitionRef = TransitionRef,
   E extends SetupSignatureElements<T> = SetupSignatureElements<T>
 > = (

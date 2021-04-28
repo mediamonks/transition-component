@@ -34,7 +34,8 @@ export type SetupSignatureElements<T extends Record<string, TransitionRef>> = {
 
 // Re-export these types so we get the correctly typed Muban refs
 export type SetupTransitionSignature<
-  T extends Record<string, R>,
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  T extends Record<string, R> = {},
   R extends TransitionRef = TransitionRef,
   E extends SetupSignatureElements<T> = SetupSignatureElements<T>
 > = CoreSetupTransitionSignature<T, R, E>;
