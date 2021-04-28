@@ -1,5 +1,7 @@
-import type { TransitionRefElement } from '@mediamonks/muban-transition-component/src/types/Transition.types';
-import type { SetupTransitionSignature } from '@mediamonks/core-transition-component';
+import type {
+  SetupTransitionSignature,
+  TransitionRefElement,
+} from '@mediamonks/muban-transition-component';
 
 type TransitionRefs = {
   title: TransitionRefElement;

@@ -14,17 +14,10 @@ export { transitionRefToElement } from './util/Transition.utils';
 
 // Types
 export type {
-  SetupTransitionSignature,
   TransitionDirection,
-  SignatureRefElement,
-  SignatureRefCollection,
-  SignatureElement,
   TransitionOptions,
-  SetupPageTransitionOptions,
-  SetupTransitionOptions,
   TransitionController,
   GuardFunction,
-  SetupScrollTransitionOptions,
   TimelineOptions,
   TransitionInOptions,
   TransitionOutOptions,
@@ -35,4 +28,8 @@ export type {
   TransitionRefElement,
   TransitionRef,
   SetupSignatureElements,
+  SetupTransitionSignature,
+  SetupPageTransitionOptions,
+  SetupTransitionOptions,
+  SetupScrollTransitionOptions,
 } from './types/Transition.types';

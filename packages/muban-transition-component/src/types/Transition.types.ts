@@ -10,6 +10,10 @@ import type { ComponentFactory } from '@muban/muban';
 import type {
   SignatureRefCollection,
   SignatureRefElement,
+  SetupTransitionSignature as CoreSetupTransitionSignature,
+  SetupTransitionOptions as CoreSetupTransitionOptions,
+  SetupPageTransitionOptions as CoreSetupPageTransitionOptions,
+  SetupScrollTransitionOptions as CoreSetupScrollTransitionOptions,
 } from '@mediamonks/core-transition-component';
 
 export type TransitionRefCollection =
@@ -27,3 +31,28 @@ export type SetupSignatureElements<T extends Record<string, TransitionRef>> = {
 } & {
   container: HTMLElement;
 };
+
+// Re-export these types so we get the correctly typed Muban refs
+export type SetupTransitionSignature<
+  T extends Record<string, R>,
+  R extends TransitionRef = TransitionRef,
+  E extends SetupSignatureElements<T> = SetupSignatureElements<T>
+> = CoreSetupTransitionSignature<T, R, E>;
+
+export type SetupTransitionOptions<
+  T extends Record<string, R>,
+  R extends TransitionRef = TransitionRef,
+  E extends SetupSignatureElements<T> = SetupSignatureElements<T>
+> = CoreSetupTransitionOptions<T, R, E>;
+
+export type SetupPageTransitionOptions<
+  T extends Record<string, R>,
+  R extends TransitionRef = TransitionRef,
+  E extends SetupSignatureElements<T> = SetupSignatureElements<T>
+> = CoreSetupPageTransitionOptions<T, R, E>;
+
+export type SetupScrollTransitionOptions<
+  T extends Record<string, R>,
+  R extends TransitionRef = TransitionRef,
+  E extends SetupSignatureElements<T> = SetupSignatureElements<T>
+> = CoreSetupScrollTransitionOptions<T, R, E>;
