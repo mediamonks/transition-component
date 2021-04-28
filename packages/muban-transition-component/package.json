@@ -1,6 +1,6 @@
 {
   "name": "@mediamonks/muban-transition-component",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.2",
   "private": false,
   "module": "./dist/esm/index.js",
   "types": "./dist/esm/index.d.ts",
@@ -15,7 +15,7 @@
     "test": "jest --config ../../jest.config.js --rootDir ./"
   },
   "dependencies": {
-    "@mediamonks/core-transition-component": "^1.0.0-alpha.1",
+    "@mediamonks/core-transition-component": "^1.0.0-alpha.2",
     "@muban/muban": "^1.0.0-alpha.26",
     "@muban/template": "^1.0.0-alpha.1",
     "gsap": "^3.6.1"
