@@ -1,6 +1,23 @@
 {
   "name": "@mediamonks/muban-transition-component",
   "version": "1.0.0-alpha.3",
+  "description": "GreenSock animations for your Muban components.",
+  "keywords": [
+    "gsap",
+    "animation",
+    "components",
+    "muban"
+  ],
+  "author": "Lars van Braam <lars@mediamonks.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mediamonks/transition-component.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mediamonks/transition-component/issues"
+  },
+  "homepage": "https://github.com/mediamonks/transition-component/tree/main/packages/muban-transition-component#readme",
   "private": false,
   "module": "./dist/esm/index.js",
   "types": "./dist/esm/index.d.ts",
