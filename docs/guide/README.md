@@ -1,10 +1,7 @@
 # Getting started
+To get started, simply pick the framework of your choice!
 
-Using the transition component is super easy. 
-
-Just follow the correct getting started guide based on your framework!
-
-## Supported frameworks
+## Frameworks
 
 | Framework        | Status           | 
 | ------------- | ------------- | 

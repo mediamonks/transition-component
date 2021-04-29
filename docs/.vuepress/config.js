@@ -20,22 +20,14 @@ module.exports = {
                     {
                         title: 'Muban',
                         path: '/guide/muban/',
-                        collapsable: false,
-                        children: [
-                            '/guide/muban/examples'
-                        ]
                     },
                     {
                         title: 'Vue',
                         path: '/guide/vue/',
-                        collapsable: false,
-                        children: []
                     },
                     {
                         title: 'React',
                         path: '/guide/react/',
-                        collapsable: false,
-                        children: []
                     }
                 ]
             }

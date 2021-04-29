@@ -1,20 +1,19 @@
 ---
 home: true
-# heroImage: https://picsum.photos/1280/720
+heroImage: https://greensock.com/uploads/monthly_2020_03/tweenmax.thumb.png.c849c5b56c6752e3f2276b82ee702625.png
 heroText: Transition Component
 tagline: GreenSock animations for your components!
 actionText: Get Started →
 actionLink: /guide/
 features:    
-- title: Build with GreenSock 3.x 
+- title: GreenSock performance! 
   details:
-   The transition components are fully dependent on GreenSock 3.x and offers all of its awesome features resulting in 
-   blazing fast animations that are easy to maintain!      
-- title: Multiple frameworks
+   The transition component uses GreenSock 3.x under the hood, and it offers all of it's awesome features resulting in blazing fast animations      
+- title: Multiple frameworks!
   details:
-    The transition component will eventually support multiple frameworks, including Muban, Vue and possibly React!
-- title: Easy to use 
+    The goal is to support multiple frameworks (Muban 2.x, Vue 3.x and React) with the same core!
+- title: Maintainable 
   details:
-   The transition component is very easy to use and follows the same base implementation across all supported frameworks.    
+    Managing your animations has never been easier, separating your animations so they can be re-used across other components is just one of the main features of the transition component.   
 footer: MIT Licensed | Copyright © 2021-present MediaMonks
 ---
