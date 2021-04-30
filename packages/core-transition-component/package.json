@@ -1,6 +1,6 @@
 {
   "name": "@mediamonks/core-transition-component",
-  "version": "1.0.0-alpha.6",
+  "version": "1.0.0-alpha.7",
   "description": "GreenSock animations for your components.",
   "keywords": [
     "gsap",
@@ -32,7 +32,6 @@
     "clean": "rimraf -rf ./dist",
     "test": "jest --config ../../jest.config.js"
   },
-  "dependencies": {},
   "devDependencies": {
     "gsap": "^3.6.1",
     "rimraf": "^3.0.2",
