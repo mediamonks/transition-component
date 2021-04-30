@@ -36,11 +36,14 @@
   "dependencies": {
     "@mediamonks/core-transition-component": "^1.0.0-alpha.6",
     "@muban/muban": "^1.0.0-alpha.26",
-    "@muban/template": "^1.0.0-alpha.1",
-    "gsap": "^3.6.1"
+    "@muban/template": "^1.0.0-alpha.1"
   },
   "devDependencies": {
+    "gsap": "^3.6.1",
     "rimraf": "^3.0.2"
   },
-  "gitHead": "e050f057bba52fea11a8c401851c5d0418bfe33f"
+  "gitHead": "e050f057bba52fea11a8c401851c5d0418bfe33f",
+  "peerDependencies": {
+    "gsap": "^3.6.1"
+  }
 }

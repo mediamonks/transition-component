@@ -32,12 +32,14 @@
     "clean": "rimraf -rf ./dist",
     "test": "jest --config ../../jest.config.js"
   },
-  "dependencies": {
-    "gsap": "^3.6.1"
-  },
+  "dependencies": {},
   "devDependencies": {
+    "gsap": "^3.6.1",
     "rimraf": "^3.0.2",
     "ts-jest": "^26.5.5"
   },
-  "gitHead": "e050f057bba52fea11a8c401851c5d0418bfe33f"
+  "gitHead": "e050f057bba52fea11a8c401851c5d0418bfe33f",
+  "peerDependencies": {
+    "gsap": "^3.6.1"
+  }
 }
