@@ -4,6 +4,7 @@ Monorepo that contains everything related to the transition-component!
 ## Packages
 * [@mediamonks/core-transition-component](./packages/core-transition-component) - The core package that holds the transition logic
 * [@medamonks/muban-transition-component](./packages/muban-transition-component) - The Muban implementation of the transition-component logic.
+* [@medamonks/muban-storybook-addon-transition](./packages/muban-storybook-addon-transition) - A Muban-storybook addon to control your timelines.
 
 ## Examples
 * [Muban example](./examples/muban) - An example implementation of the `muban-transition-component` package in Muban.
