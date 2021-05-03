@@ -29,7 +29,7 @@ This can be achieved by adding it to your `App` component through the `useGlobal
 
 ```ts
 import { defineComponent } from '@muban/muban';
-import { useTransitionContext } from '@mediamonks/muban-transition-component';
+import { useGlobalTransitionContext } from '@mediamonks/muban-transition-component';
  
 const MyComponent = defineComponent({
   name: 'app',
