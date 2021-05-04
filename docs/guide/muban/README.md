@@ -87,7 +87,7 @@ const MyComponent = defineComponent({
       // this timeline inside another timeline.
       registerTransitionController: false, 
       refs: {
-        // Any refs that will be forwarded to the `setupTransitionInTimelin` and 
+        // Any refs that will be forwarded to the `setupTransitionInTimeline` and 
         // `setupTransitionOutTimeline` functions
       },
       // `timeline` - This is the GreenSock timeline where the animations will be added.
