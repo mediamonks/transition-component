@@ -45,12 +45,12 @@ To enable page transitions you can use add the `usePageTransitions` hook to your
  
 ```ts
 import { defineComponent } from '@muban/muban';
-import { usePageTransitions } from '@mediamonks/muban-transition-component';
+import { usePageTransitioning } from '@mediamonks/muban-transition-component';
  
 const MyComponent = defineComponent({
   name: 'app',
   setup() {
-    usePageTransitions();   
+    usePageTransitioning();   
     return [];
   }
 });
