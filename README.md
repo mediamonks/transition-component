@@ -14,12 +14,13 @@ Have a look at the [documentation](https://mediamonks.github.io/transition-compo
 ## 🎩 Examples
 * [Muban example](./examples/muban) - An example implementation of the `muban-transition-component` package in Muban.
 
-### Starting the examples
-The examples are dependent on the packages in this repository, so to get them to work you'll have to do the following:
-1. Checkout the entire Git repository (not just the example folder).
-2. Run `yarn` in the root of the Git repository to install all dependencies.
-3. Change directory to the desired example folder, for example `cd examples/muban`.
-4. Start up the development server by running `yarn dev`.
+> **Starting the examples**
+>
+> The examples are dependent on the packages in this repository, so to get them to work you'll have to do the following:
+> 1. Checkout the entire Git repository (not just the example folder).
+> 2. Run `yarn` in the root of the Git repository to install all dependencies.
+> 3. Change directory to the desired example folder, for example `cd examples/muban`.
+> 4. Start up the development server by running `yarn dev`.
 
 ## 💪 Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
