@@ -33,6 +33,7 @@
     "*.js"
   ],
   "dependencies": {
+    "@mediamonks/muban-transition-component": "^1.0.0-alpha.9",
     "@storybook/addons": "^6.2.9",
     "@storybook/components": "^6.2.9",
     "@storybook/core-events": "^6.2.9",
