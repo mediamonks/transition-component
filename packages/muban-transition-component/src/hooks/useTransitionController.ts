@@ -19,11 +19,9 @@ import { transitionRefToElement } from '../util/Transition.utils';
  * @param container
  * @param setupOptions
  */
-export function useTransitionController<
-  T extends Record<string, R>,
+export function useTransitionController<T extends Record<string, R>,
   R extends TransitionRef = TransitionRef,
-  E extends SetupSignatureElements<T> = SetupSignatureElements<T>
->(
+  E extends SetupSignatureElements<T> = SetupSignatureElements<T>>(
   container: TransitionRefElement,
   setupOptions: SetupTransitionOptions<T, R, E> = {},
 ): TransitionController {
