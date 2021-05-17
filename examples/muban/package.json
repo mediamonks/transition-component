@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@mediamonks/muban-transition-component": "^1.0.0-alpha.9",
-    "@muban/muban": "^1.0.0-alpha.26",
+    "@muban/muban": "^1.0.0-alpha.27",
     "@muban/template": "^1.0.0-alpha.1",
     "gsap": "^3.6.1",
     "html-webpack-plugin": "^5.3.1"

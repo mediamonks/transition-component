@@ -1989,10 +1989,10 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
-"@muban/muban@^1.0.0-alpha.26":
-  version "1.0.0-alpha.26"
-  resolved "https://registry.yarnpkg.com/@muban/muban/-/muban-1.0.0-alpha.26.tgz#628e03bb664f4f3049e37a0fac651f6d52869176"
-  integrity sha512-dK9Z8aNAcXmBs/R1ssZO7HhBZqjDyKPaVZ7GG86z+FCHaonZuSLRR4QftIna6Pg9R01r5jKWSwS4VESAnWTyNw==
+"@muban/muban@^1.0.0-alpha.27":
+  version "1.0.0-alpha.27"
+  resolved "https://registry.yarnpkg.com/@muban/muban/-/muban-1.0.0-alpha.27.tgz#23255cd131ee1c8468d2d241abebded69659c924"
+  integrity sha512-e5p4/+3GaGX96JKMKelw1kBPUwDTf0AqNo/5uV6mAoFXEteBwVZXSPKHtCMTKv0ifk7q/541VpegOBD1q0tiXg==
   dependencies:
     "@types/json-parse-better-errors" "^1.0.0"
     "@types/lodash-es" "^4.17.3"
