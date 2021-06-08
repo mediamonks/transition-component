@@ -2,6 +2,7 @@ import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 
 import type { SetupScrollTransitionOptions } from '@mediamonks/core-transition-component';
+import { createContext } from '@muban/muban';
 import { useTransitionController } from './useTransitionController';
 import type {
   SetupSignatureElements,
@@ -9,8 +10,14 @@ import type {
   TransitionRefElement,
 } from '../types/Transition.types';
 import { transitionRefToElement } from '../util/Transition.utils';
+import type { ScrollContext } from '../context/ScrollContext';
+import { defaultScrollTriggerVariables } from '../context/ScrollContext';
 
 gsap.registerPlugin(ScrollTrigger);
+
+export const [provideScrollContext, useScrollContext] = createContext<ScrollContext | undefined>(
+  'scrollContext',
+);
 
 export function useScrollTransition<
   T extends Record<string, R>,
@@ -21,10 +28,11 @@ export function useScrollTransition<
   { scrollTrigger = {}, ...restOptions }: SetupScrollTransitionOptions<T, R, E>,
 ): ReturnType<typeof useTransitionController> {
   const trigger = transitionRefToElement(container);
+  const { scrollTriggerVariables = defaultScrollTriggerVariables } = useScrollContext() || {};
 
   const transitionController = useTransitionController<T, R, E>(container, {
     ...restOptions,
-    scrollTrigger: { trigger, start: 'top 75%', ...scrollTrigger },
+    scrollTrigger: { trigger, ...scrollTriggerVariables, ...scrollTrigger },
   });
 
   if (!scrollTrigger.scrub) {
@@ -35,6 +43,7 @@ export function useScrollTransition<
      */
     ScrollTrigger.create({
       trigger,
+      scroller: scrollTriggerVariables.scroller,
       onLeaveBack: () => transitionController.transitionTimeline.in.pause(0),
     });
   }

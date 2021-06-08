@@ -342,6 +342,39 @@ const MyComponent = defineComponent({
 You lose the transition events when you use the scroll transition hook.
 :::
 
+
+#### Global ScrollTrigger variables
+In some scenarios you might want to set some ScrollTrigger variables for all components that are children of a certain component. 
+
+An example scenario might be a lightbox like component with it's own scrollbar that is displayed on top of your main application. In this scenario you will need to define a [scroller](https://greensock.com/docs/v3/Plugins/ScrollTrigger/scroller) to ensure that `gsap` uses the correct scrollbar for triggering the transitions.
+
+```ts
+import { defineComponent, refElement } from '@muban/muban';
+import { provideScrollContext, ScrollContext } from '@mediamonks/muban-transition-component';
+ 
+const SomeParentComponent = defineComponent({
+  name: 'some-parent-component',
+  refs: {
+    content: refElement('content'),
+  },
+  setup({ refs }) {
+    // Provide the context to set the global properties.
+    provideScrollContext(
+      // You can set all of the properties that are supported by the ScrollTrigger plugin. 
+      new ScrollContext({
+        scroller: refs.content.element,
+      }),
+    );
+   
+    return [];
+  }
+});
+```
+
+:::tip
+The child still has the final say on what will be executed. So if you provide the same properties to the configuration of your child's `useScrollTransition` hook, they will overwrite the global ones.
+:::
+
 ### Triggering transitions
 Transitions can be triggered through the transition controller that is returned by the `useTransitionComponent` hook. 
 
