@@ -31,8 +31,9 @@ export function useScrollTransition<
   const { scrollTriggerVariables = defaultScrollTriggerVariables } = useScrollContext() || {};
 
   const transitionController = useTransitionController<T, R, E>(container, {
-    ...restOptions,
+    registerTransitionController: false,
     scrollTrigger: { trigger, ...scrollTriggerVariables, ...scrollTrigger },
+    ...restOptions,
   });
 
   if (!scrollTrigger.scrub) {
