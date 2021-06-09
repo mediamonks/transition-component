@@ -12,6 +12,7 @@ export const Foo = defineComponent({
     useTransitionController(refs.self, {
       setupTransitionInTimeline,
       setupTransitionOutTimeline,
+      registerTransitionController: true,
       refs: {
         bar: refs.bar,
       },

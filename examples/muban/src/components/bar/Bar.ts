@@ -11,6 +11,7 @@ export const Bar = defineComponent({
   setup({ refs }) {
     useTransitionController(refs.self, {
       setupTransitionInTimeline,
+      registerTransitionController: true,
       refs: {
         title: refs.title,
       },

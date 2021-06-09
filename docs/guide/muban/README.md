@@ -112,9 +112,9 @@ const MyComponent = defineComponent({
     // `self` ref but you could technically provide any ref you want.
     useTransitionController(refs.self, {
       // Whether or not you want to be able to access your controller from 
-      // the transition-context, defaults to `true`. If this is set to false you cannot nest 
+      // the transition-context, defaults to `false`. If this is set to `true` you could nest  
       // this timeline inside another timeline.
-      registerTransitionController: false, 
+      registerTransitionController: true, 
       refs: {
         // Any refs that will be forwarded to the `setupTransitionInTimeline` and 
         // `setupTransitionOutTimeline` functions
@@ -139,6 +139,10 @@ const MyComponent = defineComponent({
 Nesting timelines can be achieved through the `transitionContext`. 
 
 You simply call the `getTimeline` method with a ref that references the HTMLElement that was used to create the transitionController.
+
+:::tip
+Make sure the target component has the `registerTransitionController` flag set to `true` to ensure it's added to the `transitionContext`.
+:::
  
 ```ts
 ...

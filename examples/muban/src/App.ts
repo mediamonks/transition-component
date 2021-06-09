@@ -39,7 +39,7 @@ export const App = defineComponent({
 
     onMounted(() => {
       transitionController.value = transitionContext.getController(refs.foo);
-      transitionController.value.transitionIn(eventListeners);
+      transitionController.value?.transitionIn(eventListeners);
     });
 
     return [
