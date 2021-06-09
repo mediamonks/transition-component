@@ -25,7 +25,7 @@ export function getTransitionController<
   transitionContext?: AbstractTransitionContext<R>,
 ): TransitionController {
   // eslint-disable-next-line no-param-reassign
-  setupOptions = { registerTransitionController: false, ...setupOptions };
+  setupOptions = { registerTransitionController: true, ...setupOptions };
 
   let transitionPromise = Promise.resolve();
   let resolveTransitionPromise: null | (() => void) = null;
