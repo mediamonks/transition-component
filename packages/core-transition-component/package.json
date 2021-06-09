@@ -1,6 +1,6 @@
 {
   "name": "@mediamonks/core-transition-component",
-  "version": "1.0.0-alpha.9",
+  "version": "1.0.0-alpha.10",
   "description": "GreenSock animations for your components.",
   "keywords": [
     "gsap",
@@ -37,7 +37,7 @@
     "rimraf": "^3.0.2",
     "ts-jest": "^26.5.5"
   },
-  "gitHead": "e050f057bba52fea11a8c401851c5d0418bfe33f",
+  "gitHead": "f47e239a24df9bed4cf73c47a8ef1267d6da8982",
   "peerDependencies": {
     "gsap": "^3.6.1"
   }
