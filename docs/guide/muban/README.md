@@ -27,7 +27,7 @@ Before you can start using the GreenSock transitions in your project you will fi
 ### Basic implementation
 This can be achieved by adding it to your `App` component through the `useGlobalTransitionContext` hook.
 
-```ts
+```ts {2,7}
 import { defineComponent } from '@muban/muban';
 import { useGlobalTransitionContext } from '@mediamonks/muban-transition-component';
  
@@ -46,12 +46,11 @@ there. Storybook has support for decorators that can be wrapped around your stor
 going to do. 
 
 Update the `.storybook/preview.js` file to include the following decorator logic:
-```ts
+```ts {2-4,6    -19}
 ...
 import { useGlobalTransitionContext } from '@mediamonks/muban-transition-component';
 import { defineComponent } from '@muban/muban';
 import { createDecoratorComponent } from '@muban/storybook';
-
 ...
 export const decorators = [
   createDecoratorComponent(({ component }) => {
@@ -72,7 +71,7 @@ export const decorators = [
 ### Page transition implementation
 To enable page transitions you can use add the `usePageTransitions` hook to your `App` component. 
  
-```ts
+```ts {2,7}
 import { defineComponent } from '@muban/muban';
 import { usePageTransitioning } from '@mediamonks/muban-transition-component';
  
@@ -112,9 +111,9 @@ const MyComponent = defineComponent({
     // `self` ref but you could technically provide any ref you want.
     useTransitionController(refs.self, {
       // Whether or not you want to be able to access your controller from 
-      // the transition-context, defaults to `false`. If this is set to `true` you could nest  
+      // the transition-context, defaults to `true`. If this is set to `false` you cannot nest  
       // this timeline inside another timeline.
-      registerTransitionController: true, 
+      registerTransitionController: false, 
       refs: {
         // Any refs that will be forwarded to the `setupTransitionInTimeline` and 
         // `setupTransitionOutTimeline` functions
@@ -303,7 +302,7 @@ export const getTimeline = (props:SomeComponentProps) => {
 This hook can be used when you want to create a page transition, it will automatically trigger the `transitionIn` when 
 the component has been mounted. 
 
-```ts
+```ts {2,7-10}
 import { defineComponent } from '@muban/muban';
 import { usePageTransition } from '@mediamonks/muban-transition-component';
  
@@ -321,11 +320,13 @@ const MyComponent = defineComponent({
 ```
 
 ### `useScrollTransition`
-This hook can be used when you want to attach a timeline GreenSock's ScrollTrigger functionality.
+This hook can be used when you want to attach a timeline GreenSock's ScrollTrigger functionality. It basically has the same configuration options as the `useTransitionController` does with two major differences:
 
-It has the same configuration options as the `useTransitionController` does, with the addition of the `scrollTrigger` which has all the same options as [ScrollTrigger](https://greensock.com/docs/v3/Plugins/ScrollTrigger) has.
+1. The addition of the `scrollTrigger` key, which has all the same options as [ScrollTrigger](https://greensock.com/docs/v3/Plugins/ScrollTrigger).
+2. The default value for the `registerTransitionController` is set to `false`. 
 
-```ts
+
+```ts {2,7-10} 
 import { defineComponent } from '@muban/muban';
 import { useScrollTransition } from '@mediamonks/muban-transition-component';
  
@@ -352,7 +353,7 @@ In some scenarios you might want to set some ScrollTrigger variables for all com
 
 An example scenario might be a lightbox like component with it's own scrollbar that is displayed on top of your main application. In this scenario you will need to define a [scroller](https://greensock.com/docs/v3/Plugins/ScrollTrigger/scroller) to ensure that `gsap` uses the correct scrollbar for triggering the transitions.
 
-```ts
+```ts {2,7,11,13-16}
 import { defineComponent, refElement } from '@muban/muban';
 import { provideScrollContext, ScrollContext } from '@mediamonks/muban-transition-component';
  
@@ -385,7 +386,7 @@ Transitions can be triggered through the transition controller that is returned 
 #### Transition in timeline
 Transition in can be triggered by calling `transitionIn` on the transition controller
 
-```ts
+```ts {9-13,16}
 import { defineComponent } from '@muban/muban';
 import { useTransitionController } from '@mediamonks/muban-transition-component';
  
