@@ -2,6 +2,9 @@ module.exports = {
     title: 'Transition Component',
     description: 'A tool to add GSAP transitions to your components',
     base: '/transition-component/',
+    markdown: {
+        lineNumbers: true,
+    },
     themeConfig: {
         nav: [
             { text: 'Home', link: '/' },
