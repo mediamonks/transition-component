@@ -1,7 +1,7 @@
 {
   "name": "muban-example",
   "license": "MIT",
-  "version": "1.0.3-alpha.1",
+  "version": "1.0.3-alpha.2",
   "private": true,
   "scripts": {
     "dev": "lerna run build && webpack serve -c webpack.config.js",
@@ -9,7 +9,7 @@
     "clean": "rimraf -rf dist"
   },
   "dependencies": {
-    "@mediamonks/muban-transition-component": "^1.0.0-alpha.11",
+    "@mediamonks/muban-transition-component": "^1.0.0-alpha.12",
     "@muban/muban": "^1.0.0-alpha.27",
     "@muban/template": "^1.0.0-alpha.1",
     "gsap": "^3.6.1",
