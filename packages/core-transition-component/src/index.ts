@@ -21,7 +21,6 @@ export type {
   SetupTransitionOptions,
   TransitionController,
   GuardFunction,
-  SetupScrollTransitionOptions,
   TimelineOptions,
   TransitionInOptions,
   TransitionOutOptions,

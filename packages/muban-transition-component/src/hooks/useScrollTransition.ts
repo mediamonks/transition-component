@@ -1,7 +1,7 @@
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 
-import type { SetupScrollTransitionOptions } from '@mediamonks/core-transition-component';
+import type { SetupTransitionOptions } from '@mediamonks/core-transition-component';
 import { createContext } from '@muban/muban';
 import { useTransitionController } from './useTransitionController';
 import type {
@@ -25,7 +25,7 @@ export function useScrollTransition<
   E extends SetupSignatureElements<T> = SetupSignatureElements<T>
 >(
   container: TransitionRefElement,
-  { scrollTrigger = {}, ...restOptions }: SetupScrollTransitionOptions<T, R, E>,
+  { scrollTrigger = {}, ...restOptions }: SetupTransitionOptions<T, R, E>,
 ): ReturnType<typeof useTransitionController> {
   const trigger = transitionRefToElement(container);
   const { scrollTriggerVariables = defaultScrollTriggerVariables } = useScrollContext() || {};

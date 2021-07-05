@@ -73,9 +73,3 @@ export type SetupPageTransitionOptions<
   beforeTransitionIn?: GuardFunction;
   beforeTransitionOut?: GuardFunction;
 } & SetupTransitionOptions<T, R, E>;
-
-export type SetupScrollTransitionOptions<
-  T extends Record<string, R>,
-  R extends TransitionRef = TransitionRef,
-  E extends SetupSignatureElements<T> = SetupSignatureElements<T>
-> = Omit<SetupTransitionOptions<T, R, E>, 'onStart' | 'onComplete' | 'onUpdate'>;
