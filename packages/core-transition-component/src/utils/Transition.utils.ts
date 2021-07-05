@@ -40,21 +40,12 @@ export function getTransitionController<
     }),
   };
 
-  // Helper method to retrieve the correct setup method based on the direction
-  const getSetupMethod = (direction: TransitionDirection = 'in') =>
-    setupOptions[direction === 'in' ? 'setupTransitionInTimeline' : 'setupTransitionOutTimeline'];
-
-  // eslint-disable-next-line no-shadow
-  const removeEventListeners = (timeline: gsap.core.Timeline) => {
-    timeline.eventCallback('onComplete', null);
-    timeline.eventCallback('onReverseComplete', null);
-    timeline.eventCallback('onUpdate', null);
+  const onTransitionStart = (callback?: () => void): void => {
+    setupOptions.onStart?.();
+    callback?.();
   };
 
-  // eslint-disable-next-line no-shadow
-  const handleTransitionComplete = (timeline: gsap.core.Timeline, callback?: () => void) => {
-    removeEventListeners(timeline);
-
+  const onTransitionComplete = (callback?: () => void): void => {
     setupOptions.onComplete?.();
     callback?.();
 
@@ -64,6 +55,23 @@ export function getTransitionController<
     }
   };
 
+  transitionTimeline.in.eventCallback('onStart', onTransitionStart);
+  transitionTimeline.in.eventCallback('onComplete', onTransitionComplete);
+  transitionTimeline.in.eventCallback('onReverseComplete', onTransitionComplete);
+  transitionTimeline.in.eventCallback('onUpdate', () =>
+    setupOptions.onUpdate?.(transitionTimeline.in),
+  );
+
+  transitionTimeline.out.eventCallback('onStart', onTransitionStart);
+  transitionTimeline.out.eventCallback('onComplete', onTransitionComplete);
+  transitionTimeline.out.eventCallback('onUpdate', () =>
+    setupOptions.onUpdate?.(transitionTimeline.out),
+  );
+
+  // Helper method to retrieve the correct setup method based on the direction
+  const getSetupMethod = (direction: TransitionDirection = 'in') =>
+    setupOptions[direction === 'in' ? 'setupTransitionInTimeline' : 'setupTransitionOutTimeline'];
+
   const killOldTimeline = (direction: TransitionDirection) => {
     if (!transitionPromise) return;
 
@@ -72,7 +80,7 @@ export function getTransitionController<
 
     timeline.kill();
 
-    handleTransitionComplete(timeline);
+    if (resolveTransitionPromise) onTransitionComplete();
   };
 
   const controller = {
@@ -125,32 +133,21 @@ export function getTransitionController<
       killOldTimeline(options.direction);
 
       transitionPromise = new Promise((resolve) => {
-        resolveTransitionPromise = resolve;
+        resolveTransitionPromise = resolve as () => void;
 
         const timeline = transitionTimeline[options.direction];
         const timelineHasChildren = timeline.getChildren(true).length > 0;
 
-        setupOptions.onStart?.();
         options.onStart?.();
 
         if (options.direction === 'in' || (options.direction === 'out' && timelineHasChildren)) {
           // eslint-disable-next-line babel/no-unused-expressions
-          !timelineHasChildren && handleTransitionComplete(timeline, options.onComplete);
-
-          timeline
-            .eventCallback('onComplete', handleTransitionComplete, [timeline, options.onComplete])
-            .restart(true, false);
+          !timelineHasChildren && onTransitionComplete(options.onComplete);
+          timeline.restart(true, true);
         } else {
-          const reversedTimeline = transitionTimeline.in;
-
-          reversedTimeline
-            .eventCallback('onReverseComplete', handleTransitionComplete, [
-              reversedTimeline,
-              options.onComplete,
-            ])
-            .reverse();
+          transitionTimeline.in.reverse(0, true);
         }
-      });
+      }).then(() => options.onComplete?.());
 
       return transitionPromise;
     },

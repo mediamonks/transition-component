@@ -32,5 +32,4 @@ export type {
   SetupTransitionSignature,
   SetupPageTransitionOptions,
   SetupTransitionOptions,
-  SetupScrollTransitionOptions,
 } from './types/Transition.types';
