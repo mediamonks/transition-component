@@ -40,14 +40,17 @@ export function getTransitionController<
     }),
   };
 
-  const onTransitionStart = (callback?: () => void): void => {
-    setupOptions.onStart?.();
+  const onTransitionStart = (direction: TransitionDirection, callback?: () => void): void => {
+    setupOptions.onStart?.(direction);
     callback?.();
   };
 
-  const onTransitionComplete = (callback?: () => void): void => {
-    setupOptions.onComplete?.();
-    callback?.();
+  const onTransitionComplete = (
+    direction: TransitionDirection,
+    callback?: (transitionDirection: TransitionDirection) => void,
+  ): void => {
+    setupOptions.onComplete?.(direction);
+    callback?.(direction);
 
     if (resolveTransitionPromise) {
       resolveTransitionPromise();
@@ -55,15 +58,15 @@ export function getTransitionController<
     }
   };
 
-  transitionTimeline.in.eventCallback('onStart', onTransitionStart);
-  transitionTimeline.in.eventCallback('onComplete', onTransitionComplete);
-  transitionTimeline.in.eventCallback('onReverseComplete', onTransitionComplete);
+  transitionTimeline.in.eventCallback('onStart', () => onTransitionStart('in'));
+  transitionTimeline.in.eventCallback('onComplete', () => onTransitionComplete('in'));
+  transitionTimeline.in.eventCallback('onReverseComplete', () => onTransitionComplete('out'));
   transitionTimeline.in.eventCallback('onUpdate', () =>
     setupOptions.onUpdate?.(transitionTimeline.in),
   );
 
-  transitionTimeline.out.eventCallback('onStart', onTransitionStart);
-  transitionTimeline.out.eventCallback('onComplete', onTransitionComplete);
+  transitionTimeline.out.eventCallback('onStart', () => onTransitionStart('out'));
+  transitionTimeline.out.eventCallback('onComplete', () => onTransitionComplete('out'));
   transitionTimeline.out.eventCallback('onUpdate', () =>
     setupOptions.onUpdate?.(transitionTimeline.out),
   );
@@ -80,7 +83,7 @@ export function getTransitionController<
 
     timeline.kill();
 
-    if (resolveTransitionPromise) onTransitionComplete();
+    if (resolveTransitionPromise) onTransitionComplete(direction);
   };
 
   const controller = {
@@ -138,16 +141,16 @@ export function getTransitionController<
         const timeline = transitionTimeline[options.direction];
         const timelineHasChildren = timeline.getChildren(true).length > 0;
 
-        options.onStart?.();
+        options.onStart?.(options.direction);
 
         if (options.direction === 'in' || (options.direction === 'out' && timelineHasChildren)) {
           // eslint-disable-next-line babel/no-unused-expressions
-          !timelineHasChildren && onTransitionComplete(options.onComplete);
+          !timelineHasChildren && onTransitionComplete('in', options.onComplete);
           timeline.restart(true, true);
         } else {
           transitionTimeline.in.reverse(0, true);
         }
-      }).then(() => options.onComplete?.());
+      }).then(() => options.onComplete?.(options.direction));
 
       return transitionPromise;
     },
