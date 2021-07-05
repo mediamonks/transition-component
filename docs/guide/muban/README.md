@@ -344,7 +344,7 @@ const MyComponent = defineComponent({
 ```
 
 ::: warning 
-You lose the transition events when you use the scroll transition hook.
+When using this hook there will be no Promise returned by the `transitionIn` / `transitionOut` methods, you can still use the regular event callbacks in the setupOptions though. 
 :::
 
 
