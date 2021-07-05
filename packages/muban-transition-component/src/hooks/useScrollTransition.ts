@@ -45,7 +45,7 @@ export function useScrollTransition<
     ScrollTrigger.create({
       trigger,
       scroller: scrollTriggerVariables.scroller,
-      onLeaveBack: () => transitionController.transitionTimeline.in.pause(0),
+      onLeaveBack: () => transitionController.transitionTimeline.in.pause(0, false),
     });
   }
 
