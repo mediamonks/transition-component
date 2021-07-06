@@ -7,22 +7,22 @@
   <script src="/bundle.js" defer></script>
   <style>
       [data-component] {
-          padding: 20px;
+          padding: 30px 20px 10px;
           border: 1px dashed lightgrey;
           flex-direction: column;
           justify-content: center;
           align-items: center;
           position: relative;
-          overflow: hidden;
       }
 
       [data-component="app"] {
           display: flex;
+          overflow: hidden;
       }
 
       [data-component]:not([data-component="app"]) {
           display: inline-flex;
-          margin: 20px;
+          margin: 10px 20px 10px;
       }
 
       .component-label {
@@ -47,11 +47,11 @@
   </ul>
 </header>
 <main>
-  <section class="mb-5">
-    <h1>Example</h1>
-    <p class="fs-7 col-md-8">
+  <section class="mb-4">
+    <h1>Examples</h1>
+    <p class="fs-7 col-md-7">
       This page will demonstrate the basic implementation of the <code>muban-transition-component</code> module. Have a
-      look below for a basic timeline implementation and some controls to see the effects.
+      look below for a basic timeline implementations and some controls to see the effects.
     </p>
   </section>
   <section id="app"><!-- Muban will inject the templates here --></section>
