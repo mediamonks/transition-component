@@ -19,32 +19,33 @@ import { transitionRefToElement } from '../util/transition.utils';
  * @param container
  * @param setupOptions
  */
-export function useTransitionController<T extends Record<string, R>,
+export function useTransitionController<
+  T extends Record<string, R>,
   R extends TransitionRef = TransitionRef,
-  E extends SetupSignatureElements<T> = SetupSignatureElements<T>>(
+  E extends SetupSignatureElements<T> = SetupSignatureElements<T>
+>(
   container: TransitionRefElement,
   setupOptions: SetupTransitionOptions<T, R, E> = {},
-): TransitionController {
+): TransitionController | null {
   const transitionContext = useTransitionContext();
 
   const controller = getTransitionController<T, R, E>(
     container as never,
     setupOptions,
-    // TODO: we should not use any here!
     (ref) => transitionRefToElement(ref as never),
     transitionContext as never,
   );
 
   // Make sure the in-direction is setup by default
   onMounted(() =>
-    controller.setupTimeline({
+    controller?.setupTimeline({
       direction: 'in',
     }),
   );
 
   onUnmounted(() => {
-    controller.transitionTimeline.in.kill();
-    controller.transitionTimeline.out.kill();
+    controller?.transitionTimeline.in.kill();
+    controller?.transitionTimeline.out.kill();
     transitionContext?.unregister(container);
   });
 

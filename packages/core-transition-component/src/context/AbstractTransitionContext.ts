@@ -31,7 +31,6 @@ export abstract class AbstractTransitionContext<T extends TransitionRef> {
 
   public register(element: T, controller: TransitionController): void {
     const index = this.getRefIndex(element);
-
     const reference = {
       element,
       controller,

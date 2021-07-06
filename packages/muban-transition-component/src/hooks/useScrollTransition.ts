@@ -31,11 +31,10 @@ export function useScrollTransition<
 ): ReturnType<typeof useTransitionController> {
   const trigger: SignatureRefElement = transitionRefToElement(container);
 
-  if (!trigger)
-    throw new Error('No container element was provided, please make sure to provide one.');
+  // If no trigger element is provided we cannot attach any scroll logic, therefore we just return `null`.
+  if (!trigger) return null;
 
   const { scrollTriggerVariables = defaultScrollTriggerVariables } = useScrollContext() || {};
-
   const transitionController = useTransitionController<T, R, E>(container, {
     registerTransitionController: false,
     scrollTrigger: { trigger, ...scrollTriggerVariables, ...scrollTrigger },
@@ -44,7 +43,7 @@ export function useScrollTransition<
 
   const removeLeaveViewportObserver = addLeaveViewportObserver(trigger, (position) => {
     if (!scrollTrigger.scrub && position === 'bottom') {
-      transitionController.transitionTimeline.in.pause(0, false);
+      transitionController?.transitionTimeline.in.pause(0, false);
     }
   });
 

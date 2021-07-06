@@ -23,7 +23,10 @@ export function getTransitionController<
   setupOptions: SetupTransitionOptions<T, R, E> = {},
   transitionRefToElement: (ref: R) => HTMLElement | Array<HTMLElement> | undefined,
   transitionContext?: AbstractTransitionContext<R>,
-): TransitionController {
+): TransitionController | null {
+  // If the provided container element does not exist in the DOM we do not setup any logic.
+  if (!transitionRefToElement(container)) return null;
+
   // eslint-disable-next-line no-param-reassign
   setupOptions = { registerTransitionController: true, ...setupOptions };
 
@@ -169,12 +172,6 @@ export function getTransitionController<
       await this.transition({ ...options, direction: 'out' });
     },
   };
-
-  if (container === undefined) {
-    throw new Error(
-      'Unable to register the transition controller because the root element is not set',
-    );
-  }
 
   if (setupOptions.registerTransitionController) {
     // Register the transition controller on the context so we can access it from anywhere within the application.
