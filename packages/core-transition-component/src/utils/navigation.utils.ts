@@ -1,4 +1,4 @@
-import type { GuardFunction } from '../types/Transition.types';
+import type { GuardFunction } from '../types/transition.types';
 
 // Helper method to guard functions to allow the flow to be hijacked and released when the
 // user allows it.

@@ -1,5 +1,5 @@
 import gsap from 'gsap';
-import type { TransitionDirection } from '../types/Transition.types';
+import type { TransitionDirection } from '../types/transition.types';
 
 function parseChild(
   child: gsap.core.Timeline | gsap.core.Tween,

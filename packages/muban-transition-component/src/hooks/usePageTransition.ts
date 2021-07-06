@@ -7,7 +7,7 @@ import type {
   SetupSignatureElements,
   TransitionRef,
   TransitionRefElement,
-} from '../types/Transition.types';
+} from '../types/transition.types';
 
 export function usePageTransition<
   T extends Record<string, R>,

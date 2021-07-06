@@ -7,8 +7,8 @@ import {
   refElement,
 } from '@muban/muban';
 import { html } from '@muban/template';
-import { transitionRefToElement } from './Transition.utils';
-import type { TransitionRefCollection, TransitionRefElement } from '../types/Transition.types';
+import { transitionRefToElement } from './transition.utils';
+import type { TransitionRefCollection, TransitionRefElement } from '../types/transition.types';
 
 const SomeComponent = defineComponent({
   name: 'component',
