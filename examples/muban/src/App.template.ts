@@ -1,11 +1,23 @@
 import { html } from '@muban/template';
 import { fooTemplate } from './components/foo/Foo.template';
+import { scrollTemplate } from './components/scroll/Scroll.template';
 
 export function appTemplate(): string {
   return html`
     <section data-component="app">
       <span class="badge bg-danger component-label">app-component</span>
-      <div style="overflow: hidden">${fooTemplate('foo')}</div>
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <h2>Basic</h2>
+            <p class="fs-7 col-md-8">
+              See the following example of nested components with the controls to trigger the
+              transition-in and transition-out methods.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div>${fooTemplate('foo')}</div>
       <div class="container mt-5">
         <div class="row">
           <div class="col-3">
@@ -34,6 +46,11 @@ export function appTemplate(): string {
             </div>
           </div>
         </div>
+      </div>
+      <div class="container mt-5">
+        <h2>onScroll</h2>
+        <p>See the following components transition-in when they enter the viewport.</p>
+        ${Array.from({ length: 20 }).map(() => scrollTemplate())}
       </div>
     </section>
   `;
