@@ -1,5 +1,5 @@
 import { AbstractTransitionContext } from '@mediamonks/core-transition-component';
-import type { TransitionRefElement } from '../types/Transition.types';
+import type { TransitionRefElement } from '../types/transition.types';
 
 export class TransitionContext extends AbstractTransitionContext<TransitionRefElement> {
   // eslint-disable-next-line class-methods-use-this

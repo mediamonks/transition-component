@@ -8,8 +8,8 @@ import type {
   SetupSignatureElements,
   TransitionRef,
   TransitionRefElement,
-} from '../types/Transition.types';
-import { transitionRefToElement } from '../util/Transition.utils';
+} from '../types/transition.types';
+import { transitionRefToElement } from '../util/transition.utils';
 import type { ScrollContext } from '../context/ScrollContext';
 import { defaultScrollTriggerVariables } from '../context/ScrollContext';
 

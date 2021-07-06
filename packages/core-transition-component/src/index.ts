@@ -3,9 +3,9 @@ export { AbstractTransitionContext } from './context/AbstractTransitionContext';
 export { AbstractFlowContext } from './context/AbstractFlowContext';
 
 // Utils
-export { guard } from './utils/Navigation.utils';
-export { getTransitionController } from './utils/Transition.utils';
-export { cloneTimeline, clearTimeline } from './utils/Timeline.utils';
+export { guard } from './utils/navigation.utils';
+export { getTransitionController } from './utils/transition.utils';
+export { cloneTimeline, clearTimeline } from './utils/timeline.utils';
 
 // Types
 export type {
@@ -24,4 +24,4 @@ export type {
   TimelineOptions,
   TransitionInOptions,
   TransitionOutOptions,
-} from './types/Transition.types';
+} from './types/transition.types';

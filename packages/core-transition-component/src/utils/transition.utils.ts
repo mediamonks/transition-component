@@ -10,9 +10,9 @@ import type {
   TransitionOptions,
   TransitionOutOptions,
   TransitionRef,
-} from '../types/Transition.types';
+} from '../types/transition.types';
 import type { AbstractTransitionContext } from '../context/AbstractTransitionContext';
-import { clearTimeline, cloneTimeline } from './Timeline.utils';
+import { clearTimeline, cloneTimeline } from './timeline.utils';
 
 export function getTransitionController<
   T extends Record<string, R>,

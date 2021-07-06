@@ -1,4 +1,4 @@
-import { guard } from './Navigation.utils';
+import { guard } from './navigation.utils';
 
 test('The callback is triggered immediately', () => {
   const callback = jest.fn();
