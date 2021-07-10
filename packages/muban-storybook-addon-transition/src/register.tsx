@@ -72,7 +72,7 @@ addons.register(ADDON_ID, () => {
             const duration = controller.transitionTimeline.in.duration();
             // Make sure the timeline is paused at the end by default, the transition in can be
             // triggered by clicking the play button!
-            controller.transitionTimeline.in.pause(duration);
+            controller.transitionTimeline.in.pause(duration, false);
             // Store the reference so we can control it from the UI.
             transitionController.current = controller;
             setEnableControls(true);
@@ -95,6 +95,7 @@ addons.register(ADDON_ID, () => {
 
           transitionController.current?.transitionTimeline.in.pause(
             timelineDuration * (progress / 100),
+            false,
           );
         },
         [timelineDuration],

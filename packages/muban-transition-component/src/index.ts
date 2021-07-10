@@ -11,7 +11,7 @@ export { TransitionContext } from './context/TransitionContext';
 export { ScrollContext } from './context/ScrollContext';
 
 // Utils
-export { transitionRefToElement } from './util/Transition.utils';
+export { transitionRefToElement } from './util/transition.utils';
 
 // Types
 export type {
@@ -32,5 +32,4 @@ export type {
   SetupTransitionSignature,
   SetupPageTransitionOptions,
   SetupTransitionOptions,
-  SetupScrollTransitionOptions,
-} from './types/Transition.types';
+} from './types/transition.types';

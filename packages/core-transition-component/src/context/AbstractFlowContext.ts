@@ -1,4 +1,4 @@
-import type { TransitionRef } from '../types/Transition.types';
+import type { TransitionRef } from '../types/transition.types';
 import type { AbstractTransitionContext } from './AbstractTransitionContext';
 
 export abstract class AbstractFlowContext<T extends TransitionRef> {

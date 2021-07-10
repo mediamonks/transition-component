@@ -1,17 +1,19 @@
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 
-import type { SetupScrollTransitionOptions } from '@mediamonks/core-transition-component';
-import { createContext } from '@muban/muban';
+import { createContext, onUnmounted } from '@muban/muban';
+import type { SignatureRefElement } from '@mediamonks/core-transition-component';
 import { useTransitionController } from './useTransitionController';
 import type {
+  SetupTransitionOptions,
   SetupSignatureElements,
   TransitionRef,
   TransitionRefElement,
-} from '../types/Transition.types';
-import { transitionRefToElement } from '../util/Transition.utils';
+} from '../types/transition.types';
+import { transitionRefToElement } from '../util/transition.utils';
 import type { ScrollContext } from '../context/ScrollContext';
 import { defaultScrollTriggerVariables } from '../context/ScrollContext';
+import { addLeaveViewportObserver } from '../util/scroll.utils';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -25,29 +27,27 @@ export function useScrollTransition<
   E extends SetupSignatureElements<T> = SetupSignatureElements<T>
 >(
   container: TransitionRefElement,
-  { scrollTrigger = {}, ...restOptions }: SetupScrollTransitionOptions<T, R, E>,
+  { scrollTrigger = {}, ...restOptions }: SetupTransitionOptions<T, R, E>,
 ): ReturnType<typeof useTransitionController> {
-  const trigger = transitionRefToElement(container);
-  const { scrollTriggerVariables = defaultScrollTriggerVariables } = useScrollContext() || {};
+  const trigger: SignatureRefElement = transitionRefToElement(container);
 
+  // If no trigger element is provided we cannot attach any scroll logic, therefore we just return `null`.
+  if (!trigger) return null;
+
+  const { scrollTriggerVariables = defaultScrollTriggerVariables } = useScrollContext() || {};
   const transitionController = useTransitionController<T, R, E>(container, {
     registerTransitionController: false,
     scrollTrigger: { trigger, ...scrollTriggerVariables, ...scrollTrigger },
     ...restOptions,
   });
 
-  if (!scrollTrigger.scrub) {
-    /**
-     * We create another scroll trigger because we want to reset the timeline once the users completely
-     * scrolls the component out of the viewport. This way we can re-transition the component when the
-     * user scrolls it back into the viewport.
-     */
-    ScrollTrigger.create({
-      trigger,
-      scroller: scrollTriggerVariables.scroller,
-      onLeaveBack: () => transitionController.transitionTimeline.in.pause(0),
-    });
-  }
+  const removeLeaveViewportObserver = addLeaveViewportObserver(trigger, (position) => {
+    if (!scrollTrigger.scrub && position === 'bottom') {
+      transitionController?.transitionTimeline.in.pause(0, false);
+    }
+  });
+
+  onUnmounted(removeLeaveViewportObserver);
 
   return transitionController;
 }

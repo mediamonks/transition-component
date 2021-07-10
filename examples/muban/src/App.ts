@@ -11,10 +11,13 @@ import {
 import { useGlobalTransitionContext } from '@mediamonks/muban-transition-component';
 import { html } from '@muban/template';
 import type { TransitionController } from '@mediamonks/core-transition-component';
+import ScrollTrigger from 'gsap/ScrollTrigger';
 import { Foo } from './components/foo/Foo';
+import { Scroll } from './components/scroll/Scroll';
 
 export const App = defineComponent({
   name: 'app',
+  components: [Scroll],
   refs: {
     transitionInButton: 'transition-in-button',
     transitionOutButton: 'transition-out-button',
@@ -28,13 +31,14 @@ export const App = defineComponent({
     const transitionController = shallowRef<TransitionController | null>(null);
     const events = ref<Array<{ value: string; time: string }>>([]);
 
+    const addEvent = (event: string): void => {
+      events.value = [...events.value, { value: event, time: new Date().toISOString() }];
+      setTimeout(() => ScrollTrigger.refresh(), 0);
+    };
+
     const eventListeners = {
-      onStart: () => {
-        events.value = [...events.value, { value: 'onStart', time: new Date().toISOString() }];
-      },
-      onComplete: () => {
-        events.value = [...events.value, { value: 'onComplete', time: new Date().toISOString() }];
-      },
+      onStart: () => addEvent('onStart'),
+      onComplete: () => addEvent('onComplete'),
     };
 
     onMounted(() => {

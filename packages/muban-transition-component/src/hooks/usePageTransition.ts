@@ -7,7 +7,7 @@ import type {
   SetupSignatureElements,
   TransitionRef,
   TransitionRefElement,
-} from '../types/Transition.types';
+} from '../types/transition.types';
 
 export function usePageTransition<
   T extends Record<string, R>,
@@ -20,7 +20,7 @@ export function usePageTransition<
   const transitionController = useTransitionController(ref, options);
   // const flowContext = useFlowContext();
 
-  onMounted(() => guard(() => transitionController.transitionIn(), options.beforeTransitionIn));
+  onMounted(() => guard(() => transitionController?.transitionIn(), options.beforeTransitionIn));
 
   // TODO: re-implement when we have some sort of router?
   // onBeforeRouteLeave((to, from, next) =>

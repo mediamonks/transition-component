@@ -13,7 +13,6 @@ import type {
   SetupTransitionSignature as CoreSetupTransitionSignature,
   SetupTransitionOptions as CoreSetupTransitionOptions,
   SetupPageTransitionOptions as CoreSetupPageTransitionOptions,
-  SetupScrollTransitionOptions as CoreSetupScrollTransitionOptions,
 } from '@mediamonks/core-transition-component';
 
 export type TransitionRefCollection =
@@ -51,9 +50,3 @@ export type SetupPageTransitionOptions<
   R extends TransitionRef = TransitionRef,
   E extends SetupSignatureElements<T> = SetupSignatureElements<T>
 > = CoreSetupPageTransitionOptions<T, R, E>;
-
-export type SetupScrollTransitionOptions<
-  T extends Record<string, R>,
-  R extends TransitionRef = TransitionRef,
-  E extends SetupSignatureElements<T> = SetupSignatureElements<T>
-> = CoreSetupScrollTransitionOptions<T, R, E>;

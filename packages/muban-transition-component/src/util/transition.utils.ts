@@ -7,7 +7,7 @@ import type {
   TransitionRef,
   TransitionRefCollection,
   TransitionRefElement,
-} from '../types/Transition.types';
+} from '../types/transition.types';
 
 export function transitionRefToElement(ref: TransitionRefElement): SignatureRefElement;
 // eslint-disable-next-line no-redeclare

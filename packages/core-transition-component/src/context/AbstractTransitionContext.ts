@@ -3,7 +3,7 @@ import type {
   TransitionController,
   TransitionDirection,
   TransitionRef,
-} from '../types/Transition.types';
+} from '../types/transition.types';
 
 /**
  * The transition context is used to reference the component's transition controllers through refs.
@@ -31,7 +31,6 @@ export abstract class AbstractTransitionContext<T extends TransitionRef> {
 
   public register(element: T, controller: TransitionController): void {
     const index = this.getRefIndex(element);
-
     const reference = {
       element,
       controller,

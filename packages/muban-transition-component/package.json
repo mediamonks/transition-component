@@ -1,6 +1,6 @@
 {
   "name": "@mediamonks/muban-transition-component",
-  "version": "1.0.0-alpha.14",
+  "version": "1.0.0-alpha.17",
   "description": "GreenSock animations for your Muban components.",
   "keywords": [
     "gsap",
@@ -34,7 +34,7 @@
     "test": "jest --config ../../jest.config.js --rootDir ./"
   },
   "dependencies": {
-    "@mediamonks/core-transition-component": "^1.0.0-alpha.10"
+    "@mediamonks/core-transition-component": "^1.0.0-alpha.13"
   },
   "devDependencies": {
     "gsap": "^3.6.1",
