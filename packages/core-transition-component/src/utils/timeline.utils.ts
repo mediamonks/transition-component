@@ -75,7 +75,7 @@ export function clearTimeline(timeline: gsap.core.Timeline, isRoot: boolean = tr
     if ('getChildren' in child) {
       clearTimeline(child, false);
     } else {
-      gsap.set(child.targets, { clearProps: 'all' });
+      gsap.set(child.targets(), { clearProps: 'all' });
     }
   });
 
