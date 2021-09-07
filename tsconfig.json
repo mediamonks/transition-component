@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": "./",
+    "jsx": "react",
     "module": "esnext",
     "target": "es5",
     "moduleResolution": "node",

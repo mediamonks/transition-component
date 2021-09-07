@@ -1,0 +1,48 @@
+{
+  "name": "@mediamonks/react-transition-component",
+  "version": "1.0.0-alpha.1",
+  "description": "GreenSock animations for your React components.",
+  "keywords": [
+    "gsap",
+    "greensock",
+    "animation",
+    "transition",
+    "components",
+    "react"
+  ],
+  "author": "Leroy Korterink <leroy@mediamonks.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mediamonks/transition-component.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mediamonks/transition-component/issues"
+  },
+  "homepage": "https://github.com/mediamonks/transition-component/tree/main/packages/react-transition-component#readme",
+  "private": false,
+  "module": "./dist/esm/index.js",
+  "types": "./dist/esm/index.d.ts",
+  "files": [
+    "dist/**/*"
+  ],
+  "scripts": {
+    "build": "npm-run-all -s clean build:*",
+    "build:ts": "tsc -p ./tsconfig.build.json",
+    "build:ts-esm": "tsc -p ./tsconfig.build.esm.json",
+    "clean": "rimraf -rf ./dist",
+    "test": "jest --config ../../jest.config.js --rootDir ./"
+  },
+  "dependencies": {
+    "@mediamonks/core-transition-component": "file:../core-transition-component",
+    "@types/history": "^4.7.9",
+    "@types/react-router-dom": "^5.1.8",
+    "history": "^5.0.1",
+    "react": "^17.0.2",
+    "react-router-dom": "^5.3.0"
+  },
+  "gitHead": "f47e239a24df9bed4cf73c47a8ef1267d6da8982",
+  "peerDependencies": {
+    "gsap": "^3.6.1"
+  }
+}

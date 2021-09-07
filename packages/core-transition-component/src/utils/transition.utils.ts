@@ -1,7 +1,5 @@
 import gsap from 'gsap';
-
 import type {
-  SetupSignatureElements,
   SetupTransitionOptions,
   TimelineOptions,
   TransitionController,
@@ -9,27 +7,12 @@ import type {
   TransitionInOptions,
   TransitionOptions,
   TransitionOutOptions,
-  TransitionRef,
 } from '../types/transition.types';
-import type { AbstractTransitionContext } from '../context/AbstractTransitionContext';
 import { clearTimeline, cloneTimeline } from './timeline.utils';
 
-export function getTransitionController<
-  T extends Record<string, R>,
-  R extends TransitionRef,
-  E extends SetupSignatureElements<T>
->(
-  container: R,
-  setupOptions: SetupTransitionOptions<T, R, E> = {},
-  transitionRefToElement: (ref: R) => HTMLElement | Array<HTMLElement> | undefined,
-  transitionContext?: AbstractTransitionContext<R>,
-): TransitionController | null {
-  // If the provided container element does not exist in the DOM we do not setup any logic.
-  if (!transitionRefToElement(container)) return null;
-
-  // eslint-disable-next-line no-param-reassign
-  setupOptions = { registerTransitionController: true, ...setupOptions };
-
+export function getTransitionController(
+  setupOptions: SetupTransitionOptions = {},
+): TransitionController {
   let transitionPromise = Promise.resolve();
   let resolveTransitionPromise: null | (() => void) = null;
 
@@ -109,29 +92,10 @@ export function getTransitionController<
         ...options,
       };
 
-      if (transitionContext === undefined) {
-        throw new Error('No TransitionContext has been found, make sure the Apps holds one.');
-      }
-
       if (reset) clearTimeline(timeline);
 
       // Find the correct setup based on the provided direction
-      getSetupMethod(direction)?.(
-        timeline,
-        Object.entries(setupOptions.refs || {}).reduce(
-          (refs, [key, value]) => {
-            // Object.entries causes key to be too generic.
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            refs[key] = transitionRefToElement(value as TransitionRef); // eslint-disable-line no-param-reassign
-            return refs;
-          },
-          {
-            container: transitionRefToElement(container),
-          } as E,
-        ),
-        transitionContext,
-      );
+      getSetupMethod(direction)?.(timeline);
 
       return timeline;
     },
@@ -172,11 +136,6 @@ export function getTransitionController<
       await this.transition({ ...options, direction: 'out' });
     },
   };
-
-  if (setupOptions.registerTransitionController) {
-    // Register the transition controller on the context so we can access it from anywhere within the application.
-    transitionContext?.register(container, controller);
-  }
 
   return controller;
 }

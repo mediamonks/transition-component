@@ -1,5 +1,3 @@
-import type { AbstractTransitionContext } from '../context/AbstractTransitionContext';
-
 export type GuardFunction = (release: () => void) => void;
 
 export type TimelineOptions = {
@@ -22,6 +20,7 @@ export type TransitionOutOptions = Omit<TransitionOptions, 'direction'>;
 
 export type TransitionDirection = 'in' | 'out';
 export type TransitionController = {
+  ref?: unknown;
   transitionTimeline: Record<TransitionDirection, gsap.core.Timeline>;
   getTimeline(direction?: TransitionDirection): gsap.core.Timeline;
   setupTimeline(options?: Partial<TimelineOptions>): gsap.core.Timeline;
@@ -42,34 +41,16 @@ export type SetupSignatureElements<T extends Record<string, TransitionRef>> = {
   container: HTMLElement;
 };
 
-export type SetupTransitionSignature<
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  T extends Record<string, R> = {},
-  R extends TransitionRef = TransitionRef,
-  E extends SetupSignatureElements<T> = SetupSignatureElements<T>
-> = (
-  timeline: gsap.core.Timeline,
-  elements: E,
-  transitionContext: AbstractTransitionContext<R>,
-) => void;
+export type SetupTransitionSignature = (timeline: gsap.core.Timeline) => void;
 
-export type SetupTransitionOptions<
-  T extends Record<string, R>,
-  R extends TransitionRef = TransitionRef,
-  E extends SetupSignatureElements<T> = SetupSignatureElements<T>
-> = {
-  refs?: T;
+export type SetupTransitionOptions<T = unknown | undefined> = {
+  ref?: T;
   scrollTrigger?: gsap.plugins.ScrollTriggerInstanceVars;
-  registerTransitionController?: boolean;
-  setupTransitionInTimeline?: SetupTransitionSignature<T, R, E>;
-  setupTransitionOutTimeline?: SetupTransitionSignature<T, R, E>;
+  setupTransitionInTimeline?: SetupTransitionSignature;
+  setupTransitionOutTimeline?: SetupTransitionSignature;
 } & Omit<TransitionOptions, 'direction'>;
 
-export type SetupPageTransitionOptions<
-  T extends Record<string, R>,
-  R extends TransitionRef = TransitionRef,
-  E extends SetupSignatureElements<T> = SetupSignatureElements<T>
-> = {
+export type SetupPageTransitionOptions = {
   beforeTransitionIn?: GuardFunction;
   beforeTransitionOut?: GuardFunction;
-} & SetupTransitionOptions<T, R, E>;
+} & SetupTransitionOptions;

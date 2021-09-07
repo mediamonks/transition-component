@@ -60,7 +60,7 @@ export abstract class AbstractTransitionContext<T extends TransitionRef> {
 
     if (!controller) {
       throw new Error(
-        'No controller was found for the provided element. Have you enabled the registerTransitionController flag?',
+        'No controller was found for the provided element. Did you forget to set the ref?',
       );
     }
 
