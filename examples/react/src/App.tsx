@@ -1,19 +1,19 @@
 import {
-  Link,
-  Redirect,
-  Route,
-  Switch,
   TransitionControllerRef,
   TransitionPersistence,
   TransitionRouter,
   useTransitionController,
 } from '@mediamonks/react-transition-component';
+import { createBrowserHistory } from 'history';
 import React, { ReactNode, useRef, useState } from 'react';
+import { Link, Route } from 'react-router-dom';
 
 interface MyTransitionComponentProps {
   children: ReactNode;
   transitionRef?: TransitionControllerRef;
 }
+
+const history = createBrowserHistory();
 
 function MyTransitionComponent({ children, transitionRef }: MyTransitionComponentProps) {
   const divRef = useRef<HTMLDivElement>(null);
@@ -43,7 +43,7 @@ function MyTransitionComponent({ children, transitionRef }: MyTransitionComponen
           x: 0,
           scale: 1.5,
           rotation: -270,
-          duration: 4,
+          duration: 1,
         });
 
         return timeline;
@@ -79,25 +79,26 @@ function App() {
       </TransitionPersistence>
 
       {/**
-       * Custom history is used in the TransitionRouter so that history
-       * changes can be blocked until out transitions is finished.
+       * Custom history is used in the TransitionRouter so transition happens before transition
        */}
-      <TransitionRouter>
-        <Switch>
-          <Route path="/a">
-            <Link to="/b">
-              <MyTransitionComponent>Page a</MyTransitionComponent>
-            </Link>
-          </Route>
+      <TransitionRouter history={history}>
+        <Route path="/page1" exact>
+          <MyTransitionComponent>
+            <Link to="/page2">Page 1</Link>
+          </MyTransitionComponent>
+        </Route>
 
-          <Route path="/b">
-            <Link to="/a">
-              <MyTransitionComponent>Page b</MyTransitionComponent>
-            </Link>
-          </Route>
+        <Route path="/page2" exact>
+          <MyTransitionComponent>
+            <Link to="/">Page 2</Link>
+          </MyTransitionComponent>
+        </Route>
 
-          <Redirect to="/a" />
-        </Switch>
+        <Route path="/" exact>
+          <MyTransitionComponent>
+            <Link to="/page1">Page 0</Link>
+          </MyTransitionComponent>
+        </Route>
       </TransitionRouter>
     </>
   );

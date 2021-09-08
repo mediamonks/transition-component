@@ -33,8 +33,13 @@ export const useTransitionController = (
 
   useEffect(() => {
     controller.setupTimeline({
+      direction: 'out',
+    });
+    controller.setupTimeline({
       direction: 'in',
     });
+
+    controller.transitionIn();
   }, [controller]);
 
   /**
