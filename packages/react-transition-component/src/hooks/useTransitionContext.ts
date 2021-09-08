@@ -1,5 +1,7 @@
-import type { TransitionController } from '@mediamonks/core-transition-component';
-import type { TransitionControllerContext } from '@mediamonks/core-transition-component';
+import type {
+  TransitionControllerContext,
+  TransitionController,
+} from '@mediamonks/core-transition-component';
 import { TRANSITION_CONTROLLER_CONTEXT } from '@mediamonks/core-transition-component';
 import { useEffect } from 'react';
 import { useTransitionPersistenceContext } from '../components/TransitionPersistence.context';

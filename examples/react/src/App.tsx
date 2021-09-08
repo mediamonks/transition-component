@@ -1,53 +1,55 @@
 import {
+  Link,
   Redirect,
   Route,
   Switch,
+  TransitionControllerRef,
   TransitionPersistence,
   TransitionRouter,
   useTransitionController,
-  useTransitionControllerRef,
 } from '@mediamonks/react-transition-component';
 import React, { ReactNode, useRef, useState } from 'react';
 
 interface MyTransitionComponentProps {
   children: ReactNode;
-  transitionRef?: Symbol;
+  transitionRef?: TransitionControllerRef;
 }
 
-function MyTransitionComponent({ children, transitionRef = Symbol() }: MyTransitionComponentProps) {
+function MyTransitionComponent({ children, transitionRef }: MyTransitionComponentProps) {
   const divRef = useRef<HTMLDivElement>(null);
 
   useTransitionController(
-    {
+    () => ({
       ref: transitionRef,
-      setupTransitionInTimeline(timeline: any) {
-        timeline.fromTo(
-          divRef.current,
-          {
-            x: 100,
-            scale: 0.6,
-          },
-          {
-            x: 0,
+      setupTransitionInTimeline(timeline) {
+        timeline
+          .set(divRef.current, {
+            scale: 0,
+          })
+          .to(divRef.current, {
+            rotation: 45,
+            scaleY: 1,
+            scaleX: 0.5,
+          })
+          .to(divRef.current, {
             scale: 1,
-          },
-        );
+            rotation: 0,
+          });
 
         return timeline;
       },
-
-      setupTransitionOutTimeline(timeline: any) {
+      setupTransitionOutTimeline(timeline) {
         timeline.to(divRef.current, {
           x: 0,
           scale: 1.5,
-          rotate: 920,
+          rotation: -270,
           duration: 4,
         });
 
         return timeline;
       },
-    },
-    [divRef],
+    }),
+    [divRef, transitionRef],
   );
 
   return (
@@ -68,25 +70,13 @@ function MyTransitionComponent({ children, transitionRef = Symbol() }: MyTransit
 function App() {
   const [show, setShow] = useState(false);
 
-  const { transitionController, ref } = useTransitionControllerRef();
-
   return (
     <>
       <button onClick={() => setShow(!show)}>Toggle TransitionPersistence</button>
 
       <TransitionPersistence>
-        {/**
-         * Transition out is started before the element is actually removed from the v-dom
-         */}
         {show && <MyTransitionComponent>TransitionPersistence</MyTransitionComponent>}
       </TransitionPersistence>
-
-      <button onClick={() => transitionController?.transitionIn()}>TransitionIn</button>
-      <button onClick={() => transitionController?.transitionIn()}>TransitionOut</button>
-
-      <MyTransitionComponent transitionRef={ref}>
-        Control transition from parent
-      </MyTransitionComponent>
 
       {/**
        * Custom history is used in the TransitionRouter so that history
@@ -95,11 +85,15 @@ function App() {
       <TransitionRouter>
         <Switch>
           <Route path="/a">
-            <MyTransitionComponent>Page a</MyTransitionComponent>
+            <Link to="/b">
+              <MyTransitionComponent>Page a</MyTransitionComponent>
+            </Link>
           </Route>
 
           <Route path="/b">
-            <MyTransitionComponent>Page b</MyTransitionComponent>
+            <Link to="/a">
+              <MyTransitionComponent>Page b</MyTransitionComponent>
+            </Link>
           </Route>
 
           <Redirect to="/a" />

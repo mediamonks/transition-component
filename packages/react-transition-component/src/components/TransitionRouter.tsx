@@ -1,6 +1,6 @@
 import type { History, State } from 'history';
 import { createBrowserHistory } from 'history';
-import type { ReactElement } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 import React, { useEffect, useMemo } from 'react';
 import { Router } from 'react-router-dom';
 import {
@@ -10,13 +10,15 @@ import {
 } from './TransitionRouter.context';
 
 export interface TransitionRouterProps {
-  children: ReactElement;
-  history: History<State>;
+  children: ReactNode | ReadonlyArray<ReactNode>;
+  history?: History<State>;
 }
+
+export const DEFAULT_HISTORY = createBrowserHistory();
 
 export function TransitionRouter({
   children,
-  history = createBrowserHistory(),
+  history = DEFAULT_HISTORY,
 }: TransitionRouterProps): ReactElement {
   // eslint-disable-next-line no-underscore-dangle, @typescript-eslint/naming-convention
   const _transitionRouterContext = useTransitionRouterContext();

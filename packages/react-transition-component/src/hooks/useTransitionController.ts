@@ -3,13 +3,20 @@ import type {
   TransitionController,
 } from '@mediamonks/core-transition-component';
 import { getTransitionController } from '@mediamonks/core-transition-component';
-import { useMemo } from 'react';
-import type { TransitionControllerRef } from '..';
+import { useEffect, useMemo } from 'react';
 import {
   useConnectTransitionControllerContext,
   useConnectTransitionPersistanceContext,
   useConnectTransitionRouterContext,
 } from './useTransitionContext';
+
+/**
+ * "primitive" type for transition controller reference
+ */
+export type TransitionControllerRef = 'TransitionControllerRef' & {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  __brand: symbol;
+};
 
 /**
  * Creates transition controller for React component
@@ -19,10 +26,16 @@ import {
  * @returns
  */
 export const useTransitionController = (
-  options: SetupTransitionOptions<TransitionControllerRef>,
+  options: () => SetupTransitionOptions<TransitionControllerRef>,
   deps: ReadonlyArray<unknown>,
 ): TransitionController => {
-  const controller = useMemo(() => getTransitionController(options), deps);
+  const controller = useMemo(() => getTransitionController(options()), deps);
+
+  useEffect(() => {
+    controller.setupTimeline({
+      direction: 'in',
+    });
+  }, [controller]);
 
   /**
    * Connect controller to controller contexts

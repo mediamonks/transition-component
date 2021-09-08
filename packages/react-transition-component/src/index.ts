@@ -13,4 +13,3 @@ export * from './components/TransitionRouter';
 export * from './components/TransitionRouter.context';
 export * from './hooks/useTransitionContext';
 export * from './hooks/useTransitionController';
-export * from './hooks/useTransitionControllerRef';
