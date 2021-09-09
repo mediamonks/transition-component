@@ -1,8 +1,10 @@
 // Contexts
-export type { AbstractFlowContext } from './context/AbstractFlowContext';
-export type { AbstractTransitionContext } from './context/AbstractTransitionContext';
-export type { TransitionControllerContext } from './context/TransitionControllerContext';
-export { TRANSITION_CONTROLLER_CONTEXT } from './context/TransitionControllerContext';
+export { AbstractFlowContext } from './context/AbstractFlowContext';
+export { AbstractTransitionContext } from './context/AbstractTransitionContext';
+export {
+  TransitionControllerContext,
+  TRANSITION_CONTROLLER_CONTEXT,
+} from './context/TransitionControllerContext';
 
 // Types
 export type {
