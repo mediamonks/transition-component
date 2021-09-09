@@ -28,22 +28,17 @@
   ],
   "scripts": {
     "build": "npm-run-all -s clean build:*",
-    "build:ts": "tsc -p ./tsconfig.build.json",
-    "build:ts-esm": "tsc -p ./tsconfig.build.esm.json",
+    "build:ts": "tsc -p ./tsconfig.cjs.json",
+    "build:ts-esm": "tsc -p ./tsconfig.esm.json",
     "clean": "rimraf -rf ./dist",
     "test": "jest --config ../../jest.config.js --rootDir ./"
   },
   "dependencies": {
-    "@mediamonks/core-transition-component": "file:../core-transition-component"
-  },
-  "devDependencies": {
-    "gsap": "^3.6.1",
-    "rimraf": "^3.0.2"
-  },
-  "gitHead": "f47e239a24df9bed4cf73c47a8ef1267d6da8982",
-  "peerDependencies": {
+    "@mediamonks/core-transition-component": "file:../core-transition-component",
     "@muban/muban": "^1.0.0-alpha.27",
-    "@muban/template": "^1.0.0-alpha.1",
+    "@muban/template": "^1.0.0-alpha.1"
+  },
+  "peerDependencies": {
     "gsap": "^3.6.1"
   }
 }

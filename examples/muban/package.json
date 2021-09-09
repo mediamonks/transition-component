@@ -4,7 +4,7 @@
   "version": "1.0.3-alpha.8",
   "private": true,
   "scripts": {
-    "dev": "lerna run build && webpack serve -c webpack.config.js",
+    "dev": "webpack serve -c webpack.config.js",
     "build": "webpack",
     "clean": "rimraf -rf dist"
   },
