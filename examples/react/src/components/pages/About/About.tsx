@@ -4,6 +4,7 @@ import { TransitionControllerRef, useTransitionController } from '@mediamonks/re
 import { StyledAbout } from './About.styles';
 import FullScreenBlock from '../../organisms/FullScreenBlock/FullScreenBlock';
 import HeadingBlock from '../../organisms/HeadingBlock/HeadingBlock';
+import GridBlock from '../../organisms/GridBlock/GridBlock';
 
 interface AboutProps {
   transitionRef?: TransitionControllerRef;
@@ -42,7 +43,7 @@ export default function About({ transitionRef }: AboutProps): ReactElement {
       ref={divRef}
     >
       <HeadingBlock backgroundColor={'#F0F8FF'} copy={"This is the about page"} />
-      <FullScreenBlock backgroundColor={'#F0FFFF'} />
+      <GridBlock backgroundColor={'#F0FFFF'} />
       <FullScreenBlock backgroundColor={'#F5F5DC'} />
       <HeadingBlock backgroundColor={'red'} copy={"This is still the about page"} />
     </StyledAbout>

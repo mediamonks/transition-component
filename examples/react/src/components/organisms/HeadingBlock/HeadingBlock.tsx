@@ -32,9 +32,8 @@ export default function HeadingBlock(
           scrollTrigger: {
             scrub: false,
             trigger: divRef.current as Element,
-            start: '-=300',
+            start: 0,
             end: "+=200",
-            markers: true,
             toggleActions: "restart none none reset"
           }
         })

@@ -27,7 +27,6 @@ export default function FullScreenBlock(
             trigger: divRef.current as Element,
             start: divRef.current ? Math.max(divRef.current.offsetTop - 100, 0) : 0,
             end: "+=200",
-            markers: true,
             toggleActions: "restart none none reset"
           }
         })
