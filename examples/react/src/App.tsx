@@ -6,7 +6,9 @@ import {
 } from '@mediamonks/react-transition-component';
 import { createBrowserHistory } from 'history';
 import React, { ReactNode, useRef, useState } from 'react';
-import { Link, Route } from 'react-router-dom';
+import { Link, Route, NavLink } from 'react-router-dom';
+import About from './components/pages/About/About';
+import { Path } from './routes/Path';
 
 interface MyTransitionComponentProps {
   children: ReactNode;
@@ -72,31 +74,28 @@ function App() {
 
   return (
     <>
-      <button onClick={() => setShow(!show)}>Toggle TransitionPersistence</button>
-
-      <TransitionPersistence>
-        {show && <MyTransitionComponent>TransitionPersistence</MyTransitionComponent>}
-      </TransitionPersistence>
-
       {/**
        * Custom history is used in the TransitionRouter so transition happens before transition
        */}
       <TransitionRouter history={history}>
-        <Route path="/page1" exact>
-          <MyTransitionComponent>
-            <Link to="/page2">Page 1</Link>
-          </MyTransitionComponent>
+        <nav style={{ height: '80px', padding: '10px 30px', display: 'flex', alignItems: 'center', backgroundColor: '#f2f2f2'}}>
+          <NavLink to={Path.Home} style={{textDecoration: 'none'}}>Home</NavLink>
+          <NavLink to={Path.About} style={{marginLeft: '20px', textDecoration: 'none'}}>About</NavLink>
+        </nav>
+
+        <button onClick={() => setShow(!show)}>Toggle TransitionPersistence</button>
+
+        <TransitionPersistence>
+          {show && <MyTransitionComponent>TransitionPersistence</MyTransitionComponent>}
+        </TransitionPersistence>
+
+        <Route path={Path.About} exact>
+          <About />
         </Route>
 
-        <Route path="/page2" exact>
+        <Route path={Path.Home} exact>
           <MyTransitionComponent>
-            <Link to="/">Page 2</Link>
-          </MyTransitionComponent>
-        </Route>
-
-        <Route path="/" exact>
-          <MyTransitionComponent>
-            <Link to="/page1">Page 0</Link>
+            <Link to={Path.About}>Page 0</Link>
           </MyTransitionComponent>
         </Route>
       </TransitionRouter>
