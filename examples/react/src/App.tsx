@@ -1,12 +1,12 @@
 import {
+  createTransitionHistory,
+  PersistenceTransition,
   TransitionControllerRef,
-  TransitionPersistence,
-  TransitionRouter,
   useTransitionController,
 } from '@mediamonks/react-transition-component';
 import { createBrowserHistory } from 'history';
 import React, { ReactNode, useRef, useState } from 'react';
-import { Link, Route, NavLink } from 'react-router-dom';
+import { Link, NavLink, Route, Router } from 'react-router-dom';
 import About from './components/pages/About/About';
 import { Path } from './routes/Path';
 
@@ -15,7 +15,7 @@ interface MyTransitionComponentProps {
   transitionRef?: TransitionControllerRef;
 }
 
-const history = createBrowserHistory();
+const history = createTransitionHistory(createBrowserHistory());
 
 function MyTransitionComponent({ children, transitionRef }: MyTransitionComponentProps) {
   const divRef = useRef<HTMLDivElement>(null);
@@ -74,20 +74,29 @@ function App() {
 
   return (
     <>
-      {/**
-       * Custom history is used in the TransitionRouter so transition happens before transition
-       */}
-      <TransitionRouter history={history}>
-        <nav style={{ height: '80px', padding: '10px 30px', display: 'flex', alignItems: 'center', backgroundColor: '#f2f2f2'}}>
-          <NavLink to={Path.Home} style={{textDecoration: 'none'}}>Home</NavLink>
-          <NavLink to={Path.About} style={{marginLeft: '20px', textDecoration: 'none'}}>About</NavLink>
+      <Router history={history}>
+        <nav
+          style={{
+            height: '80px',
+            padding: '10px 30px',
+            display: 'flex',
+            alignItems: 'center',
+            backgroundColor: '#f2f2f2',
+          }}
+        >
+          <NavLink to={Path.Home} style={{ textDecoration: 'none' }}>
+            Home
+          </NavLink>
+          <NavLink to={Path.About} style={{ marginLeft: '20px', textDecoration: 'none' }}>
+            About
+          </NavLink>
         </nav>
 
-        <button onClick={() => setShow(!show)}>Toggle TransitionPersistence</button>
+        <button onClick={() => setShow(!show)}>Toggle PersistenceTransition</button>
 
-        <TransitionPersistence>
-          {show && <MyTransitionComponent>TransitionPersistence</MyTransitionComponent>}
-        </TransitionPersistence>
+        <PersistenceTransition>
+          {show && <MyTransitionComponent>PersistenceTransition</MyTransitionComponent>}
+        </PersistenceTransition>
 
         <Route path={Path.About} exact>
           <About />
@@ -98,7 +107,7 @@ function App() {
             <Link to={Path.About}>Page 0</Link>
           </MyTransitionComponent>
         </Route>
-      </TransitionRouter>
+      </Router>
     </>
   );
 }

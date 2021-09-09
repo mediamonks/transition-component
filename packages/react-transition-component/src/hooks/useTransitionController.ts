@@ -2,13 +2,16 @@ import type {
   SetupTransitionOptions,
   TransitionController,
 } from '@mediamonks/core-transition-component';
-import { getTransitionController } from '@mediamonks/core-transition-component';
-import { useEffect, useMemo } from 'react';
 import {
-  useConnectTransitionControllerContext,
-  useConnectTransitionPersistanceContext,
-  useConnectTransitionRouterContext,
-} from './useTransitionContext';
+  getTransitionController,
+  TRANSITION_CONTROLLER_CONTEXT,
+} from '@mediamonks/core-transition-component';
+import { useEffect, useMemo } from 'react';
+import { createConnectToTransitionControllerContext } from './useTransitionController.util';
+
+const useConnectToGlobalTransitionControllerContext = createConnectToTransitionControllerContext(
+  () => TRANSITION_CONTROLLER_CONTEXT,
+);
 
 /**
  * "primitive" type for transition controller reference
@@ -35,19 +38,13 @@ export const useTransitionController = (
     controller.setupTimeline({
       direction: 'out',
     });
+
     controller.setupTimeline({
       direction: 'in',
     });
-
-    controller.transitionIn();
   }, [controller]);
 
-  /**
-   * Connect controller to controller contexts
-   */
-  useConnectTransitionControllerContext(controller);
-  useConnectTransitionRouterContext(controller);
-  useConnectTransitionPersistanceContext(controller);
+  useConnectToGlobalTransitionControllerContext(controller);
 
   return controller;
 };

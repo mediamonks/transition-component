@@ -1,16 +1,14 @@
 import type { History } from 'history';
-import type { TransitionRouterContext } from './TransitionRouter.context';
+import { ROUTE_TRANSITION_CONTROLLER_CONTEXT } from '../hooks/useRouteTransitionController';
 
 type TargetFunctions = History['push'] | History['replace'] | History['go'];
 
-export const createTransitionHistory = (
-  history: History,
-  transitionRouterContext: TransitionRouterContext,
-): History => {
+export const createTransitionHistory = (history: History): History => {
   const createProxy = <T extends TargetFunctions>(targetFunction: T): T =>
     new Proxy(targetFunction, {
-      async apply(target, thisArgument, argumentList) {
-        await transitionRouterContext.transition({
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      async apply(target, _thisArgument, argumentList) {
+        await ROUTE_TRANSITION_CONTROLLER_CONTEXT.transition({
           direction: 'out',
         });
 
