@@ -1,5 +1,6 @@
 import type { ReactElement, ReactNode } from 'react';
 import React, { forwardRef } from 'react';
+import { StyledHeading } from './Heading.styles';
 
 interface HeadingProps {
   children: ReactNode;
@@ -9,16 +10,11 @@ export default forwardRef<HTMLHeadingElement, HeadingProps>(function Heading(
   {children, ...props}:HeadingProps, ref,): ReactElement {
 
   return (
-    <h1
+    <StyledHeading
       ref={ref}
-      style={{
-        fontSize: '42px',
-        color: 'black',
-        margin: 20,
-      }}
       {...props}
     >
       {children}
-    </h1>
+    </StyledHeading>
   );
 });

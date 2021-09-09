@@ -2,13 +2,13 @@ import type { ReactElement } from 'react';
 import React, { useRef } from 'react';
 import Heading from '../../atoms/Heading/Heading';
 import { TransitionControllerRef, useTransitionController } from '@mediamonks/react-transition-component';
-import { StyledAbout } from './About.styles';
+import { StyledHome } from './Home.styles';
 
-interface AboutProps {
+interface HomeProps {
   transitionRef?: TransitionControllerRef;
 }
 
-export default function About({ transitionRef }: AboutProps): ReactElement {
+export default function Home({ transitionRef }: HomeProps): ReactElement {
   const divRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
 
@@ -59,10 +59,10 @@ export default function About({ transitionRef }: AboutProps): ReactElement {
   );
 
   return (
-    <StyledAbout
+    <StyledHome
       ref={divRef}
     >
-      <Heading ref={headingRef}>About</Heading>
-    </StyledAbout>
+      <Heading ref={headingRef}>Home</Heading>
+    </StyledHome>
   );
 }

@@ -9,6 +9,8 @@ import React, { ReactNode, useRef, useState } from 'react';
 import { Link, Route, NavLink } from 'react-router-dom';
 import About from './components/pages/About/About';
 import { Path } from './routes/Path';
+import { StyledNav, StyledNavLink } from './App.styles';
+import Home from './components/pages/Home/Home';
 
 interface MyTransitionComponentProps {
   children: ReactNode;
@@ -78,10 +80,10 @@ function App() {
        * Custom history is used in the TransitionRouter so transition happens before transition
        */}
       <TransitionRouter history={history}>
-        <nav style={{ height: '80px', padding: '10px 30px', display: 'flex', alignItems: 'center', backgroundColor: '#f2f2f2'}}>
-          <NavLink to={Path.Home} style={{textDecoration: 'none'}}>Home</NavLink>
-          <NavLink to={Path.About} style={{marginLeft: '20px', textDecoration: 'none'}}>About</NavLink>
-        </nav>
+        <StyledNav>
+          <StyledNavLink to={Path.Home}>Home</StyledNavLink>
+          <StyledNavLink to={Path.About}>About</StyledNavLink>
+        </StyledNav>
 
         <button onClick={() => setShow(!show)}>Toggle TransitionPersistence</button>
 
@@ -94,9 +96,7 @@ function App() {
         </Route>
 
         <Route path={Path.Home} exact>
-          <MyTransitionComponent>
-            <Link to={Path.About}>Page 0</Link>
-          </MyTransitionComponent>
+          <Home />
         </Route>
       </TransitionRouter>
     </>
