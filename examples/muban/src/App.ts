@@ -8,7 +8,7 @@ import {
   refComponent,
   shallowRef,
 } from '@muban/muban';
-import { useGlobalTransitionContext } from '@mediamonks/muban-transition-component';
+import { TRANSITION_CONTROLLER_CONTEXT } from '@mediamonks/muban-transition-component';
 import { html } from '@muban/template';
 import type { TransitionController } from '@mediamonks/core-transition-component';
 import ScrollTrigger from 'gsap/ScrollTrigger';
@@ -27,8 +27,7 @@ export const App = defineComponent({
     }),
   },
   setup({ refs }) {
-    const transitionContext = useGlobalTransitionContext();
-    const transitionController = shallowRef<TransitionController | null>(null);
+    const transitionController = shallowRef<TransitionController | undefined>();
     const events = ref<Array<{ value: string; time: string }>>([]);
 
     const addEvent = (event: string): void => {
@@ -42,7 +41,7 @@ export const App = defineComponent({
     };
 
     onMounted(() => {
-      transitionController.value = transitionContext.getController(refs.foo);
+      transitionController.value = TRANSITION_CONTROLLER_CONTEXT.findTransitionController(refs.foo);
       transitionController.value?.transitionIn(eventListeners);
     });
 
