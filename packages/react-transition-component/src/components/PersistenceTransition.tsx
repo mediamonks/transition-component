@@ -1,23 +1,24 @@
+import { TransitionControllerContext } from '@mediamonks/core-transition-component';
 import type { ReactElement, ReactNode } from 'react';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import {
-  TransitionPersistenceContext,
-  TransitionPersistenceReactContext,
-} from './TransitionPersistence.context';
+import { PersistenceTransitionControllerReactContext } from './PersistenceTransition.context';
 
-export interface TransitionPersistenceProps {
+export interface PersistenceTransitionProps {
   children?: ReactNode | ReadonlyArray<ReactNode>;
 }
 
-export function TransitionPersistence({ children }: TransitionPersistenceProps): ReactElement {
+export function PersistenceTransition({ children }: PersistenceTransitionProps): ReactElement {
   const [previousChildren, setPreviousChildren] = useState<ReactNode>(children);
-  const transitionPersistanceContext = useMemo(() => new TransitionPersistenceContext(), []);
+  const persistanceTransitionControllerContext = useMemo(
+    () => new TransitionControllerContext(),
+    [],
+  );
   const isMounted = useRef(true);
 
   useEffect(() => {
     (async () => {
       try {
-        await transitionPersistanceContext.transition({
+        await persistanceTransitionControllerContext.transition({
           direction: previousChildren === children ? 'in' : 'out',
         });
       } finally {
@@ -36,15 +37,17 @@ export function TransitionPersistence({ children }: TransitionPersistenceProps):
       isMounted.current = false;
 
       // Kill transitions before unmounting
-      transitionPersistanceContext.killTransition('in');
-      transitionPersistanceContext.killTransition('out');
+      persistanceTransitionControllerContext.killTransition('in');
+      persistanceTransitionControllerContext.killTransition('out');
     },
     [],
   );
 
   return (
-    <TransitionPersistenceReactContext.Provider value={transitionPersistanceContext}>
+    <PersistenceTransitionControllerReactContext.Provider
+      value={persistanceTransitionControllerContext}
+    >
       {previousChildren}
-    </TransitionPersistenceReactContext.Provider>
+    </PersistenceTransitionControllerReactContext.Provider>
   );
 }

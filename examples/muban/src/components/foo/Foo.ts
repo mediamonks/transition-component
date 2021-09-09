@@ -1,5 +1,5 @@
-import { defineComponent, refComponent } from '@muban/muban';
 import { useTransitionController } from '@mediamonks/muban-transition-component';
+import { defineComponent, refComponent } from '@muban/muban';
 import { Bar } from '../bar/Bar';
 import { setupTransitionInTimeline, setupTransitionOutTimeline } from './Foo.transitions';
 
@@ -10,12 +10,8 @@ export const Foo = defineComponent({
   },
   setup({ refs }) {
     useTransitionController(refs.self, {
-      setupTransitionInTimeline,
-      setupTransitionOutTimeline,
-      registerTransitionController: true,
-      refs: {
-        bar: refs.bar,
-      },
+      setupTransitionInTimeline: setupTransitionInTimeline(refs),
+      setupTransitionOutTimeline: setupTransitionOutTimeline(refs),
     });
 
     return [];

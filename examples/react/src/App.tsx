@@ -1,28 +1,28 @@
 import {
+  createTransitionHistory,
+  PersistenceTransition,
   TransitionControllerRef,
-  TransitionPersistence,
-  TransitionRouter,
-  useTransitionController,
+  usePersistanceTransitionController,
 } from '@mediamonks/react-transition-component';
 import { createBrowserHistory } from 'history';
-import React, { ReactNode, useRef, useState } from 'react';
-import { Route } from 'react-router-dom';
-import About from './components/pages/About/About';
-import { Path } from './routes/Path';
+import { ReactNode, useRef, useState } from 'react';
+import { Route, Router } from 'react-router-dom';
 import { StyledNav, StyledNavLink } from './App.styles';
+import About from './components/pages/About/About';
 import Home from './components/pages/Home/Home';
+import { Path } from './routes/Path';
 
 interface MyTransitionComponentProps {
   children: ReactNode;
   transitionRef?: TransitionControllerRef;
 }
 
-const history = createBrowserHistory();
+const history = createTransitionHistory(createBrowserHistory());
 
 function MyTransitionComponent({ children, transitionRef }: MyTransitionComponentProps) {
   const divRef = useRef<HTMLDivElement>(null);
 
-  useTransitionController(
+  usePersistanceTransitionController(
     () => ({
       ref: transitionRef,
       setupTransitionInTimeline(timeline) {
@@ -75,32 +75,27 @@ function App() {
   const [show, setShow] = useState(false);
 
   return (
-    <>
-      {/**
-       * Custom history is used in the TransitionRouter so transition happens before transition
-       */}
-      <TransitionRouter history={history}>
-        <StyledNav>
-          <div>
+    <Router history={history}>
+      <StyledNav>
+        <div>
           <StyledNavLink to={Path.Home}>Home</StyledNavLink>
           <StyledNavLink to={Path.About}>About</StyledNavLink>
-          </div>
-          <button onClick={() => setShow(!show)}>Toggle TransitionPersistence</button>
-        </StyledNav>
+        </div>
+        <button onClick={() => setShow(!show)}>Toggle TransitionPersistence</button>
+      </StyledNav>
 
-        <TransitionPersistence>
-          {show && <MyTransitionComponent>TransitionPersistence</MyTransitionComponent>}
-        </TransitionPersistence>
+      <PersistenceTransition>
+        {show && <MyTransitionComponent>PersistenceTransition</MyTransitionComponent>}
+      </PersistenceTransition>
 
-        <Route path={Path.About} exact>
-          <About />
-        </Route>
+      <Route path={Path.About} exact>
+        <About />
+      </Route>
 
-        <Route path={Path.Home} exact>
-          <Home />
-        </Route>
-      </TransitionRouter>
-    </>
+      <Route path={Path.Home} exact>
+        <Home />
+      </Route>
+    </Router>
   );
 }
 

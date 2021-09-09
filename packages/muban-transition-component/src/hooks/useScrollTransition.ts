@@ -1,19 +1,16 @@
+import type {
+  SignatureRefElement,
+  SetupTransitionOptions,
+} from '@mediamonks/core-transition-component';
+import { createContext, onUnmounted } from '@muban/muban';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
-
-import { createContext, onUnmounted } from '@muban/muban';
-import type { SignatureRefElement } from '@mediamonks/core-transition-component';
-import { useTransitionController } from './useTransitionController';
-import type {
-  SetupTransitionOptions,
-  SetupSignatureElements,
-  TransitionRef,
-  TransitionRefElement,
-} from '../types/transition.types';
-import { transitionRefToElement } from '../util/transition.utils';
 import type { ScrollContext } from '../context/ScrollContext';
 import { defaultScrollTriggerVariables } from '../context/ScrollContext';
+import type { TransitionRefElement } from '../types/transition.types';
 import { addLeaveViewportObserver } from '../util/scroll.utils';
+import { transitionRefToElement } from '../util/transition.utils';
+import { useTransitionController } from './useTransitionController';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -21,13 +18,9 @@ export const [provideScrollContext, useScrollContext] = createContext<ScrollCont
   'scrollContext',
 );
 
-export function useScrollTransition<
-  T extends Record<string, R>,
-  R extends TransitionRef = TransitionRef,
-  E extends SetupSignatureElements<T> = SetupSignatureElements<T>
->(
+export function useScrollTransition(
   container: TransitionRefElement,
-  { scrollTrigger = {}, ...restOptions }: SetupTransitionOptions<T, R, E>,
+  { scrollTrigger = {}, ...restOptions }: SetupTransitionOptions,
 ): ReturnType<typeof useTransitionController> {
   const trigger: SignatureRefElement = transitionRefToElement(container);
 
@@ -35,9 +28,12 @@ export function useScrollTransition<
   if (!trigger) return null;
 
   const { scrollTriggerVariables = defaultScrollTriggerVariables } = useScrollContext() || {};
-  const transitionController = useTransitionController<T, R, E>(container, {
-    registerTransitionController: false,
-    scrollTrigger: { trigger, ...scrollTriggerVariables, ...scrollTrigger },
+  const transitionController = useTransitionController(container, {
+    scrollTrigger: {
+      trigger,
+      ...scrollTriggerVariables,
+      ...scrollTrigger,
+    },
     ...restOptions,
   });
 

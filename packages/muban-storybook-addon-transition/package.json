@@ -24,7 +24,8 @@
   "main": "dist/register.js",
   "types": "dist/register.d.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "npm-run-all -s clean build:*",
+    "build:ts": "tsc -p ./tsconfig.json",
     "clean": "rimraf -rf ./dist"
   },
   "files": [
@@ -33,15 +34,11 @@
     "*.js"
   ],
   "dependencies": {
-    "@mediamonks/muban-transition-component": "file:../muban-transition-component",
     "@storybook/addons": "^6.2.9",
     "@storybook/components": "^6.2.9",
     "@storybook/core-events": "^6.2.9",
-    "@storybook/theming": "^6.2.9"
-  },
-  "devDependencies": {
-    "react": "^17.0.2",
-    "rimraf": "^3.0.2"
+    "@storybook/theming": "^6.2.9",
+    "@mediamonks/muban-transition-component": "file:../muban-transition-component"
   },
   "peerDependencies": {
     "react": "^17.0.2"

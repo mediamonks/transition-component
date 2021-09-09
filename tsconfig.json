@@ -1,10 +1,9 @@
 {
   "compilerOptions": {
     "baseUrl": "./",
-    "jsx": "react",
-    "module": "esnext",
-    "target": "es5",
-    "moduleResolution": "node",
+    "module": "ESNext",
+    "target": "ES5",
+    "moduleResolution": "Node",
     "lib": [
       "dom",
       "dom.iterable",
@@ -27,16 +26,10 @@
     "skipLibCheck": true,
     "declaration": true
   },
-  "references": [
-    { "path": "packages/core-transition-component" },
-    { "path": "packages/muban-transition-component" }
-  ],
   "exclude": [
-    "node_modules",
-    "dist"
+    "**/node_modules",
+    "**/dist",
+    "**/*.test.ts",
+    "**/*.spec.ts",
   ],
-  "include": [
-    "./packages/**/src",
-    "./examples/**/src"
-  ]
 }
