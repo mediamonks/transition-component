@@ -44,6 +44,7 @@ export default function About({ transitionRef }: AboutProps): ReactElement {
       <HeadingBlock backgroundColor={'#F0F8FF'} copy={"This is the about page"} />
       <FullScreenBlock backgroundColor={'#F0FFFF'} />
       <FullScreenBlock backgroundColor={'#F5F5DC'} />
+      <HeadingBlock backgroundColor={'red'} copy={"This is still the about page"} />
     </StyledAbout>
   );
 }
