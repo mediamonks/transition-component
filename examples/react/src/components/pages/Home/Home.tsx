@@ -1,7 +1,10 @@
+import {
+  TransitionControllerRef,
+  useRouteTransitionController,
+} from '@mediamonks/react-transition-component';
 import type { ReactElement } from 'react';
 import React, { useRef } from 'react';
 import Heading from '../../atoms/Heading/Heading';
-import { TransitionControllerRef, useTransitionController } from '@mediamonks/react-transition-component';
 import { StyledHome } from './Home.styles';
 
 interface HomeProps {
@@ -12,7 +15,7 @@ export default function Home({ transitionRef }: HomeProps): ReactElement {
   const divRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
 
-  useTransitionController(
+  useRouteTransitionController(
     () => ({
       ref: transitionRef,
       setupTransitionInTimeline(timeline) {
@@ -44,7 +47,7 @@ export default function Home({ transitionRef }: HomeProps): ReactElement {
         timeline.to(headingRef.current, {
           opacity: 0,
           duration: 0.3,
-        })
+        });
         timeline.to(divRef.current, {
           x: 0,
           scale: 1.5,
@@ -59,9 +62,7 @@ export default function Home({ transitionRef }: HomeProps): ReactElement {
   );
 
   return (
-    <StyledHome
-      ref={divRef}
-    >
+    <StyledHome ref={divRef}>
       <Heading ref={headingRef}>Home</Heading>
     </StyledHome>
   );
