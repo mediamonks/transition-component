@@ -1,15 +1,15 @@
 import type { ReactElement } from 'react';
 import React, { useRef } from 'react';
 import { TransitionControllerRef, useTransitionController } from '@mediamonks/react-transition-component';
-import { StyledAbout, StyledHeading } from './About.styles';
+import { StyledAbout } from './About.styles';
 import FullScreenBlock from '../../organisms/FullScreenBlock/FullScreenBlock';
+import HeadingBlock from '../../organisms/HeadingBlock/HeadingBlock';
 
 interface AboutProps {
   transitionRef?: TransitionControllerRef;
 }
 export default function About({ transitionRef }: AboutProps): ReactElement {
   const divRef = useRef<HTMLDivElement>(null);
-  const headingRef = useRef<HTMLHeadingElement>(null);
 
   useTransitionController(
     () => ({
@@ -17,29 +17,17 @@ export default function About({ transitionRef }: AboutProps): ReactElement {
       setupTransitionInTimeline(timeline) {
         timeline
           .set(divRef.current, {
-            xPercent: 100,
-          })
-          .set(headingRef.current, {
-            y: 30,
             opacity: 0,
           })
           .to(divRef.current, {
-            xPercent: 0
-          })
-          .to(headingRef.current, {
-            y: 0,
-            opacity: 1,
+            opacity: 1
           });
 
         return timeline;
       },
       setupTransitionOutTimeline(timeline) {
-        timeline.to(headingRef.current, {
-          opacity: 0,
-          duration: 0.3,
-        })
         timeline.to(divRef.current, {
-          xPercent: 100,
+          opacity: 0,
           duration: 1,
         });
 
@@ -53,10 +41,9 @@ export default function About({ transitionRef }: AboutProps): ReactElement {
     <StyledAbout
       ref={divRef}
     >
-      <StyledHeading ref={headingRef}>About</StyledHeading>
-      <FullScreenBlock backgroundColor={'red'} />
-      <FullScreenBlock backgroundColor={'green'} />
-      <FullScreenBlock backgroundColor={'blue'} />
+      <HeadingBlock backgroundColor={'#F0F8FF'} copy={"This is the about page"} />
+      <FullScreenBlock backgroundColor={'#F0FFFF'} />
+      <FullScreenBlock backgroundColor={'#F5F5DC'} />
     </StyledAbout>
   );
 }

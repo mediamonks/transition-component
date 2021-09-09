@@ -6,7 +6,7 @@ import {
 } from '@mediamonks/react-transition-component';
 import { createBrowserHistory } from 'history';
 import React, { ReactNode, useRef, useState } from 'react';
-import { Link, Route, NavLink } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import About from './components/pages/About/About';
 import { Path } from './routes/Path';
 import { StyledNav, StyledNavLink } from './App.styles';

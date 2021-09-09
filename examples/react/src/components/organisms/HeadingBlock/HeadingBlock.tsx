@@ -1,21 +1,24 @@
-import type { ReactElement, ReactNode } from 'react';
+import type { ReactElement } from 'react';
 import React, { useRef } from 'react';
-import { StyledFullScreenBlock } from './FullScreenBlock.styles';
+import { StyledHeadingBlock, StyledHeading } from './HeadingBlock.styles';
 import { TransitionControllerRef, useTransitionController } from '@mediamonks/react-transition-component';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { SplitText } from '../../../util/SplitText';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, SplitText);
 
-interface FullScreenBlockProps {
+interface HeadingBlockProps {
   backgroundColor?: string;
-  children?: ReactNode;
+  copy?: string;
   transitionRef?: TransitionControllerRef;
 }
 
-export default function FullScreenBlock(
-  {transitionRef, children, backgroundColor, ...props}:FullScreenBlockProps): ReactElement {
+export default function HeadingBlock(
+  {transitionRef, copy, backgroundColor, ...props}:HeadingBlockProps): ReactElement {
   const divRef = useRef<HTMLDivElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const splitHeading = new SplitText(headingRef.current);
 
   useTransitionController(
     () => ({
@@ -35,19 +38,23 @@ export default function FullScreenBlock(
           opacity: 0,
         }, {
           opacity: 1,
-        });
+        })
+        .from(splitHeading.words, {yPercent:-100,  stagger:0.05, duration:0.3, ease:"back"})
+        .from(splitHeading.words, {opacity:0, stagger:0.05, duration:0.2}, 0);
       },
     }),
     [divRef, transitionRef],
   );
 
   return (
-    <StyledFullScreenBlock
+    <StyledHeadingBlock
       ref={divRef}
       $backgroundColor={backgroundColor}
       {...props}
     >
-      {children}
-    </StyledFullScreenBlock>
+      <StyledHeading ref={headingRef}>
+        {copy}
+      </StyledHeading>
+    </StyledHeadingBlock>
   );
 };
