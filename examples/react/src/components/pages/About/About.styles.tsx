@@ -1,8 +1,13 @@
 import styled from 'styled-components';
+import Heading from '../../atoms/Heading/Heading';
 
 export const StyledAbout = styled.div`
-  margin: 20px;
-  width: 200px;
-  height: 200px;
-  background: red;
+  max-width: 100vw;
+  overflow: hidden;
+  background: seashell;
+`;
+
+export const StyledHeading = styled(Heading)`
+  margin: 0;
+  padding: 20px 40px;
 `;

@@ -81,11 +81,12 @@ function App() {
        */}
       <TransitionRouter history={history}>
         <StyledNav>
+          <div>
           <StyledNavLink to={Path.Home}>Home</StyledNavLink>
           <StyledNavLink to={Path.About}>About</StyledNavLink>
+          </div>
+          <button onClick={() => setShow(!show)}>Toggle TransitionPersistence</button>
         </StyledNav>
-
-        <button onClick={() => setShow(!show)}>Toggle TransitionPersistence</button>
 
         <TransitionPersistence>
           {show && <MyTransitionComponent>TransitionPersistence</MyTransitionComponent>}
