@@ -2,7 +2,7 @@ import {
   createTransitionHistory,
   PersistenceTransition,
   TransitionControllerRef,
-  useTransitionController,
+  usePersistanceTransitionController,
 } from '@mediamonks/react-transition-component';
 import { createBrowserHistory } from 'history';
 import { ReactNode, useRef, useState } from 'react';
@@ -22,7 +22,7 @@ const history = createTransitionHistory(createBrowserHistory());
 function MyTransitionComponent({ children, transitionRef }: MyTransitionComponentProps) {
   const divRef = useRef<HTMLDivElement>(null);
 
-  useTransitionController(
+  usePersistanceTransitionController(
     () => ({
       ref: transitionRef,
       setupTransitionInTimeline(timeline) {
