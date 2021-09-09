@@ -1,12 +1,23 @@
-export * from '@mediamonks/core-transition-component';
-
 // Components
-export * from './components/TransitionPersistence';
-export * from './components/TransitionPersistence.context';
-export * from './components/TransitionRouter';
-export * from './components/TransitionRouter.context';
-export * from './components/TransitionRouter.util';
+export { PersistenceTransition } from './components/PersistenceTransition';
+export type { PersistenceTransitionProps } from './components/PersistenceTransition';
+export {
+  PersistenceTransitionControllerReactContext,
+  usePersistenceTransitionControllerContext,
+} from './components/PersistenceTransition.context';
 
 // Hooks
-export * from './hooks/useTransitionContext';
-export * from './hooks/useTransitionController';
+export {
+  PERSISTANCE_TRANSITION_CONTROLLER_CONTEXT,
+  usePersistanceTransitionController,
+} from './hooks/usePersistanceTransitionController';
+export {
+  ROUTE_TRANSITION_CONTROLLER_CONTEXT,
+  useRouteTransitionController,
+} from './hooks/useRouteTransitionController';
+export { useTransitionController } from './hooks/useTransitionController';
+export type { TransitionControllerRef } from './hooks/useTransitionController';
+export { createConnectToTransitionControllerContext } from './hooks/useTransitionController.util';
+
+// Lib
+export { createTransitionHistory } from './lib/createTransitionHistory';
