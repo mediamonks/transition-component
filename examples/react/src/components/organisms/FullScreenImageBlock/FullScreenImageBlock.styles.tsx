@@ -6,7 +6,7 @@ export const StyledFullScreenImageBlock = styled.div`
   position: relative;
   width: 100vw;
   overflow: hidden;
-  
+
   img {
     position: absolute;
     top: 0;

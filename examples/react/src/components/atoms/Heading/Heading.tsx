@@ -8,14 +8,11 @@ interface HeadingProps {
 }
 
 export default forwardRef<HTMLHeadingElement, HeadingProps>(function Heading(
-  {className, children, ...props}:HeadingProps, ref,): ReactElement {
-
+  { children, ...props }: HeadingProps,
+  ref,
+): ReactElement {
   return (
-    <StyledHeading
-      ref={ref}
-      className={className}
-      {...props}
-    >
+    <StyledHeading ref={ref} {...props}>
       {children}
     </StyledHeading>
   );

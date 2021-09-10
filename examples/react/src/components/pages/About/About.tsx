@@ -1,51 +1,44 @@
-import {
-  TransitionControllerRef,
-  useRouteTransitionController,
-} from '@mediamonks/react-transition-component';
+import { useEnterTimeline, useRouteLeaveTimeline } from '@mediamonks/react-transition-component';
 import type { ReactElement } from 'react';
 import React, { useRef } from 'react';
-import HeadingBlock from '../../organisms/HeadingBlock/HeadingBlock';
-import GridBlock from '../../organisms/GridBlock/GridBlock';
-import { StyledAbout } from './About.styles';
 import FullScreenImageBlock from '../../organisms/FullScreenImageBlock/FullScreenImageBlock';
+import GridBlock from '../../organisms/GridBlock/GridBlock';
+import HeadingBlock from '../../organisms/HeadingBlock/HeadingBlock';
+import { StyledAbout } from './About.styles';
 
-interface AboutProps {
-  transitionRef?: TransitionControllerRef;
-}
-export default function About({ transitionRef }: AboutProps): ReactElement {
+export default function About(): ReactElement {
   const divRef = useRef<HTMLDivElement>(null);
 
-  useRouteTransitionController(
-    () => ({
-      ref: transitionRef,
-      setupTransitionInTimeline(timeline) {
-        timeline
-          .set(divRef.current, {
-            opacity: 0,
-          })
-          .to(divRef.current, {
-            opacity: 1,
-            duration: 1,
-          });
+  useEnterTimeline((timeline) => {
+    timeline
+      .set(divRef.current, {
+        opacity: 0,
+      })
+      .to(divRef.current, {
+        opacity: 1,
+        duration: 1,
+      });
 
-        return timeline;
-      },
-      setupTransitionOutTimeline(timeline) {
-        timeline.to(divRef.current, {
-          opacity: 0,
-          duration: 1,
-        });
+    return timeline;
+  });
 
-        return timeline;
-      },
-    }),
-    [divRef, transitionRef],
-  );
+  useRouteLeaveTimeline((timeline) => {
+    timeline.to(divRef.current, {
+      opacity: 0,
+      duration: 1,
+    });
+
+    return timeline;
+  });
 
   return (
     <StyledAbout ref={divRef}>
-      <HeadingBlock className='main-about-heading' backgroundColor='#F0F8FF' copy='This is the about page, this animation will only trigger once' />
-      <GridBlock backgroundColor='#F0FFFF' />
+      <HeadingBlock
+        className="main-about-heading"
+        backgroundColor="#F0F8FF"
+        copy="This is the about page, this animation will only trigger once"
+      />
+      <GridBlock backgroundColor="#F0FFFF" />
       <FullScreenImageBlock />
     </StyledAbout>
   );

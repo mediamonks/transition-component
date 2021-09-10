@@ -1,12 +1,14 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import Heading from '../../atoms/Heading/Heading';
 
-export const StyledHeadingBlock = styled.div<{$backgroundColor?: string}>`
+export const StyledHeadingBlock = styled.div<{ $backgroundColor?: string }>`
   width: 100vw;
-  
-  ${(props) => props.$backgroundColor && `
-    background-color: ${props.$backgroundColor};
-  `}
+
+  ${(props) =>
+    props.$backgroundColor &&
+    css`
+      background-color: ${props.$backgroundColor};
+    `}
 `;
 
 export const StyledHeading = styled(Heading)`
