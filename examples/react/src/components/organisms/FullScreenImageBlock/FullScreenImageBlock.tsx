@@ -37,7 +37,7 @@ export default function FullScreenImageBlock(): ReactElement {
   );
 
   return (
-    <StyledFullScreenImageBlock ref={divRef}>
+    <StyledFullScreenImageBlock className='full-screen-image-block' ref={divRef}>
       <img
         alt="random nature"
         src="https://source.unsplash.com/1600x900/?nature,water"
