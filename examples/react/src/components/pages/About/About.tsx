@@ -4,10 +4,10 @@ import {
 } from '@mediamonks/react-transition-component';
 import type { ReactElement } from 'react';
 import React, { useRef } from 'react';
-import FullScreenBlock from '../../organisms/FullScreenBlock/FullScreenBlock';
 import HeadingBlock from '../../organisms/HeadingBlock/HeadingBlock';
 import GridBlock from '../../organisms/GridBlock/GridBlock';
 import { StyledAbout } from './About.styles';
+import FullScreenImageBlock from '../../organisms/FullScreenImageBlock/FullScreenImageBlock';
 
 interface AboutProps {
   transitionRef?: TransitionControllerRef;
@@ -44,10 +44,9 @@ export default function About({ transitionRef }: AboutProps): ReactElement {
 
   return (
     <StyledAbout ref={divRef}>
-      <HeadingBlock className={"main-about-heading"} backgroundColor={'#F0F8FF'} copy={'This is the about page'} />
+      <HeadingBlock className={"main-about-heading"} backgroundColor={'#F0F8FF'} copy={'This is the about page, this animation will only trigger once'} />
       <GridBlock backgroundColor={'#F0FFFF'} />
-      <FullScreenBlock backgroundColor={'#F5F5DC'} />
-      <HeadingBlock className={"secondary-about-heading"} backgroundColor={'red'} copy={'This is still the about page'} />
+      <FullScreenImageBlock />
     </StyledAbout>
   );
 }

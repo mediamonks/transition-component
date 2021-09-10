@@ -44,8 +44,6 @@ export default function HeadingBlock({
               trigger: divRef.current as Element,
               start: '-=300',
               end: '+=200',
-              markers: true,
-              toggleActions: 'restart none none reset',
             },
           })
           .fromTo(
@@ -59,10 +57,10 @@ export default function HeadingBlock({
           )
           .from(
             splitHeading?.chars || null,
-            { yPercent: 100, stagger: 0.05, duration: 0.3, ease: 'back' },
+            { yPercent: 100, stagger: { each: 0.02, ease: "power1.out", }, duration: 0.25, ease: 'back' },
             0,
           )
-          .from(splitHeading?.words || null, { opacity: 0, stagger: 0.05, duration: 0.2 }, 0);
+          .from(splitHeading?.words || null, { opacity: 0, stagger: { each: 0.02, ease: "power1.out", }, duration: 0.22 }, 0);
       },
     }),
     [divRef, transitionRef, splitHeading],

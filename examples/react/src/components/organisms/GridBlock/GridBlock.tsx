@@ -21,7 +21,7 @@ export default function GridBlock(
     if (divRef.current) {
       setBlockes(Array.from(divRef.current.querySelectorAll('[data-block]')))
     }
-  }, [divRef.current]);
+  }, []);
 
   useTransitionController(
     () => ({
@@ -33,7 +33,6 @@ export default function GridBlock(
             trigger: divRef.current as Element,
             start: "-=400",
             end: "+=400",
-            markers: true,
             toggleActions: "restart none none reset"
           }
         })
