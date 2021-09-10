@@ -19,8 +19,8 @@ export type TransitionInOptions = Omit<TransitionOptions, 'direction'>;
 export type TransitionOutOptions = Omit<TransitionOptions, 'direction'>;
 
 export type TransitionDirection = 'in' | 'out';
-export type TransitionController = {
-  ref?: unknown;
+export type TransitionController<T = unknown> = {
+  ref?: T;
   transitionTimeline: Record<TransitionDirection, gsap.core.Timeline>;
   getTimeline(direction?: TransitionDirection): gsap.core.Timeline;
   setupTimeline(options?: Partial<TimelineOptions>): gsap.core.Timeline;
