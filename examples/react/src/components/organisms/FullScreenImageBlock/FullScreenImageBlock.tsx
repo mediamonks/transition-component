@@ -1,4 +1,4 @@
-import type { ReactElement, ReactNode } from 'react';
+import type { ReactElement } from 'react';
 import React, { useRef } from 'react';
 import { StyledFullScreenImageBlock } from './FullScreenImageBlock.styles';
 import { TransitionControllerRef, useTransitionController } from '@mediamonks/react-transition-component';
@@ -25,7 +25,7 @@ export default function FullScreenImageBlock(
             trigger: divRef.current as Element,
             start: divRef.current ? Math.max(divRef.current.offsetTop - window.innerHeight, 0) : 0,
             end: `+=${(divRef.current as HTMLElement).offsetHeight + window.innerHeight}`,
-            toggleActions: "restart none none reset",
+            toggleActions: 'restart none none reset',
           }
         })
         .fromTo((divRef.current as Element).children[0], {
@@ -34,7 +34,7 @@ export default function FullScreenImageBlock(
         }, {
           yPercent: 10,
           duration: 1,
-          ease: "power1.inOut"
+          ease: 'power1.inOut'
         }, 0);
       },
     }),
@@ -46,7 +46,7 @@ export default function FullScreenImageBlock(
       ref={divRef}
       {...props}
     >
-      <img alt="random image" src={"https://source.unsplash.com/1600x900/?nature,water"} />
+      <img alt="random nature" src="https://source.unsplash.com/1600x900/?nature,water" />
     </StyledFullScreenImageBlock>
   );
 };

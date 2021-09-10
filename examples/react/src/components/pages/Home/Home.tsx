@@ -63,7 +63,7 @@ export default function Home({ transitionRef }: HomeProps): ReactElement {
 
   return (
     <StyledHome ref={divRef}>
-      <Heading ref={headingRef} className={"home-heading"}>Home</Heading>
+      <Heading ref={headingRef} className='home-heading'>Home</Heading>
     </StyledHome>
   );
 }

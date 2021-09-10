@@ -44,8 +44,8 @@ export default function About({ transitionRef }: AboutProps): ReactElement {
 
   return (
     <StyledAbout ref={divRef}>
-      <HeadingBlock className={"main-about-heading"} backgroundColor={'#F0F8FF'} copy={'This is the about page, this animation will only trigger once'} />
-      <GridBlock backgroundColor={'#F0FFFF'} />
+      <HeadingBlock className='main-about-heading' backgroundColor='#F0F8FF' copy='This is the about page, this animation will only trigger once' />
+      <GridBlock backgroundColor='#F0FFFF' />
       <FullScreenImageBlock />
     </StyledAbout>
   );

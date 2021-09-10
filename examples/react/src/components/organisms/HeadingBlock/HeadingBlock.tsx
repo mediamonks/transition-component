@@ -57,10 +57,10 @@ export default function HeadingBlock({
           )
           .from(
             splitHeading?.chars || null,
-            { yPercent: 100, stagger: { each: 0.02, ease: "power1.out", }, duration: 0.25, ease: 'back' },
+            { yPercent: 100, stagger: { each: 0.02, ease: 'power1.out', }, duration: 0.25, ease: 'back' },
             0,
           )
-          .from(splitHeading?.words || null, { opacity: 0, stagger: { each: 0.02, ease: "power1.out", }, duration: 0.22 }, 0);
+          .from(splitHeading?.words || null, { opacity: 0, stagger: { each: 0.02, ease: 'power1.out', }, duration: 0.22 }, 0);
       },
     }),
     [divRef, transitionRef, splitHeading],

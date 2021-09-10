@@ -31,9 +31,9 @@ export default function GridBlock(
           scrollTrigger: {
             scrub: 1,
             trigger: divRef.current as Element,
-            start: "-=400",
-            end: "+=400",
-            toggleActions: "restart none none reset"
+            start: '-=400',
+            end: '+=400',
+            toggleActions: 'restart none none reset'
           }
         })
         .fromTo(divRef.current, {
@@ -47,11 +47,11 @@ export default function GridBlock(
           }, {
             scale: 1,
             duration: 0.5,
-            ease: "power2.inOut",
+            ease: 'power2.inOut',
             clearProps: 'all',
             stagger: {
               grid: [10,6],
-              from: "center",
+              from: 'center',
               amount: 1.5
             }
           }, 0.25)
@@ -67,7 +67,7 @@ export default function GridBlock(
       {...props}
     >
       {Array.from(new Array(120)).map((none, index) => (
-        <StyledBlock $backgroundColor={backgroundColor} className={index === 119 ? "last-grid-block" : ""} data-block />
+        <StyledBlock $backgroundColor={backgroundColor} className={index === 119 ? 'last-grid-block' : ''} data-block />
         ))
       }
     </StyledGridBlock>
