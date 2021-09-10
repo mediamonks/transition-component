@@ -1,4 +1,4 @@
-import { useEnterTimeline } from '@mediamonks/react-transition-component';
+import { useTimeline } from '@mediamonks/react-transition-component';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { ReactElement } from 'react';
@@ -14,7 +14,7 @@ interface GridBlockProps {
 export default function GridBlock({ backgroundColor, ...props }: GridBlockProps): ReactElement {
   const divRef = useRef<HTMLDivElement>(null);
 
-  useEnterTimeline(
+  useTimeline(
     (timeline) => {
       timeline
         .fromTo(
@@ -52,9 +52,8 @@ export default function GridBlock({ backgroundColor, ...props }: GridBlockProps)
       scrollTrigger: {
         scrub: 1,
         trigger: divRef.current,
-        start: '-=400',
-        end: '+=400',
-        toggleActions: 'restart none none reset',
+        markers: true,
+        id: 'gridblock',
       },
     }),
   );

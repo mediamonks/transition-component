@@ -1,4 +1,4 @@
-import { useEnterTimeline } from '@mediamonks/react-transition-component';
+import { useTimeline } from '@mediamonks/react-transition-component';
 import type { ReactElement } from 'react';
 import React, { useRef } from 'react';
 import { StyledFullScreenImageBlock } from './FullScreenImageBlock.styles';
@@ -7,7 +7,7 @@ export default function FullScreenImageBlock(): ReactElement {
   const divRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
 
-  useEnterTimeline(
+  useTimeline(
     (timeline) => {
       timeline.fromTo(
         imageRef.current,
@@ -28,9 +28,9 @@ export default function FullScreenImageBlock(): ReactElement {
     () => ({
       scrollTrigger: {
         scrub: 1,
-        trigger: divRef.current as Element,
-        start: divRef.current ? Math.max(divRef.current.offsetTop - window.innerHeight, 0) : 0,
-        end: `+=${(divRef.current as HTMLElement).offsetHeight + window.innerHeight}`,
+        markers: true,
+        id: 'fullScreenImageBlock',
+        trigger: divRef.current,
         toggleActions: 'restart none none reset',
       },
     }),

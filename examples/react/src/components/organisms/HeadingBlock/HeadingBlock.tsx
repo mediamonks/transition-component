@@ -1,8 +1,8 @@
-import { useEnterTimeline } from '@mediamonks/react-transition-component';
+import { useTimeline } from '@mediamonks/react-transition-component';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { ReactElement } from 'react';
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { SplitText } from '../../../util/SplitText';
 import { StyledHeading, StyledHeadingBlock } from './HeadingBlock.styles';
 
@@ -23,54 +23,41 @@ export default function HeadingBlock({
   const divRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
 
-  useEnterTimeline(
+  useTimeline(
     (timeline) => {
       const splitHeading = new SplitText(headingRef.current);
 
-      timeline
-        .fromTo(
-          divRef.current,
-          {
-            opacity: 0,
+      console.log(splitHeading.chars);
+
+      timeline.fromTo(
+        splitHeading.chars,
+        {
+          yPercent: -200,
+          opacity: 0,
+          stagger: {
+            from: 'start',
+            axis: 'x',
+            amount: 0.2,
           },
-          {
-            opacity: 1,
-          },
-        )
-        .from(
-          splitHeading.chars,
-          {
-            yPercent: 100,
-            stagger: {
-              each: 0.02,
-              ease: 'power1.out',
-            },
-            duration: 0.25,
-            ease: 'back',
-          },
-          0,
-        )
-        .from(
-          splitHeading.words,
-          {
-            opacity: 0,
-            stagger: {
-              each: 0.02,
-              ease: 'power1.out',
-            },
-            duration: 0.22,
-          },
-          0,
-        );
+          duration: 0.25,
+          ease: 'back',
+        },
+        {
+          yPercent: 0,
+          opacity: 1,
+        },
+      );
 
       return timeline;
     },
     () => ({
       scrollTrigger: {
-        scrub: false,
-        trigger: divRef.current as Element,
+        trigger: divRef.current,
+        scrub: 1,
+        id: 'headingBlock',
         start: '-=300',
-        end: '+=200',
+        end: '+=250',
+        markers: true,
       },
     }),
   );
