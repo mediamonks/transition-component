@@ -14,12 +14,14 @@ gsap.registerPlugin(ScrollTrigger, SplitText);
 interface HeadingBlockProps {
   backgroundColor?: string;
   copy?: string;
+  className?: string;
   transitionRef?: TransitionControllerRef;
 }
 
 export default function HeadingBlock({
   transitionRef,
   copy,
+  className,
   backgroundColor,
   ...props
 }: HeadingBlockProps): ReactElement {
@@ -67,7 +69,7 @@ export default function HeadingBlock({
   );
 
   return (
-    <StyledHeadingBlock ref={divRef} $backgroundColor={backgroundColor} {...props}>
+    <StyledHeadingBlock className={className} ref={divRef} $backgroundColor={backgroundColor} {...props}>
       <StyledHeading ref={headingRef}>{copy}</StyledHeading>
     </StyledHeadingBlock>
   );
