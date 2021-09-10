@@ -27,24 +27,22 @@ export default function HeadingBlock({
     (timeline) => {
       const splitHeading = new SplitText(headingRef.current);
 
-      console.log(splitHeading.chars);
-
+      console.log(splitHeading);
       timeline.fromTo(
         splitHeading.chars,
         {
-          yPercent: -200,
+          yPercent: -100,
           opacity: 0,
-          stagger: {
-            from: 'start',
-            axis: 'x',
-            amount: 0.2,
-          },
           duration: 0.25,
           ease: 'back',
         },
         {
           yPercent: 0,
           opacity: 1,
+          stagger: {
+            each: 0.04,
+            ease: 'power1.out'
+          },
         },
       );
 
@@ -53,7 +51,7 @@ export default function HeadingBlock({
     () => ({
       scrollTrigger: {
         trigger: divRef.current,
-        scrub: 1,
+        scrub: false,
         id: 'headingBlock',
         start: '-=300',
         end: '+=250',
