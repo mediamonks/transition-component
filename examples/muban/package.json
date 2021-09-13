@@ -4,7 +4,7 @@
   "version": "1.0.3-alpha.8",
   "private": true,
   "scripts": {
-    "dev": "webpack serve -c webpack.config.js",
+    "dev": "lerna run build && webpack serve -c webpack.config.js",
     "build": "webpack",
     "clean": "rimraf -rf dist"
   },
@@ -12,7 +12,6 @@
     "@mediamonks/muban-transition-component": "file:../../packages/muban-transition-component",
     "@muban/muban": "^1.0.0-alpha.27",
     "@muban/template": "^1.0.0-alpha.1",
-    "@playwright/test": "^1.14.1",
     "gsap": "^3.6.1",
     "html-webpack-plugin": "^5.3.1"
   },

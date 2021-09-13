@@ -10,7 +10,11 @@ export const Bar = defineComponent({
   },
   setup({ refs }) {
     useTransitionController(refs.self, {
-      setupTransitionInTimeline: setupTransitionInTimeline(refs),
+      setupTransitionInTimeline,
+      registerTransitionController: true,
+      refs: {
+        title: refs.title,
+      },
     });
 
     return [];

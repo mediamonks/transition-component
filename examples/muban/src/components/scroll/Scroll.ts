@@ -8,12 +8,15 @@ export const Scroll = defineComponent({
   },
   setup({ refs }) {
     useScrollTransition(refs.self, {
+      refs: {
+        paragraph: refs.paragraph,
+      },
       scrollTrigger: {
         start: 'top 100%', // Make sure the animation is triggered as soon as it enters the viewport
       },
-      setupTransitionInTimeline: (timeline) => {
-        if (refs.paragraph)
-          timeline.from(refs.paragraph, {
+      setupTransitionInTimeline: (timeline, { paragraph }) => {
+        if (paragraph)
+          timeline.from(paragraph, {
             y: 200,
             autoAlpha: 0,
             duration: 1,

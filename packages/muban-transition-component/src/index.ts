@@ -1,61 +1,35 @@
-// Re-exports
-export {
-  clearTimeline,
-  cloneTimeline,
-  getTransitionController,
-  guard,
-  TRANSITION_CONTROLLER_CONTEXT,
-} from '@mediamonks/core-transition-component';
-export type {
-  AbstractFlowContext,
-  AbstractTransitionContext,
-  GuardFunction,
-  SetupPageTransitionOptions,
-  SetupTransitionOptions,
-  SetupTransitionSignature,
-  SignatureElement,
-  SignatureRefCollection,
-  SignatureRefElement,
-  TimelineOptions,
-  TransitionController,
-  TransitionControllerContext,
-  TransitionDirection,
-  TransitionInOptions,
-  TransitionOptions,
-  TransitionOutOptions,
-} from '@mediamonks/core-transition-component';
+// Hooks
+export { useGlobalTransitionContext } from './hooks/useGlobalTransitionContext';
+export { usePageTransition } from './hooks/usePageTransition';
+export { usePageTransitioning } from './hooks/usePageTransitioning';
+export { useScrollTransition, provideScrollContext } from './hooks/useScrollTransition';
+export { useTransitionController } from './hooks/useTransitionController';
 
 // Context
-export type { FlowContext } from './context/FlowContext';
-export { defaultScrollTriggerVariables } from './context/ScrollContext';
-export type { ScrollContext } from './context/ScrollContext';
-export type { TransitionContext } from './context/TransitionContext';
+export { FlowContext } from './context/FlowContext';
+export { TransitionContext } from './context/TransitionContext';
+export { ScrollContext } from './context/ScrollContext';
 
-// Hooks
-export {
-  provideTransitionContext,
-  useGlobalTransitionContext,
-  useTransitionContext,
-} from './hooks/useGlobalTransitionContext';
-export { usePageTransition } from './hooks/usePageTransition';
-export {
-  provideFlowContext,
-  useFlowContext,
-  usePageTransitioning,
-} from './hooks/usePageTransitioning';
-export {
-  provideScrollContext,
-  useScrollContext,
-  useScrollTransition,
-} from './hooks/useScrollTransition';
-export { useTransitionController } from './hooks/useTransitionController';
+// Utils
+export { transitionRefToElement } from './util/transition.utils';
 
 // Types
 export type {
-  SetupSignatureElements,
-  TransitionRef,
+  TransitionDirection,
+  TransitionOptions,
+  TransitionController,
+  GuardFunction,
+  TimelineOptions,
+  TransitionInOptions,
+  TransitionOutOptions,
+} from '@mediamonks/core-transition-component';
+
+export type {
   TransitionRefCollection,
   TransitionRefElement,
+  TransitionRef,
+  SetupSignatureElements,
+  SetupTransitionSignature,
+  SetupPageTransitionOptions,
+  SetupTransitionOptions,
 } from './types/transition.types';
-// Utils
-export { transitionRefToElement } from './util/transition.utils';

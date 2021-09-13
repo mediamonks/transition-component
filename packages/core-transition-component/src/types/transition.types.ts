@@ -1,3 +1,5 @@
+import type { AbstractTransitionContext } from '../context/AbstractTransitionContext';
+
 export type GuardFunction = (release: () => void) => void;
 
 export type TimelineOptions = {
@@ -19,8 +21,7 @@ export type TransitionInOptions = Omit<TransitionOptions, 'direction'>;
 export type TransitionOutOptions = Omit<TransitionOptions, 'direction'>;
 
 export type TransitionDirection = 'in' | 'out';
-export type TransitionController<T = unknown> = {
-  ref?: T;
+export type TransitionController = {
   transitionTimeline: Record<TransitionDirection, gsap.core.Timeline>;
   getTimeline(direction?: TransitionDirection): gsap.core.Timeline;
   setupTimeline(options?: Partial<TimelineOptions>): gsap.core.Timeline;
@@ -41,16 +42,34 @@ export type SetupSignatureElements<T extends Record<string, TransitionRef>> = {
   container: HTMLElement;
 };
 
-export type SetupTransitionSignature = (timeline: gsap.core.Timeline) => void;
+export type SetupTransitionSignature<
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  T extends Record<string, R> = {},
+  R extends TransitionRef = TransitionRef,
+  E extends SetupSignatureElements<T> = SetupSignatureElements<T>
+> = (
+  timeline: gsap.core.Timeline,
+  elements: E,
+  transitionContext: AbstractTransitionContext<R>,
+) => void;
 
-export type SetupTransitionOptions<T = unknown | undefined> = {
-  ref?: T;
+export type SetupTransitionOptions<
+  T extends Record<string, R>,
+  R extends TransitionRef = TransitionRef,
+  E extends SetupSignatureElements<T> = SetupSignatureElements<T>
+> = {
+  refs?: T;
   scrollTrigger?: gsap.plugins.ScrollTriggerInstanceVars;
-  setupTransitionInTimeline?: SetupTransitionSignature;
-  setupTransitionOutTimeline?: SetupTransitionSignature;
+  registerTransitionController?: boolean;
+  setupTransitionInTimeline?: SetupTransitionSignature<T, R, E>;
+  setupTransitionOutTimeline?: SetupTransitionSignature<T, R, E>;
 } & Omit<TransitionOptions, 'direction'>;
 
-export type SetupPageTransitionOptions = {
+export type SetupPageTransitionOptions<
+  T extends Record<string, R>,
+  R extends TransitionRef = TransitionRef,
+  E extends SetupSignatureElements<T> = SetupSignatureElements<T>
+> = {
   beforeTransitionIn?: GuardFunction;
   beforeTransitionOut?: GuardFunction;
-} & SetupTransitionOptions;
+} & SetupTransitionOptions<T, R, E>;

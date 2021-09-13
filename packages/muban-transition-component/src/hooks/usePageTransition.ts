@@ -1,12 +1,21 @@
+import { onMounted } from '@muban/muban';
 import type { SetupPageTransitionOptions } from '@mediamonks/core-transition-component';
 import { guard } from '@mediamonks/core-transition-component';
-import { onMounted } from '@muban/muban';
-import type { TransitionRefElement } from '../types/transition.types';
-import { useTransitionController } from './useTransitionController';
 
-export function usePageTransition(
+import { useTransitionController } from './useTransitionController';
+import type {
+  SetupSignatureElements,
+  TransitionRef,
+  TransitionRefElement,
+} from '../types/transition.types';
+
+export function usePageTransition<
+  T extends Record<string, R>,
+  R extends TransitionRef = TransitionRef,
+  E extends SetupSignatureElements<T> = SetupSignatureElements<T>
+>(
   ref: TransitionRefElement,
-  options: SetupPageTransitionOptions,
+  options: SetupPageTransitionOptions<T, R, E>,
 ): ReturnType<typeof useTransitionController> {
   const transitionController = useTransitionController(ref, options);
   // const flowContext = useFlowContext();

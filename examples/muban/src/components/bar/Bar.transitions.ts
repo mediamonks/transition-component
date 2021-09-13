@@ -4,12 +4,12 @@ import type {
 } from '@mediamonks/muban-transition-component';
 
 type TransitionRefs = {
-  self: TransitionRefElement;
   title: TransitionRefElement;
 };
 
-export const setupTransitionInTimeline = ({ self }: TransitionRefs): SetupTransitionSignature => (
+export const setupTransitionInTimeline: SetupTransitionSignature<TransitionRefs> = (
   timeline,
+  { container },
 ) => {
-  timeline.fromTo(self, { scale: 0 }, { scale: 1, duration: 1, ease: 'Bounce.easeOut' });
+  timeline.fromTo(container, { scale: 0 }, { scale: 1, duration: 1, ease: 'Bounce.easeOut' });
 };
