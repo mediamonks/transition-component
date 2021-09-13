@@ -41,7 +41,7 @@ export default function HeadingBlock({
           opacity: 1,
           stagger: {
             each: 0.04,
-            ease: 'power1.out'
+            ease: 'power1.out',
           },
         },
       );
@@ -55,7 +55,7 @@ export default function HeadingBlock({
         id: 'headingBlock',
         start: '-=300',
         end: '+=250',
-        markers: true,
+        markers: Boolean(process.env.SHOW_MARKERS),
       },
     }),
   );

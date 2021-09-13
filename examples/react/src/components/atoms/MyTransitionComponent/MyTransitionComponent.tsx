@@ -10,14 +10,17 @@ export function MyTransitionComponent({ children }: MyTransitionComponentProps) 
 
   useEnterTimeline((timeline) => {
     timeline
-      .set(divRef.current, {
-        scale: 0,
-      })
-      .to(divRef.current, {
-        rotation: 45,
-        scaleY: 1,
-        scaleX: 0.5,
-      })
+      .fromTo(
+        divRef.current,
+        {
+          scale: 0,
+        },
+        {
+          rotation: 45,
+          scaleY: 1,
+          scaleX: 0.5,
+        },
+      )
       .to(divRef.current, {
         scale: 1,
         rotation: 0,

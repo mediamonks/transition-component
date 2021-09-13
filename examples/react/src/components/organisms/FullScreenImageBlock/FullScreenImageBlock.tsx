@@ -28,7 +28,7 @@ export default function FullScreenImageBlock(): ReactElement {
     () => ({
       scrollTrigger: {
         scrub: 1,
-        markers: true,
+        markers: Boolean(process.env.SHOW_MARKERS),
         id: 'fullScreenImageBlock',
         trigger: divRef.current,
         toggleActions: 'restart none none reset',
@@ -37,7 +37,7 @@ export default function FullScreenImageBlock(): ReactElement {
   );
 
   return (
-    <StyledFullScreenImageBlock className='full-screen-image-block' ref={divRef}>
+    <StyledFullScreenImageBlock className="full-screen-image-block" ref={divRef}>
       <img
         alt="random nature"
         src="https://source.unsplash.com/1600x900/?nature,water"

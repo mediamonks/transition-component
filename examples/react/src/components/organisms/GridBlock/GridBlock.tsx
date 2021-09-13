@@ -52,7 +52,7 @@ export default function GridBlock({ backgroundColor, ...props }: GridBlockProps)
       scrollTrigger: {
         scrub: 1,
         trigger: divRef.current,
-        markers: true,
+        markers: Boolean(process.env.SHOW_MARKERS),
         id: 'gridblock',
       },
     }),

@@ -10,14 +10,16 @@ export default function About(): ReactElement {
   const divRef = useRef<HTMLDivElement>(null);
 
   useEnterTimeline((timeline) => {
-    timeline
-      .set(divRef.current, {
+    timeline.fromTo(
+      divRef.current,
+      {
         opacity: 0,
-      })
-      .to(divRef.current, {
+      },
+      {
         opacity: 1,
         duration: 1,
-      });
+      },
+    );
 
     return timeline;
   });

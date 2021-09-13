@@ -10,26 +10,29 @@ export default function Home(): ReactElement {
 
   useEnterTimeline((timeline) => {
     timeline
-      .set(divRef.current, {
-        scale: 0,
-      })
-      .set(headingRef.current, {
-        y: 30,
-        opacity: 0,
-      })
-      .to(divRef.current, {
-        rotation: 45,
-        scaleY: 1,
-        scaleX: 0.5,
-      })
+      .fromTo(
+        divRef.current,
+        {
+          scale: 0,
+        },
+        {
+          rotation: 45,
+          scaleY: 1,
+          scaleX: 0.5,
+        },
+      )
       .to(divRef.current, {
         scale: 1,
         rotation: 0,
       })
-      .to(headingRef.current, {
-        y: 0,
-        opacity: 1,
-      });
+      .fromTo(
+        headingRef.current,
+        { y: 30, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+        },
+      );
 
     return timeline;
   });
