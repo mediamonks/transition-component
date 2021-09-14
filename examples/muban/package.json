@@ -9,7 +9,7 @@
     "clean": "rimraf -rf dist"
   },
   "dependencies": {
-    "@mediamonks/muban-transition-component": "^1.0.0-alpha.18",
+    "@mediamonks/muban-transition-component": "file:../../packages/muban-transition-component",
     "@muban/muban": "^1.0.0-alpha.27",
     "@muban/template": "^1.0.0-alpha.1",
     "gsap": "^3.6.1",
