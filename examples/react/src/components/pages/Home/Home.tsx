@@ -1,61 +1,48 @@
-import { useEnterTimeline, useRouteLeaveTimeline } from '@mediamonks/react-transition-component';
-import type { ReactElement } from 'react';
-import React, { useRef } from 'react';
+import {
+  useEnterTransition,
+  useRouteLeaveTransition,
+  useTransitionController,
+  TransitionController,
+} from '@mediamonks/react-transition-component';
+import { ReactElement, useRef, useState } from 'react';
 import Heading from '../../atoms/Heading/Heading';
 import { StyledHome } from './Home.styles';
+import { setupTransitionInTimeline } from './Home.transitions';
 
 export default function Home(): ReactElement {
+  const [headingTransitionController, setHeadingTransitionController] =
+    useState<TransitionController>();
+
   const divRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
 
-  useEnterTimeline((timeline) => {
-    timeline
-      .fromTo(
-        divRef.current,
-        {
-          scale: 0,
+  const transitionController = useTransitionController(
+    () => ({
+      timelineVars: {
+        scrollTrigger: {
+          trigger: headingRef.current,
         },
-        {
-          rotation: 45,
-          scaleY: 1,
-          scaleX: 0.5,
-        },
-      )
-      .to(divRef.current, {
-        scale: 1,
-        rotation: 0,
-      })
-      .fromTo(
-        headingRef.current,
-        { y: 30, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-        },
-      );
+      },
+      refs: {
+        div: divRef,
+        heading: headingRef,
+        headingTransitionController,
+      },
+      setupTransitionInTimeline,
+    }),
+    [headingTransitionController],
+  );
 
-    return timeline;
-  });
-
-  useRouteLeaveTimeline((timeline) => {
-    timeline
-      .to(headingRef.current, {
-        opacity: 0,
-        duration: 0.3,
-      })
-      .to(divRef.current, {
-        x: 0,
-        scale: 1.5,
-        rotation: -270,
-        duration: 1,
-      });
-
-    return timeline;
-  });
+  useEnterTransition(transitionController);
+  useRouteLeaveTransition(transitionController);
 
   return (
     <StyledHome ref={divRef}>
-      <Heading ref={headingRef} className="home-heading">
+      <Heading
+        ref={headingRef}
+        transitionController={setHeadingTransitionController}
+        className="home-heading"
+      >
         Home
       </Heading>
     </StyledHome>

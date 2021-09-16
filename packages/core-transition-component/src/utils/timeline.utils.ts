@@ -15,11 +15,11 @@ function parseChild(
   /* eslint-enable */
 }
 
-const parseChildTimeline = (
+function parseChildTimeline(
   child: gsap.core.Timeline,
   timeline: gsap.core.Timeline,
   direction: TransitionDirection,
-) => {
+): void {
   const subTimeline = gsap.timeline(child.vars);
 
   // Re-call the parse method for each of the children
@@ -28,7 +28,7 @@ const parseChildTimeline = (
 
   // Add the timeline to the parent timeline
   timeline.add(subTimeline.restart(), child.startTime());
-};
+}
 
 function parseChildTween(
   child: gsap.core.Tween,

@@ -1,6 +1,6 @@
 import {
   createTransitionHistory,
-  TransitionPersistence,
+  TransitionPresence,
 } from '@mediamonks/react-transition-component';
 import { createBrowserHistory } from 'history';
 import { useState } from 'react';
@@ -23,12 +23,12 @@ function App() {
           <StyledNavLink to={Path.Home}>Home</StyledNavLink>
           <StyledNavLink to={Path.About}>About</StyledNavLink>
         </div>
-        <button onClick={() => setShow(!show)}>Toggle TransitionPersistence</button>
+        <button onClick={() => setShow(!show)}>Toggle TransitionPresence</button>
       </StyledNav>
 
-      <TransitionPersistence>
-        {show && <MyTransitionComponent>TransitionPersistence</MyTransitionComponent>}
-      </TransitionPersistence>
+      <TransitionPresence>
+        {show && <MyTransitionComponent>TransitionPresence</MyTransitionComponent>}
+      </TransitionPresence>
 
       <Route path={Path.About} exact>
         <About />

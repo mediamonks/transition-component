@@ -1,16 +1,28 @@
-import { useTimeline } from '@mediamonks/react-transition-component';
+import { useTransitionController } from '@mediamonks/react-transition-component';
 import type { ReactElement } from 'react';
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { StyledFullScreenImageBlock } from './FullScreenImageBlock.styles';
 
 export default function FullScreenImageBlock(): ReactElement {
   const divRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
 
-  useTimeline(
-    (timeline) => {
+  useTransitionController(() => ({
+    timelineVars: {
+      scrollTrigger: {
+        scrub: 1,
+        markers: Boolean(process.env.SHOW_MARKERS),
+        id: 'fullScreenImageBlock',
+        trigger: divRef.current,
+        toggleActions: 'restart none none reset',
+      },
+    },
+    refs: {
+      image: imageRef,
+    },
+    setupTransitionInTimeline(timeline, { image }) {
       timeline.fromTo(
-        imageRef.current,
+        image.current,
         {
           yPercent: -10,
           scale: 1.2,
@@ -22,22 +34,11 @@ export default function FullScreenImageBlock(): ReactElement {
         },
         0,
       );
-
-      return timeline;
     },
-    () => ({
-      scrollTrigger: {
-        scrub: 1,
-        markers: Boolean(process.env.SHOW_MARKERS),
-        id: 'fullScreenImageBlock',
-        trigger: divRef.current,
-        toggleActions: 'restart none none reset',
-      },
-    }),
-  );
+  }));
 
   return (
-    <StyledFullScreenImageBlock className="full-screen-image-block" ref={divRef}>
+    <StyledFullScreenImageBlock className="full-screen-image-block">
       <img
         alt="random nature"
         src="https://source.unsplash.com/1600x900/?nature,water"

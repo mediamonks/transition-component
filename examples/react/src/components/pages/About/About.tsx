@@ -1,37 +1,29 @@
-import { useEnterTimeline, useRouteLeaveTimeline } from '@mediamonks/react-transition-component';
+import {
+  useEnterTransition,
+  useRouteLeaveTransition,
+  useTransitionController,
+} from '@mediamonks/react-transition-component';
 import type { ReactElement } from 'react';
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import FullScreenImageBlock from '../../organisms/FullScreenImageBlock/FullScreenImageBlock';
 import GridBlock from '../../organisms/GridBlock/GridBlock';
 import HeadingBlock from '../../organisms/HeadingBlock/HeadingBlock';
 import { StyledAbout } from './About.styles';
+import { setupTransitionInTimeline, setupTransitionOutTimeline } from './About.transitions';
 
 export default function About(): ReactElement {
   const divRef = useRef<HTMLDivElement>(null);
 
-  useEnterTimeline((timeline) => {
-    timeline.fromTo(
-      divRef.current,
-      {
-        opacity: 0,
-      },
-      {
-        opacity: 1,
-        duration: 1,
-      },
-    );
+  const transitionController = useTransitionController(() => ({
+    refs: {
+      div: divRef,
+    },
+    setupTransitionInTimeline,
+    setupTransitionOutTimeline,
+  }));
 
-    return timeline;
-  });
-
-  useRouteLeaveTimeline((timeline) => {
-    timeline.to(divRef.current, {
-      opacity: 0,
-      duration: 1,
-    });
-
-    return timeline;
-  });
+  useEnterTransition(transitionController);
+  useRouteLeaveTransition(transitionController);
 
   return (
     <StyledAbout ref={divRef}>

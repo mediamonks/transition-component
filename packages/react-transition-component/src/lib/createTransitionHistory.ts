@@ -1,9 +1,10 @@
 import type { History } from 'history';
-import { ROUTE_LEAVE_TRANSITIONS } from '../hooks/useRouteLeaveTimeline';
-import { createTimelines } from '../hooks/useTimeline.util';
+import { ROUTE_LEAVE_TRANSITION_CONTROLLERS } from '../hooks/useRouteLeaveTransition';
 
 async function beforePopState(): Promise<void> {
-  const timelines = createTimelines(ROUTE_LEAVE_TRANSITIONS);
+  const timelines = Array.from(ROUTE_LEAVE_TRANSITION_CONTROLLERS).map((transitionController) =>
+    transitionController.transitionOut(),
+  );
 
   await Promise.all(timelines);
 }

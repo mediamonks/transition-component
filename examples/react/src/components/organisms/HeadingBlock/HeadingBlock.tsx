@@ -1,10 +1,11 @@
-import { useTimeline } from '@mediamonks/react-transition-component';
+import { useTransitionController } from '@mediamonks/react-transition-component';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { ReactElement } from 'react';
 import { useRef } from 'react';
 import { SplitText } from '../../../util/SplitText';
 import { StyledHeading, StyledHeadingBlock } from './HeadingBlock.styles';
+import { setupTransitionInTimeline } from './HeadingBlock.transitions';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -23,32 +24,8 @@ export default function HeadingBlock({
   const divRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
 
-  useTimeline(
-    (timeline) => {
-      const splitHeading = new SplitText(headingRef.current);
-
-      console.log(splitHeading);
-      timeline.fromTo(
-        splitHeading.chars,
-        {
-          yPercent: -100,
-          opacity: 0,
-          duration: 0.25,
-          ease: 'back',
-        },
-        {
-          yPercent: 0,
-          opacity: 1,
-          stagger: {
-            each: 0.04,
-            ease: 'power1.out',
-          },
-        },
-      );
-
-      return timeline;
-    },
-    () => ({
+  useTransitionController(() => ({
+    timelineVars: {
       scrollTrigger: {
         trigger: divRef.current,
         scrub: false,
@@ -57,8 +34,12 @@ export default function HeadingBlock({
         end: '+=250',
         markers: Boolean(process.env.SHOW_MARKERS),
       },
-    }),
-  );
+    },
+    refs: {
+      heading: headingRef,
+    },
+    setupTransitionInTimeline,
+  }));
 
   return (
     <StyledHeadingBlock

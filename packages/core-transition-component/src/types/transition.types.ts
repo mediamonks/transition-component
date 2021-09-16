@@ -1,75 +1,38 @@
-import type { AbstractTransitionContext } from '../context/AbstractTransitionContext';
-
 export type GuardFunction = (release: () => void) => void;
+export type TransitionDirection = 'in' | 'out';
 
-export type TimelineOptions = {
+export interface SetupTimelineOptions {
   direction: TransitionDirection;
   reset?: boolean;
   timeline?: gsap.core.Timeline;
-};
+}
 
-export type TransitionOptions = {
-  direction: TransitionDirection;
-  scrollTrigger?: gsap.plugins.ScrollTriggerInstanceVars;
-  reset?: boolean;
-  onStart?: (direction: TransitionDirection) => void;
-  onComplete?: (direction: TransitionDirection) => void;
+export interface TransitionOptionEventHandlers<T = TransitionDirection> {
+  onStart?: (direction: T) => void;
+  onComplete?: (direction: T) => void;
   onUpdate?: (timeline: gsap.core.Timeline) => void;
-};
+}
 
-export type TransitionInOptions = Omit<TransitionOptions, 'direction'>;
-export type TransitionOutOptions = Omit<TransitionOptions, 'direction'>;
+export interface TransitionOptions<T extends TransitionDirection>
+  extends TransitionOptionEventHandlers<T> {
+  direction: T;
+  reset?: boolean;
+}
 
-export type TransitionDirection = 'in' | 'out';
-export type TransitionController = {
+export interface TransitionController<T = undefined> {
+  ref?: T;
   transitionTimeline: Record<TransitionDirection, gsap.core.Timeline>;
   getTimeline(direction?: TransitionDirection): gsap.core.Timeline;
-  setupTimeline(options?: Partial<TimelineOptions>): gsap.core.Timeline;
-  transition(options: TransitionOptions): Promise<void>;
-  transitionIn(options?: TransitionInOptions): Promise<void>;
-  transitionOut(options?: TransitionOutOptions): Promise<void>;
-};
+  setupTimeline(options?: Partial<SetupTimelineOptions>): gsap.core.Timeline;
+  transition(options: TransitionOptions<TransitionDirection>): Promise<void>;
+  transitionIn(options?: Omit<TransitionOptions<'in'>, 'direction'>): Promise<void>;
+  transitionOut(options?: Omit<TransitionOptions<'out'>, 'direction'>): Promise<void>;
+}
 
-export type TransitionRef = unknown;
-
-export type SignatureRefElement = HTMLElement | undefined;
-export type SignatureRefCollection = Array<HTMLElement>;
-export type SignatureElement = SignatureRefCollection | SignatureRefElement;
-
-export type SetupSignatureElements<T extends Record<string, TransitionRef>> = {
-  [K in keyof T]: SignatureElement;
-} & {
-  container: HTMLElement;
-};
-
-export type SetupTransitionSignature<
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  T extends Record<string, R> = {},
-  R extends TransitionRef = TransitionRef,
-  E extends SetupSignatureElements<T> = SetupSignatureElements<T>
-> = (
-  timeline: gsap.core.Timeline,
-  elements: E,
-  transitionContext: AbstractTransitionContext<R>,
-) => void;
-
-export type SetupTransitionOptions<
-  T extends Record<string, R>,
-  R extends TransitionRef = TransitionRef,
-  E extends SetupSignatureElements<T> = SetupSignatureElements<T>
-> = {
-  refs?: T;
-  scrollTrigger?: gsap.plugins.ScrollTriggerInstanceVars;
-  registerTransitionController?: boolean;
-  setupTransitionInTimeline?: SetupTransitionSignature<T, R, E>;
-  setupTransitionOutTimeline?: SetupTransitionSignature<T, R, E>;
-} & Omit<TransitionOptions, 'direction'>;
-
-export type SetupPageTransitionOptions<
-  T extends Record<string, R>,
-  R extends TransitionRef = TransitionRef,
-  E extends SetupSignatureElements<T> = SetupSignatureElements<T>
-> = {
-  beforeTransitionIn?: GuardFunction;
-  beforeTransitionOut?: GuardFunction;
-} & SetupTransitionOptions<T, R, E>;
+export interface SetupTransitionOptions<T = undefined> extends TransitionOptionEventHandlers {
+  ref?: unknown;
+  refs: T;
+  timelineVars?: gsap.TimelineVars;
+  setupTransitionInTimeline?: (timeline: gsap.core.Timeline, refs: T) => void;
+  setupTransitionOutTimeline?: (timeline: gsap.core.Timeline, refs: T) => void;
+}

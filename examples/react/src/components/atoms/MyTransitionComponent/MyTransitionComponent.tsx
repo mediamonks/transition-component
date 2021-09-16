@@ -1,5 +1,13 @@
-import { useEnterTimeline, useLeaveTimeline } from '@mediamonks/react-transition-component';
+import {
+  useEnterTransition,
+  useLeaveTransition,
+  useTransitionController,
+} from '@mediamonks/react-transition-component';
 import { ReactNode, useRef } from 'react';
+import {
+  setupTransitionInTimeline,
+  setupTransitionOutTimeline,
+} from './MyTransitionComponent.transitions';
 
 interface MyTransitionComponentProps {
   children: ReactNode;
@@ -8,37 +16,16 @@ interface MyTransitionComponentProps {
 export function MyTransitionComponent({ children }: MyTransitionComponentProps) {
   const divRef = useRef<HTMLDivElement>(null);
 
-  useEnterTimeline((timeline) => {
-    timeline
-      .fromTo(
-        divRef.current,
-        {
-          scale: 0,
-        },
-        {
-          rotation: 45,
-          scaleY: 1,
-          scaleX: 0.5,
-        },
-      )
-      .to(divRef.current, {
-        scale: 1,
-        rotation: 0,
-      });
+  const transitionController = useTransitionController(() => ({
+    refs: {
+      div: divRef,
+    },
+    setupTransitionInTimeline,
+    setupTransitionOutTimeline,
+  }));
 
-    return timeline;
-  });
-
-  useLeaveTimeline((timeline) => {
-    timeline.to(divRef.current, {
-      x: 0,
-      scale: 1.5,
-      rotation: -270,
-      duration: 1,
-    });
-
-    return timeline;
-  });
+  useEnterTransition(transitionController);
+  useLeaveTransition(transitionController);
 
   return (
     <div
