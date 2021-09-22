@@ -34,11 +34,11 @@
     "*.js"
   ],
   "dependencies": {
+    "@mediamonks/muban-transition-component": "^1.0.0-alpha.18",
     "@storybook/addons": "^6.2.9",
     "@storybook/components": "^6.2.9",
     "@storybook/core-events": "^6.2.9",
-    "@storybook/theming": "^6.2.9",
-    "@mediamonks/muban-transition-component": "file:../muban-transition-component"
+    "@storybook/theming": "^6.2.9"
   },
   "peerDependencies": {
     "react": "^17.0.2"

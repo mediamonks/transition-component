@@ -34,7 +34,7 @@
     "test": "jest --config ../../jest.config.js --rootDir ./"
   },
   "dependencies": {
-    "@mediamonks/core-transition-component": "file:../core-transition-component",
+    "@mediamonks/core-transition-component": "^1.0.0-alpha.14",
     "@muban/muban": "^1.0.0-alpha.27",
     "@muban/template": "^1.0.0-alpha.1"
   },
