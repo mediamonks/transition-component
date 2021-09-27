@@ -5,6 +5,7 @@ import type {
   TransitionController,
   TransitionDirection,
   TransitionOptions,
+  TransitionOptionsWithDirection,
 } from '../types/transition.types';
 import { clearTimeline, cloneTimeline } from './timeline.utils';
 
@@ -16,8 +17,8 @@ import { clearTimeline, cloneTimeline } from './timeline.utils';
  * @param setupOptions
  * @returns
  */
-export function createTransitionController<R>(
-  setupOptions: SetupTransitionOptions<R>,
+export function createTransitionController<T>(
+  setupOptions: SetupTransitionOptions<T>,
 ): TransitionController {
   let transitionPromise = Promise.resolve();
   let resolveTransitionPromise: null | (() => void) = null;
@@ -37,9 +38,9 @@ export function createTransitionController<R>(
     callback?.();
   };
 
-  const onTransitionComplete = <T extends TransitionDirection>(
-    direction: T,
-    callback?: (transitionDirection: T) => void,
+  const onTransitionComplete = <D extends TransitionDirection>(
+    direction: D,
+    callback?: (transitionDirection: D) => void,
   ): void => {
     setupOptions.onComplete?.(direction);
     callback?.(direction);
@@ -82,7 +83,8 @@ export function createTransitionController<R>(
     }
   };
 
-  const controller = {
+  const controller: TransitionController = {
+    ref: setupOptions.ref,
     transitionTimeline,
     getTimeline(direction: TransitionDirection = 'in') {
       if (direction === 'out') {
@@ -110,7 +112,7 @@ export function createTransitionController<R>(
 
       return timeline;
     },
-    async transition<T extends TransitionDirection>(options: TransitionOptions<T>) {
+    async transition(options: TransitionOptionsWithDirection) {
       killOldTimeline(options.direction);
 
       transitionPromise = new Promise((resolve) => {
@@ -123,7 +125,7 @@ export function createTransitionController<R>(
 
         if (options.direction === 'in' || (options.direction === 'out' && timelineHasChildren)) {
           // eslint-disable-next-line babel/no-unused-expressions
-          !timelineHasChildren && onTransitionComplete('in' as T, options.onComplete);
+          !timelineHasChildren && onTransitionComplete('in', options.onComplete);
           timeline.restart(true, true);
         } else {
           transitionTimeline.in.reverse(0, true);
@@ -132,7 +134,7 @@ export function createTransitionController<R>(
 
       return transitionPromise;
     },
-    async transitionIn(options?: Omit<TransitionOptions<'in'>, 'direction'>) {
+    async transitionIn(options?: TransitionOptions) {
       if (options?.reset) {
         this.setupTimeline({
           direction: 'in',
@@ -145,7 +147,7 @@ export function createTransitionController<R>(
         direction: 'in',
       });
     },
-    async transitionOut(options?: Omit<TransitionOptions<'out'>, 'direction'>) {
+    async transitionOut(options?: TransitionOptions) {
       if (options?.reset || transitionTimeline.out.getChildren(true).length === 0) {
         this.setupTimeline({
           direction: 'out',

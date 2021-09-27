@@ -13,25 +13,27 @@ export interface TransitionOptionEventHandlers<T = TransitionDirection> {
   onUpdate?: (timeline: gsap.core.Timeline) => void;
 }
 
-export interface TransitionOptions<T extends TransitionDirection>
-  extends TransitionOptionEventHandlers<T> {
-  direction: T;
+export interface TransitionOptions extends TransitionOptionEventHandlers {
   reset?: boolean;
 }
 
-export interface TransitionController<T = undefined> {
-  ref?: T;
+export interface TransitionOptionsWithDirection extends TransitionOptions {
+  direction: TransitionDirection;
+}
+
+export interface TransitionController {
+  ref?: unknown;
   transitionTimeline: Record<TransitionDirection, gsap.core.Timeline>;
   getTimeline(direction?: TransitionDirection): gsap.core.Timeline;
   setupTimeline(options?: Partial<SetupTimelineOptions>): gsap.core.Timeline;
-  transition(options: TransitionOptions<TransitionDirection>): Promise<void>;
-  transitionIn(options?: Omit<TransitionOptions<'in'>, 'direction'>): Promise<void>;
-  transitionOut(options?: Omit<TransitionOptions<'out'>, 'direction'>): Promise<void>;
+  transition(options: TransitionOptionsWithDirection): Promise<void>;
+  transitionIn(options?: TransitionOptions): Promise<void>;
+  transitionOut(options?: TransitionOptions): Promise<void>;
 }
 
-export interface SetupTransitionOptions<T = undefined> extends TransitionOptionEventHandlers {
+export interface SetupTransitionOptions<T> extends TransitionOptionEventHandlers {
   ref?: unknown;
-  refs: T;
+  refs?: T;
   timelineVars?: gsap.TimelineVars;
   setupTransitionInTimeline?: (timeline: gsap.core.Timeline, refs: T) => void;
   setupTransitionOutTimeline?: (timeline: gsap.core.Timeline, refs: T) => void;
