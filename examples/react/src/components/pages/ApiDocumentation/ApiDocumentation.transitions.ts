@@ -1,4 +1,4 @@
-import { normalizeRefs } from '@mediamonks/react-transition-component';
+import { unwrapRefs } from '@mediamonks/react-transition-component';
 import { RefObject } from 'react';
 
 type AboutRefs = {
@@ -6,7 +6,7 @@ type AboutRefs = {
 };
 
 export function setupTransitionInTimeline(timeline: gsap.core.Timeline, refs: AboutRefs) {
-  const { div } = normalizeRefs(refs);
+  const { div } = unwrapRefs(refs);
 
   timeline.fromTo(
     div,
@@ -21,7 +21,7 @@ export function setupTransitionInTimeline(timeline: gsap.core.Timeline, refs: Ab
 }
 
 export function setupTransitionOutTimeline(timeline: gsap.core.Timeline, refs: AboutRefs) {
-  const { div } = normalizeRefs(refs);
+  const { div } = unwrapRefs(refs);
 
   timeline.to(div, {
     opacity: 0,

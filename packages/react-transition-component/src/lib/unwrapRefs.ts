@@ -1,6 +1,11 @@
 import type { MutableRefObject, RefObject } from 'react';
 
-export function normalizeRefs<T extends Record<string, unknown>>(
+/**
+ * Unwraps react refs in object
+ * @param refs
+ * @returns
+ */
+export function unwrapRefs<T extends Record<string, unknown>>(
   refs: T,
 ): {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

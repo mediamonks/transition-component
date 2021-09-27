@@ -1,5 +1,9 @@
 // Components
 export { TransitionPresence } from './components/TransitionPresence';
+export { TransitionRoute } from './components/TransitionRoute';
+export type { TransitionRouteProps } from './components/TransitionRoute';
+export { TransitionRouter } from './components/TransitionRouter';
+export type { TransitionRouterProps } from './components/TransitionRouter';
 
 // Hooks
 export { useEnterTransition } from './hooks/useEnterTransition';
@@ -9,19 +13,17 @@ export { useSyncRef } from './hooks/useSyncRef';
 export { useTransitionController } from './hooks/useTransitionController';
 
 // Lib
-export { createTransitionHistory } from './lib/createTransitionHistory';
-export { normalizeRefs } from './lib/normalizeRefs';
-
-export type {
-  TransitionController,
-  TransitionDirection,
-  TransitionOptions,
-  TransitionOptionEventHandlers,
-  SetupTimelineOptions,
-  SetupTransitionOptions,
-} from '@mediamonks/core-transition-component';
+export { unwrapRefs } from './lib/unwrapRefs';
 
 export {
-  TRANSITION_CONTROLLERS,
   findTransitionController,
+  TRANSITION_CONTROLLERS,
+} from '@mediamonks/core-transition-component';
+export type {
+  SetupTimelineOptions,
+  SetupTransitionOptions,
+  TransitionController,
+  TransitionDirection,
+  TransitionOptionEventHandlers,
+  TransitionOptions,
 } from '@mediamonks/core-transition-component';

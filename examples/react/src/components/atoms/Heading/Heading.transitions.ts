@@ -1,29 +1,30 @@
-import { normalizeRefs } from '@mediamonks/react-transition-component';
+import { unwrapRefs } from '@mediamonks/react-transition-component';
 import { RefObject } from 'react';
 import { SplitText } from '../../../util/SplitText';
 
 type HeadingBlockRefs = {
-  heading: RefObject<HTMLHeadingElement | null>;
+  mainRef: RefObject<HTMLHeadingElement | null>;
 };
 
 export function setupTransitionInTimeline(timeline: gsap.core.Timeline, refs: HeadingBlockRefs) {
-  const { heading } = normalizeRefs(refs);
+  const { mainRef } = unwrapRefs(refs);
 
-  const splitHeading = new SplitText(heading);
+  const mainSplit = new SplitText(mainRef);
 
   timeline.fromTo(
-    splitHeading.chars,
+    [...mainSplit.chars.reverse()],
     {
-      yPercent: -100,
+      xPercent: -100,
       opacity: 0,
-      duration: 0.25,
-      ease: 'back',
+      duration: 0.05,
+      color: '#0000ff',
     },
     {
-      yPercent: 0,
+      xPercent: 0,
       opacity: 1,
+      color: '#ffffff',
       stagger: {
-        each: 0.04,
+        each: 0.05,
         ease: 'power1.out',
       },
     },

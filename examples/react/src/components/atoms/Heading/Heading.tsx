@@ -3,43 +3,41 @@ import {
   useTransitionController,
   TransitionController,
 } from '@mediamonks/react-transition-component';
-import { forwardRef, ReactElement, ReactNode, useEffect, useRef } from 'react';
+import { forwardRef, ReactElement, ReactNode, useEffect, useRef, useState } from 'react';
 import { StyledHeading } from './Heading.styles';
 import { setupTransitionInTimeline } from './Heading.transitions';
 
 interface HeadingProps {
+  as?: any;
   className?: string;
-  transitionController?: (transitionController: TransitionController) => void;
   children: ReactNode;
 }
 
 export default forwardRef<HTMLHeadingElement, HeadingProps>(function Heading(
-  { children, transitionController, ...props }: HeadingProps,
+  { children, ...props }: HeadingProps,
   ref,
 ): ReactElement {
-  const headingRef = useRef<HTMLHeadingElement>(null);
+  const mainRef = useRef<HTMLDivElement>(null);
 
-  useSyncRef(headingRef, ref);
-
-  const headingTransitionController = useTransitionController(() => ({
-    ref: headingRef.current,
+  useTransitionController(() => ({
     refs: {
-      heading: headingRef,
+      mainRef,
+    },
+    timelineVars: {
+      scrollTrigger: {
+        trigger: mainRef.current,
+        markers: true,
+        invalidateOnRefresh: true,
+        start: 'top 75%',
+        scrub: 0.5,
+      },
     },
     setupTransitionInTimeline,
   }));
 
-  useEffect(() => {
-    if (transitionController == null) {
-      return;
-    }
-
-    transitionController(headingTransitionController);
-  }, [headingTransitionController, transitionController]);
-
   return (
-    <StyledHeading ref={headingRef} {...props}>
-      {children}
+    <StyledHeading ref={ref} {...props}>
+      <div ref={mainRef}>{children}</div>
     </StyledHeading>
   );
 });

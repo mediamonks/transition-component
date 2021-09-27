@@ -1,7 +1,7 @@
 import type { RefObject } from 'react';
-import { normalizeRefs } from './normalizeRefs';
+import { unwrapRefs } from './unwrapRefs';
 
-describe('normalizeRefs', () => {
+describe('unwrapRefs', () => {
   it('Should normalize RefObject or MutableRefObject in object', () => {
     const myRef: RefObject<string> = {
       current: 'myRefString',
@@ -12,7 +12,7 @@ describe('normalizeRefs', () => {
       myRef,
     };
 
-    expect(normalizeRefs(refs)).toEqual({
+    expect(unwrapRefs(refs)).toEqual({
       notRef: 'myString',
       myRef: 'myRefString',
     });

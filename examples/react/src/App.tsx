@@ -1,43 +1,37 @@
-import {
-  createTransitionHistory,
-  TransitionPresence,
-} from '@mediamonks/react-transition-component';
+import { TransitionRoute, TransitionRouter } from '@mediamonks/react-transition-component';
 import { createBrowserHistory } from 'history';
 import { useState } from 'react';
-import { Route, Router } from 'react-router-dom';
-import { StyledNav, StyledNavLink } from './App.styles';
-import { MyTransitionComponent } from './components/atoms/MyTransitionComponent/MyTransitionComponent';
-import About from './components/pages/About/About';
+import { ThemeProvider } from 'styled-components';
+import { appTheme, GlobalStyle } from './App.styles';
+import { Navigation } from './components/organisms/Navigation/Navigation';
+import ApiDocumentation from './components/pages/ApiDocumentation/ApiDocumentation';
+import Examples from './components/pages/Examples/Examples';
 import Home from './components/pages/Home/Home';
 import { Path } from './routes/Path';
 
-const history = createTransitionHistory(createBrowserHistory());
+const history = createBrowserHistory();
 
 function App() {
   const [show, setShow] = useState(false);
 
   return (
-    <Router history={history}>
-      <StyledNav>
-        <div>
-          <StyledNavLink to={Path.Home}>Home</StyledNavLink>
-          <StyledNavLink to={Path.About}>About</StyledNavLink>
-        </div>
-        <button onClick={() => setShow(!show)}>Toggle TransitionPresence</button>
-      </StyledNav>
+    <TransitionRouter history={history}>
+      <ThemeProvider theme={appTheme}>
+        <GlobalStyle />
 
-      <TransitionPresence>
-        {show && <MyTransitionComponent>TransitionPresence</MyTransitionComponent>}
-      </TransitionPresence>
+        <Navigation />
 
-      <Route path={Path.About} exact>
-        <About />
-      </Route>
-
-      <Route path={Path.Home} exact>
-        <Home />
-      </Route>
-    </Router>
+        <TransitionRoute path={Path.Examples} exact>
+          {() => <Examples />}
+        </TransitionRoute>
+        <TransitionRoute path={Path.ApiDocumentation} exact>
+          {() => <ApiDocumentation />}
+        </TransitionRoute>
+        <TransitionRoute path={Path.Home} exact>
+          {() => <Home />}
+        </TransitionRoute>
+      </ThemeProvider>
+    </TransitionRouter>
   );
 }
 

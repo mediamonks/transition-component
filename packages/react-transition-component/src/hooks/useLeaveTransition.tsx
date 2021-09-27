@@ -1,6 +1,6 @@
 import type { TransitionController } from '@mediamonks/core-transition-component';
 import { useLayoutEffect } from 'react';
-import { useLeaveTransitionControllers } from '../components/TransitionPresence.context';
+import { useTransitionPresenceTransitionControllers } from '../components/TransitionPresence';
 
 /**
  * Creates gsap.core.Timeline that will start before component is unmounted
@@ -21,7 +21,7 @@ import { useLeaveTransitionControllers } from '../components/TransitionPresence.
  * useLeaveTransition(transitionController);
  */
 export function useLeaveTransition(transitionController: TransitionController): void {
-  const leaveTransitions = useLeaveTransitionControllers();
+  const leaveTransitions = useTransitionPresenceTransitionControllers();
 
   if (leaveTransitions == null) {
     throw new Error(

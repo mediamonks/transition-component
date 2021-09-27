@@ -1,6 +1,6 @@
 import type { TransitionController } from '@mediamonks/core-transition-component';
 
-export function killTransitionControllerTimelines(
+export function killTransitionControllersTimelines(
   transitionControllers: Set<TransitionController>,
 ): void {
   transitionControllers.forEach((transitionController) => {

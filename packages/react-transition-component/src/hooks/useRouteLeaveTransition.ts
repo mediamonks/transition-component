@@ -1,7 +1,6 @@
 import type { TransitionController } from '@mediamonks/core-transition-component';
 import { useLayoutEffect } from 'react';
-
-export const ROUTE_LEAVE_TRANSITION_CONTROLLERS = new Set<TransitionController>();
+import { useTransitionRouteTransitionControllers } from '../components/TransitionRoute';
 
 /**
  * Connects transitionController so that it will transitionOut before component
@@ -25,11 +24,17 @@ export const ROUTE_LEAVE_TRANSITION_CONTROLLERS = new Set<TransitionController>(
  * useRouteLeaveTimeline(transitionController);
  */
 export function useRouteLeaveTransition(transitionController: TransitionController): void {
+  const transitionControllers = useTransitionRouteTransitionControllers();
+
+  if (transitionControllers == null) {
+    throw new Error('Cannot use useRouteLeaveTransition outside of a <TransitionRoute />');
+  }
+
   useLayoutEffect(() => {
-    ROUTE_LEAVE_TRANSITION_CONTROLLERS.add(transitionController);
+    transitionControllers.add(transitionController);
 
     return () => {
-      ROUTE_LEAVE_TRANSITION_CONTROLLERS.delete(transitionController);
+      transitionControllers.delete(transitionController);
     };
   }, [transitionController]);
 }

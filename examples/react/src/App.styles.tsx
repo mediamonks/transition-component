@@ -1,27 +1,28 @@
-import styled from 'styled-components';
-import { NavLink } from 'react-router-dom';
+import { createGlobalStyle } from 'styled-components';
 
-export const StyledNav = styled.nav`
-  height: 80px;
-  padding: 10px 40px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #f2f2f2;
-  border-bottom: 1px solid #dddcdc;
-  box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.08);
-`;
+export const appTheme = {
+  app: {
+    color: '#f1f1f1',
+    background: '#000000',
+    codeColor: '#60ffd5',
+    codeBackground: '#5b5b5b',
+  },
 
-export const StyledNavLink = styled(NavLink)`
-  font-size: 18px;
-  text-decoration: none;
-  color: black;
-  
-  &:not(:first-child) {
-    margin-left: 30px;
-  }
-  
-  &:hover {
-    text-decoration: underline;
+  navigation: {
+    color: '#f1f1f1',
+    background: '#010101',
+  },
+
+  example: {
+    captionColor: '#8a8a8a',
+  },
+} as const;
+
+export type AppTheme = typeof appTheme;
+
+export const GlobalStyle = createGlobalStyle`
+  body {
+    color: ${(props) => props.theme.app.color};
+    background: ${(props) => props.theme.app.background};
   }
 `;

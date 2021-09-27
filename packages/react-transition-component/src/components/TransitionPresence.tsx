@@ -1,20 +1,26 @@
 import type { TransitionController } from '@mediamonks/core-transition-component';
 import type { ReactElement, ReactNode } from 'react';
 import { useLayoutEffect, useMemo, useState } from 'react';
+import { createTransitionControllerContext } from '../context/TransitionControllersContext';
 import { useIsMounted } from '../hooks/useIsMounted';
+import { killTransitionControllersTimelines } from '../lib/killTransitionControllersTimelines';
 import { noop } from '../lib/noop';
-import { LeaveTransitionControllersContext } from './TransitionPresence.context';
-import { killTransitionControllerTimelines } from './TransitionPresence.util';
+
+const { TransitionControllersContext, useTransitionControllers } =
+  createTransitionControllerContext();
+
+export const useTransitionPresenceTransitionControllers = useTransitionControllers;
 
 export interface TransitionPresenceProps {
   children: ReactNode;
+  crossFlow?: boolean;
 }
 
 /**
  * Will transition out old children before replacing with new children
  */
-export function TransitionPresence({ children }: TransitionPresenceProps): ReactElement {
-  const leaveTransitionControllers = useMemo(() => new Set<TransitionController>(), []);
+export function TransitionPresence({ children, crossFlow }: TransitionPresenceProps): ReactElement {
+  const transitionControllers = useMemo(() => new Set<TransitionController>(), []);
   const [delayedChildren, setDelayedChildren] = useState<ReactNode>(children);
 
   const isMounted = useIsMounted();
@@ -24,33 +30,34 @@ export function TransitionPresence({ children }: TransitionPresenceProps): React
       return noop;
     }
 
-    const timelines = Array.from(leaveTransitionControllers).map((leaveTransitionController) => {
-      return leaveTransitionController.transitionOut();
-    });
-
     (async () => {
-      try {
-        await Promise.all(timelines);
-      } finally {
-        killTransitionControllerTimelines(leaveTransitionControllers);
+      const timelines = Array.from(transitionControllers).map((leaveTransitionController) => {
+        return leaveTransitionController.transitionOut();
+      });
 
-        // Only update children when component is still mounted. Component can
-        // unmount while async function is awaiting the transition promise.
-        if (isMounted.current) {
-          // Always update children, even when error happened during transition
-          setDelayedChildren(children);
-        }
+      await Promise.all(timelines);
+
+      killTransitionControllersTimelines(transitionControllers);
+
+      // Only update children when component is still mounted. Component can
+      // unmount while async function is awaiting the transition promise.
+      if (isMounted.current) {
+        // Always update children, even when error happened during transition
+        setDelayedChildren(children);
       }
     })();
 
     return () => {
-      killTransitionControllerTimelines(leaveTransitionControllers);
+      killTransitionControllersTimelines(transitionControllers);
     };
   }, [children, delayedChildren]);
 
   return (
-    <LeaveTransitionControllersContext.Provider value={leaveTransitionControllers}>
+    <TransitionControllersContext.Provider value={transitionControllers}>
       {delayedChildren}
-    </LeaveTransitionControllersContext.Provider>
+
+      {/* Render new children immediately for cross flow transition */}
+      {crossFlow && children !== delayedChildren && children}
+    </TransitionControllersContext.Provider>
   );
 }

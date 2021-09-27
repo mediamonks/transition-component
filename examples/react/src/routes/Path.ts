@@ -1,5 +1,6 @@
 // eslint-disable-next-line no-shadow
 export enum Path {
   Home = '/',
-  About = '/about',
+  ApiDocumentation = '/api',
+  Examples = '/examples',
 }
