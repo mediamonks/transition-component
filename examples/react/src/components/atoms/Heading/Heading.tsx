@@ -1,10 +1,7 @@
-import {
-  useTransitionController,
-} from '@mediamonks/react-transition-component';
-import { forwardRef, ReactElement, ReactNode, useRef } from 'react';
-import { StyledHeading } from './Heading.styles';
-import { setupTransitionInTimeline } from './Heading.transitions';
+import { forwardRef, ReactElement, ReactNode } from 'react';
+import { Link } from 'react-router-dom';
 import { HeadingType } from './Heading.data';
+import { StyledHeading, StyledHeadingButton } from './Heading.styles';
 
 interface HeadingProps {
   as?: HeadingType;
@@ -16,27 +13,18 @@ export default forwardRef<HTMLHeadingElement, HeadingProps>(function Heading(
   { children, as = HeadingType.H1, ...props }: HeadingProps,
   ref,
 ): ReactElement {
-  const mainRef = useRef<HTMLDivElement>(null);
+  let id;
 
-  useTransitionController(() => ({
-    refs: {
-      mainRef,
-    },
-    timelineVars: {
-      scrollTrigger: {
-        trigger: mainRef.current,
-        markers: true,
-        invalidateOnRefresh: true,
-        start: 'top 75%',
-        scrub: 0.5,
-      },
-    },
-    setupTransitionInTimeline,
-  }));
+  if (typeof children === 'string') {
+    id = children
+      .replace(/[^\w\s]/gi, '')
+      .trim()
+      .replace(/\s/gi, '-');
+  }
 
   return (
-    <StyledHeading ref={ref} $type={as} {...props}>
-      <div ref={mainRef}>{children}</div>
+    <StyledHeading ref={ref} $type={as} {...props} id={id}>
+      {id ? <Link to={`#${id}`}>{children}</Link> : children}
     </StyledHeading>
   );
 });

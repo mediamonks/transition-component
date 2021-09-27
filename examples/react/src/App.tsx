@@ -1,13 +1,10 @@
-import { TransitionRoute, TransitionRouter } from '@mediamonks/react-transition-component';
+import { TransitionRouter } from '@mediamonks/react-transition-component';
 import { createBrowserHistory } from 'history';
 import { useState } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { appTheme, GlobalStyle } from './App.styles';
 import { Navigation } from './components/organisms/Navigation/Navigation';
-import ApiDocumentation from './components/pages/ApiDocumentation/ApiDocumentation';
-import Examples from './components/pages/Examples/Examples';
-import Home from './components/pages/Home/Home';
-import { Path } from './routes/Path';
+import { Routes } from './Routes';
 
 const history = createBrowserHistory();
 
@@ -20,15 +17,7 @@ function App() {
 
         <Navigation />
 
-        <TransitionRoute path={Path.Examples} exact>
-          {() => <Examples />}
-        </TransitionRoute>
-        <TransitionRoute path={Path.ApiDocumentation} exact>
-          {() => <ApiDocumentation />}
-        </TransitionRoute>
-        <TransitionRoute path={Path.Home} exact>
-          {() => <Home />}
-        </TransitionRoute>
+        <Routes />
       </ThemeProvider>
     </TransitionRouter>
   );
