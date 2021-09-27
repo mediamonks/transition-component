@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
+import { FontFamily } from './styles/variables';
 
 export const appTheme = {
   app: {
@@ -22,6 +23,7 @@ export type AppTheme = typeof appTheme;
 
 export const GlobalStyle = createGlobalStyle`
   body {
+    font-family: ${FontFamily.Arial};
     color: ${(props) => props.theme.app.color};
     background: ${(props) => props.theme.app.background};
   }

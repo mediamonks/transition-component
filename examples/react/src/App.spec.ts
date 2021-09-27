@@ -8,8 +8,8 @@ test('homepage test', async ({ page }) => {
   await expect(title).toHaveText('Home');
 });
 
-test('about page test', async ({ page }) => {
-  await page.goto(`${baseTestUrl}/about`);
+test('examples page test', async ({ page }) => {
+  await page.goto(`${baseTestUrl}/examples`);
   const mainAboutTitle = page.locator('.main-about-heading');
   await expect(mainAboutTitle).toHaveText('This is the about page, this animation will only trigger once');
   const lastGridBlock = page.locator('.last-grid-block');

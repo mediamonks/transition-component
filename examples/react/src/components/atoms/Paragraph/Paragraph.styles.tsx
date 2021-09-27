@@ -1,8 +1,9 @@
 import styled from 'styled-components';
+import { typeStyle } from '../../../styles/typeStyle';
 
 export const StyledParagraph = styled.p`
-  font-size: 18px;
-  line-height: 32px;
+  ${typeStyle.paragraph};
+  font-weight: 100;
 
   & + & {
     margin-bottom: 20px;

@@ -13,6 +13,7 @@ import { Example } from '../../organisms/Example/Example';
 import { Section } from '../../organisms/Section/Section';
 import { StyledExamples } from './Examples.styles';
 import { setupTransitionInTimeline, setupTransitionOutTimeline } from './Examples.transitions';
+import { HeadingType } from '../../atoms/Heading/Heading.data';
 
 function Slide({ children }: { children: ReactNode }) {
   const divRef = useRef<HTMLDivElement>(null);
@@ -100,7 +101,7 @@ export default function Examples(): ReactElement {
       <Carousel />
 
       <Section>
-        <Heading as="h2">Examples</Heading>
+        <Heading as={HeadingType.H2}>Examples</Heading>
 
         <Paragraph>
           Talk is cheap! So lets check out these examples to see what{' '}
@@ -109,7 +110,7 @@ export default function Examples(): ReactElement {
       </Section>
 
       <Section>
-        <Heading as="h3">Conditional rendering</Heading>
+        <Heading as={HeadingType.H3}>Conditional rendering</Heading>
 
         <Paragraph>
           Talk is cheap! So lets check out these examples to see what{' '}
@@ -120,7 +121,7 @@ export default function Examples(): ReactElement {
       </Section>
 
       <Section>
-        <Heading as="h3">Image Carousel</Heading>
+        <Heading as={HeadingType.H3}>Image Carousel</Heading>
 
         <Paragraph>
           We can leverage the <code>TransitionPresence</code> component to create complex carousel
@@ -132,7 +133,7 @@ export default function Examples(): ReactElement {
       </Section>
 
       <Section>
-        <Heading as="h3">Page transitions</Heading>
+        <Heading as={HeadingType.H3}>Page transitions</Heading>
 
         <Paragraph>
           Lorem ipsum dolor sit, amet consectetur adipisicing elit. Obcaecati esse omnis asperiores

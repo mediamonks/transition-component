@@ -13,7 +13,6 @@ const history = createBrowserHistory();
 
 function App() {
   const [show, setShow] = useState(false);
-
   return (
     <TransitionRouter history={history}>
       <ThemeProvider theme={appTheme}>

@@ -1,20 +1,19 @@
 import {
-  useSyncRef,
   useTransitionController,
-  TransitionController,
 } from '@mediamonks/react-transition-component';
-import { forwardRef, ReactElement, ReactNode, useEffect, useRef, useState } from 'react';
+import { forwardRef, ReactElement, ReactNode, useRef } from 'react';
 import { StyledHeading } from './Heading.styles';
 import { setupTransitionInTimeline } from './Heading.transitions';
+import { HeadingType } from './Heading.data';
 
 interface HeadingProps {
-  as?: any;
+  as?: HeadingType;
   className?: string;
   children: ReactNode;
 }
 
 export default forwardRef<HTMLHeadingElement, HeadingProps>(function Heading(
-  { children, ...props }: HeadingProps,
+  { children, as = HeadingType.H1, ...props }: HeadingProps,
   ref,
 ): ReactElement {
   const mainRef = useRef<HTMLDivElement>(null);
@@ -36,7 +35,7 @@ export default forwardRef<HTMLHeadingElement, HeadingProps>(function Heading(
   }));
 
   return (
-    <StyledHeading ref={ref} {...props}>
+    <StyledHeading ref={ref} $type={as} {...props}>
       <div ref={mainRef}>{children}</div>
     </StyledHeading>
   );
