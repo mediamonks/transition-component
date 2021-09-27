@@ -104,8 +104,8 @@ export default function Examples(): ReactElement {
         <Heading as={HeadingType.H2}>Examples</Heading>
 
         <Paragraph>
-          Talk is cheap! So lets check out these examples to see what{' '}
-          <code>@mediamonks/react-transition-component</code> can do.
+          Talk is cheap! Check out these examples to see what{' '}
+          <code className="language-markup">@mediamonks/react-transition-component</code> can do.
         </Paragraph>
       </Section>
 
@@ -114,19 +114,24 @@ export default function Examples(): ReactElement {
 
         <Paragraph>
           Talk is cheap! So lets check out these examples to see what{' '}
-          <code>@mediamonks/react-transition-component</code> can do.
+          <code className="language-markup">@mediamonks/react-transition-component</code> can do.
         </Paragraph>
 
-        <Example id="new" caption="Hellooo" />
+        <Example
+          id="mediamonks-react-transition-component-template-smrdd"
+          caption="Use this CodeSandBox as a template if you want to create a new example"
+          runOnClick={false}
+        />
       </Section>
 
       <Section>
         <Heading as={HeadingType.H3}>Image Carousel</Heading>
 
         <Paragraph>
-          We can leverage the <code>TransitionPresence</code> component to create complex carousel
-          style components. Every slide is wrapped is wrapped by the <code>TransitionPresence</code>{' '}
-          so that we can transition in/out each slide if they become active.
+          We can leverage the <code className="language-markup">TransitionPresence</code> component
+          to create complex carousel style components. Every slide is wrapped by the{' '}
+          <code className="language-tsx">{'<TransitionPresence />'}</code> component so that we can
+          transition in/out each slide if they become active.
         </Paragraph>
 
         <Example id="new" caption="Hellooo" />
@@ -153,9 +158,10 @@ export default function Examples(): ReactElement {
           id="new"
           caption={
             <>
-              <code>@mediamonks/react-transition-component</code> tries to be compatible with{' '}
-              <code>react-router</code> but for page transitions we cannot support the{' '}
-              <code>
+              <code className="language-markup">@mediamonks/react-transition-component</code> tries
+              to be compatible with <code className="language-markup">react-router</code> but for
+              page transitions we cannot support the{' '}
+              <code className="language-tsx">
                 {'<'}Switch{'/>'}
               </code>{' '}
               component because it will only render one Route at a time.
