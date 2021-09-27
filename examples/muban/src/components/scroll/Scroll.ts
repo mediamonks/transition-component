@@ -11,19 +11,25 @@ export const Scroll = defineComponent({
       refs: {
         paragraph: refs.paragraph,
       },
-      scrollTrigger: {
-        start: 'top 100%', // Make sure the animation is triggered as soon as it enters the viewport
+      timelineVars: {
+        scrollTrigger: {
+          start: 'top 100%', // Make sure the animation is triggered as soon as it enters the viewport
+        },
       },
-      setupTransitionInTimeline: (timeline, { paragraph }) => {
-        if (paragraph)
-          timeline.from(paragraph, {
-            y: 200,
-            autoAlpha: 0,
-            duration: 1,
-            ease: 'expo.out',
-          });
+      setupTransitionInTimeline(timeline, { paragraph }) {
+        if (paragraph.element == null) {
+          return;
+        }
+
+        timeline.from(paragraph.element, {
+          y: 200,
+          autoAlpha: 0,
+          duration: 1,
+          ease: 'expo.out',
+        });
       },
     });
+
     return [];
   },
 });

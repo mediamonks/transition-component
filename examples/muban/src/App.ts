@@ -1,3 +1,5 @@
+import type { TransitionController } from '@mediamonks/core-transition-component';
+import { findTransitionController } from '@mediamonks/muban-transition-component';
 import {
   bind,
   bindTemplate,
@@ -8,9 +10,7 @@ import {
   refComponent,
   shallowRef,
 } from '@muban/muban';
-import { useGlobalTransitionContext } from '@mediamonks/muban-transition-component';
 import { html } from '@muban/template';
-import type { TransitionController } from '@mediamonks/core-transition-component';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import { Foo } from './components/foo/Foo';
 import { Scroll } from './components/scroll/Scroll';
@@ -27,8 +27,6 @@ export const App = defineComponent({
     }),
   },
   setup({ refs }) {
-    const transitionContext = useGlobalTransitionContext();
-    const transitionController = shallowRef<TransitionController | null>(null);
     const events = ref<Array<{ value: string; time: string }>>([]);
 
     const addEvent = (event: string): void => {
@@ -41,8 +39,10 @@ export const App = defineComponent({
       onComplete: () => addEvent('onComplete'),
     };
 
+    const transitionController = shallowRef<TransitionController | undefined>(undefined);
+
     onMounted(() => {
-      transitionController.value = transitionContext.getController(refs.foo);
+      transitionController.value = findTransitionController(refs.foo.component?.element);
       transitionController.value?.transitionIn(eventListeners);
     });
 
@@ -72,7 +72,9 @@ export const App = defineComponent({
       ),
       bind(refs.transitionInButton, {
         event: {
-          click: () => transitionController.value?.transitionIn(eventListeners),
+          click: () => {
+            transitionController.value?.transitionIn(eventListeners);
+          },
         },
       }),
       bind(refs.transitionOutButton, {
