@@ -1,6 +1,6 @@
 {
   "name": "@mediamonks/muban-storybook-addon-transition",
-  "version": "1.0.0-alpha.12",
+  "version": "1.0.1-alpha.0",
   "description": "Control your timelines from Storybook.",
   "keywords": [
     "gsap",
@@ -34,7 +34,7 @@
     "*.js"
   ],
   "dependencies": {
-    "@mediamonks/muban-transition-component": "^1.0.0-alpha.18",
+    "@mediamonks/muban-transition-component": "^1.0.1-alpha.0",
     "@storybook/addons": "^6.2.9",
     "@storybook/components": "^6.2.9",
     "@storybook/core-events": "^6.2.9",
