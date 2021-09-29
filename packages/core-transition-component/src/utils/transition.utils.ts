@@ -14,11 +14,9 @@ import type {
 import type { AbstractTransitionContext } from '../context/AbstractTransitionContext';
 import { clearTimeline, cloneTimeline } from './timeline.utils';
 
-export function getTransitionController<
-  T extends Record<string, R>,
+export function getTransitionController<T extends Record<string, R>,
   R extends TransitionRef,
-  E extends SetupSignatureElements<T>
->(
+  E extends SetupSignatureElements<T>>(
   container: R,
   setupOptions: SetupTransitionOptions<T, R, E> = {},
   transitionRefToElement: (ref: R) => HTMLElement | Array<HTMLElement> | undefined,
@@ -99,6 +97,16 @@ export function getTransitionController<
       }
 
       return cloneTimeline(transitionTimeline[direction], direction).play();
+    },
+    resetTimeline(direction: TransitionDirection) {
+      const timeline = this.setupTimeline({
+        direction, reset: true,
+      });
+
+      // If the timeline contains a scrollTrigger configuration we should also update that.
+      timeline?.scrollTrigger.update(true);
+
+      return timeline;
     },
     // eslint-disable-next-line no-shadow
     setupTimeline(options: Partial<TimelineOptions> = {}) {
