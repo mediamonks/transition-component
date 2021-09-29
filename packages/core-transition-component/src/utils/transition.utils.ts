@@ -100,7 +100,8 @@ export function getTransitionController<T extends Record<string, R>,
     },
     resetTimeline(direction: TransitionDirection) {
       const timeline = this.setupTimeline({
-        direction, reset: true,
+        direction,
+        reset: true,
       });
 
       // If the timeline contains a scrollTrigger configuration we should also update that.
