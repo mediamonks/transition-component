@@ -41,10 +41,10 @@ function parseChildTween(
     );
   }
 
-  if (direction === 'in' && !child.vars.startAt) {
+  // When nesting a timeline we should either have a `startAt` or a function target defined.
+  if (direction === 'in' && (!child.vars.startAt && !child.targets().find((target) => typeof target === 'function'))) {
     throw new Error('Do not use from while nesting transitionInTimelines, use fromTo instead!');
   }
-
   const { startAt: from, ...to } = child.vars;
   const targets = child.targets();
   const startTime = child.startTime();
