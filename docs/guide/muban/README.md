@@ -154,7 +154,6 @@ setupTransitionInTimeline: (timeline, { someRef }, transitionContext) => {
 ```
 
 #### Separating your transition logic
-
 When your timelines becomes more complex and grows in size you might want to consider moving your setup functions to a separate file (for example: `myComponent.transitions.ts`).
 
 ```ts
@@ -251,7 +250,7 @@ import { getTimeline } from './SomeComponent.transitions.ts';
     // In this example we watch some ref that might change due to a 
     // window resize or what ever you can think of.
     watch(someRef, () => {
-      transitionController.setupTimeline({ direction: 'in', reset: true })
+      transitionController.resetTimeline('in');
     });
       
     return [];
@@ -418,6 +417,37 @@ This triggering this is very similar to triggering the transition out, so please
 Looping timelines are still a todo! 
 :::
 
+### Resetting timelines
+In some scenarios you might want to reset a timeline, for example you want to use a different timeline on a certain breakpoint.
+
+This can be easily achieved by calling the `resetTimeline` method and providing the desired direction. 
+
+**Supported directions**
+- `in`
+- `out`
+ 
+**Reset the in-transition**
+```ts {14}
+import { defineComponent } from '@muban/muban';
+import { useTransitionController } from '@mediamonks/muban-transition-component';
+ 
+const MyComponent = defineComponent({
+  name: 'some-component',
+  setup() {
+    const transitionController = useTransitionController(refs.self, {
+      setupTransitionInTimeline: (timeline, elements, transitionContext) => {
+        timeline.from(elements.container, { autoAlpha: 0, duration: 1})
+      },
+    });
+
+    // Calling the reset method will re-initialize the timeline
+    transitionController.resetTimeline('in')
+
+    return [];
+  }
+});
+```
+ 
 ### Events
 There are multiple ways to listen to the transition events.
 - Hook callbacks
