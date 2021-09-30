@@ -33,12 +33,12 @@
     "test": "jest --config ../../jest.config.js"
   },
   "devDependencies": {
-    "gsap": "^3.6.1",
+    "gsap": "^3.7.0",
     "rimraf": "^3.0.2",
     "ts-jest": "^26.5.5"
   },
   "gitHead": "f47e239a24df9bed4cf73c47a8ef1267d6da8982",
   "peerDependencies": {
-    "gsap": "^3.6.1"
+    "gsap": "^3.7.0"
   }
 }
