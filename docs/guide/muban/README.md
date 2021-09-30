@@ -163,7 +163,6 @@ Take a look at this working example on CodePen
 <iframe src="https://codesandbox.io/embed/nesting-a-timeline-within-another-timeline-bt78t?fontsize=14&hidenavigation=1&theme=dark" style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;" title="Nesting a timeline within another timeline" allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking" sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"></iframe>
 
 #### Separating your transition logic
-
 When your timelines becomes more complex and grows in size you might want to consider moving your setup functions to a separate file (for example: `myComponent.transitions.ts`).
 
 ```ts
@@ -260,7 +259,7 @@ import { getTimeline } from './SomeComponent.transitions.ts';
     // In this example we watch some ref that might change due to a 
     // window resize or what ever you can think of.
     watch(someRef, () => {
-      transitionController.setupTimeline({ direction: 'in', reset: true })
+      transitionController.resetTimeline('in');
     });
       
     return [];
@@ -430,6 +429,37 @@ This triggering this is very similar to triggering the transition out, so please
 Looping timelines are still a todo! 
 :::
 
+### Resetting timelines
+In some scenarios you might want to reset a timeline, for example you want to use a different timeline on a certain breakpoint.
+
+This can be easily achieved by calling the `resetTimeline` method and providing the desired direction. 
+
+**Supported directions**
+- `in`
+- `out`
+ 
+**Reset the in-transition**
+```ts {14}
+import { defineComponent } from '@muban/muban';
+import { useTransitionController } from '@mediamonks/muban-transition-component';
+ 
+const MyComponent = defineComponent({
+  name: 'some-component',
+  setup() {
+    const transitionController = useTransitionController(refs.self, {
+      setupTransitionInTimeline: (timeline, elements, transitionContext) => {
+        timeline.from(elements.container, { autoAlpha: 0, duration: 1})
+      },
+    });
+
+    // Calling the reset method will re-initialize the timeline
+    transitionController.resetTimeline('in')
+
+    return [];
+  }
+});
+```
+ 
 ### Events
 There are multiple ways to listen to the transition events.
 - Hook callbacks

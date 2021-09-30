@@ -24,6 +24,7 @@ export type TransitionDirection = 'in' | 'out';
 export type TransitionController = {
   transitionTimeline: Record<TransitionDirection, gsap.core.Timeline>;
   getTimeline(direction?: TransitionDirection): gsap.core.Timeline;
+  resetTimeline(direction?:TransitionDirection): gsap.core.Timeline;
   setupTimeline(options?: Partial<TimelineOptions>): gsap.core.Timeline;
   transition(options: TransitionOptions): Promise<void>;
   transitionIn(options?: TransitionInOptions): Promise<void>;

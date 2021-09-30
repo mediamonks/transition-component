@@ -12,7 +12,6 @@
     "@mediamonks/muban-transition-component": "file:../../packages/muban-transition-component",
     "@muban/muban": "^1.0.0-alpha.27",
     "@muban/template": "^1.0.0-alpha.1",
-    "gsap": "^3.6.1",
     "html-webpack-plugin": "^5.3.1"
   },
   "devDependencies": {
