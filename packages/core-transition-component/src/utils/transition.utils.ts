@@ -104,8 +104,14 @@ export function getTransitionController<T extends Record<string, R>,
         reset: true,
       });
 
-      // If the timeline contains a scrollTrigger configuration we should also update that.
-      timeline?.scrollTrigger.update(true);
+      // This is not mentioned in the docs, but the method does actually reset the `scrollTrigger` instance and fixes
+      // the issue with re-triggering the scroll events.
+      try {
+        // @ts-ignore
+        timeline?.scrollTrigger.update(true);
+      } catch(error){
+        console.log('Unable to reset the scrollTrigger instance.', error)
+      }
 
       return timeline;
     },
