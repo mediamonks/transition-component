@@ -81,7 +81,7 @@ describe('<TransitionPresence />', () => {
     expect(container.firstChild).toHaveTextContent('Component 1');
   });
 
-  it('Should render new children immediately on rerender with crossFlow', () => {
+  it('Should render new children immediately on rerender with crossFlow', async () => {
     const { container, rerender } = render(
       <TransitionPresence crossFlow>
         <TransitionComponent>Component 1</TransitionComponent>
@@ -96,8 +96,11 @@ describe('<TransitionPresence />', () => {
       </TransitionPresence>,
     );
 
-    // Should have both children now
-    expect(container).toHaveTextContent('Component 1');
+    // Should render new children immediately
     expect(container).toHaveTextContent('Component 2');
+
+    await waitFor(() => {
+      expect(container).not.toHaveTextContent('Component 1');
+    });
   });
 });
