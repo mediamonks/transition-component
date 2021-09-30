@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { act, render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import type { ReactNode } from 'react';
 import { useRef } from 'react';
 import { useLeaveTransition } from '../hooks/useLeaveTransition';
@@ -59,22 +59,16 @@ describe('<TransitionPresence />', () => {
 
     expect(container).toHaveTextContent('Component 1');
 
-    await act(async () => {
-      rerender(
-        <TransitionPresence>
-          <TransitionComponent>Component 2</TransitionComponent>
-        </TransitionPresence>,
-      );
+    rerender(
+      <TransitionPresence>
+        <TransitionComponent>Component 2</TransitionComponent>
+      </TransitionPresence>,
+    );
 
-      // Check if old component is still mounted
-      expect(container).toHaveTextContent('Component 1');
-
-      // Wait for transition
-      await new Promise((resolve) => setTimeout(resolve, 100));
+    await waitFor(() => {
+      expect(container).not.toHaveTextContent('Component 1');
     });
 
-    // Old children should be unmounted after transition
-    expect(container).not.toHaveTextContent('Component 1');
     expect(container).toHaveTextContent('Component 2');
   });
 
