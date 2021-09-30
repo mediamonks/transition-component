@@ -30,7 +30,8 @@
     "build:ts": "tsc -p ./tsconfig.cjs.json",
     "build:ts-esm": "tsc -p ./tsconfig.esm.json",
     "clean": "rimraf -rf ./dist",
-    "test": "jest --config ../../jest.config.js"
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "gitHead": "59ef2a3ec9de34ceda246176b797098a4f641e37",
   "peerDependencies": {
