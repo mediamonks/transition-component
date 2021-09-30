@@ -1,7 +1,7 @@
 {
   "name": "muban-example",
   "license": "MIT",
-  "version": "1.0.3-alpha.9",
+  "version": "1.0.3-alpha.10",
   "private": true,
   "scripts": {
     "dev": "lerna run build && webpack serve -c webpack.config.js",
