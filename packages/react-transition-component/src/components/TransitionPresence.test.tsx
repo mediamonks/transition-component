@@ -28,7 +28,6 @@ function TransitionComponent({ children }: TransitionComponentProps) {
         },
         {
           opacity: 0,
-          duration: 0.1,
         },
       );
     },
