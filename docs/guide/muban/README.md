@@ -100,6 +100,7 @@ You can now create transition components by using one of the following hooks:
 This hook can be used when you want to create a component that either requires a manual transition trigger or if it 
 will be added to a parent timeline.
 
+
 ```ts
 import { defineComponent } from '@muban/muban';
 import { useTransitionController } from '@mediamonks/muban-transition-component';
@@ -134,6 +135,10 @@ const MyComponent = defineComponent({
 });
 ```
 
+Take a look at this working example on CodePen
+
+<iframe src="https://codesandbox.io/embed/controlling-the-transition-controller-tbv4g?fontsize=14&hidenavigation=1&theme=dark" style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;" title="Controlling the transition-controller" allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking" sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts" ></iframe>
+
 #### Nesting a timeline
 Nesting timelines can be achieved through the `transitionContext`. 
 
@@ -152,6 +157,10 @@ setupTransitionInTimeline: (timeline, { someRef }, transitionContext) => {
 },
 ...
 ```
+
+Take a look at this working example on CodePen
+
+<iframe src="https://codesandbox.io/embed/nesting-a-timeline-within-another-timeline-bt78t?fontsize=14&hidenavigation=1&theme=dark" style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;" title="Nesting a timeline within another timeline" allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking" sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"></iframe>
 
 #### Separating your transition logic
 
@@ -346,6 +355,9 @@ const MyComponent = defineComponent({
 ::: warning 
 When using this hook there will be no Promise returned by the `transitionIn` / `transitionOut` methods, you can still use the regular event callbacks in the setupOptions though. 
 :::
+
+Take a look at this working example on CodePen
+<iframe src="https://codesandbox.io/embed/using-scrolltrigger-to-trigger-transitions-qewqv?fontsize=14&hidenavigation=1&theme=dark" style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;" title="Using ScrollTrigger to trigger transitions" allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking" sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"></iframe>
 
 
 #### Global ScrollTrigger variables
