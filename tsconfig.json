@@ -31,5 +31,7 @@
     "**/dist",
     "**/*.test.ts",
     "**/*.spec.ts",
+    "**/*.test.tsx",
+    "**/*.spec.tsx",
   ],
 }

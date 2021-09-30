@@ -40,5 +40,6 @@
   },
   "peerDependencies": {
     "gsap": "^3.6.1"
-  }
+  },
+  "gitHead": "59ef2a3ec9de34ceda246176b797098a4f641e37"
 }
