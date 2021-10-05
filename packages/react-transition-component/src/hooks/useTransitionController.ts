@@ -18,14 +18,9 @@ export function useTransitionController<T>(
   useLayoutEffect(() => {
     registerTransitionController(controller);
 
-    // Make sure the in-direction is setup by default
-    controller?.setupTimeline({
-      direction: 'in',
-    });
-
     return () => {
-      controller?.transitionTimeline.in.kill();
-      controller?.transitionTimeline.out.kill();
+      controller.getTimeline('in')?.kill();
+      controller.getTimeline('out')?.kill();
 
       unregisterTransitionController(controller);
     };

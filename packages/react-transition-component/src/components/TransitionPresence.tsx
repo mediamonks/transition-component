@@ -32,6 +32,16 @@ export function TransitionPresence({ children, crossFlow }: TransitionPresencePr
 
     (async () => {
       const timelines = Array.from(transitionControllers).map((leaveTransitionController) => {
+        try {
+          leaveTransitionController.setupTimeline({
+            direction: 'out',
+          });
+        } catch (error: unknown) {
+          leaveTransitionController.setupTimeline({
+            direction: 'in',
+          });
+        }
+
         return leaveTransitionController.transitionOut();
       });
 

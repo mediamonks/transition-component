@@ -25,14 +25,14 @@ export function useTransitionController<T>(
 
   // Make sure the in-direction is setup by default
   onMounted(() =>
-    controller?.setupTimeline({
+    controller.setupTimeline({
       direction: 'in',
     }),
   );
 
   onUnmounted(() => {
-    controller?.transitionTimeline.in.kill();
-    controller?.transitionTimeline.out.kill();
+    controller.getTimeline('in')?.kill();
+    controller.getTimeline('out')?.kill();
 
     unregisterTransitionController(controller);
   });

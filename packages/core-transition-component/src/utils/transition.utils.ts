@@ -7,12 +7,10 @@ import type {
   TransitionOptions,
   TransitionOptionsWithDirection,
 } from '../types/transition.types';
-import { clearTimeline, cloneTimeline } from './timeline.utils';
+import { clearTimeline } from './timeline.utils';
 
 /**
  * Creates the TransitionController
- *
- * TODO: Check if we can extract more functions from the inner scope so that tree-shaking can be more efficient
  *
  * @param setupOptions
  * @returns
@@ -20,147 +18,127 @@ import { clearTimeline, cloneTimeline } from './timeline.utils';
 export function createTransitionController<T>(
   setupOptions: SetupTransitionOptions<T>,
 ): TransitionController {
-  let transitionPromise = Promise.resolve();
-  let resolveTransitionPromise: null | (() => void) = null;
-
-  const transitionTimeline: Record<TransitionDirection, gsap.core.Timeline> = {
-    in: gsap.timeline({
-      paused: true,
-      ...setupOptions.timelineVars,
-    }),
-    out: gsap.timeline({
-      paused: true,
-    }),
-  };
-
-  const onTransitionStart = (direction: TransitionDirection, callback?: () => void): void => {
-    setupOptions.onStart?.(direction);
-    callback?.();
-  };
-
-  const onTransitionComplete = <D extends TransitionDirection>(
-    direction: D,
-    callback?: (transitionDirection: D) => void,
-  ): void => {
-    setupOptions.onComplete?.(direction);
-    callback?.(direction);
-
-    if (resolveTransitionPromise) {
-      resolveTransitionPromise();
-      resolveTransitionPromise = null;
-    }
-  };
-
-  transitionTimeline.in.eventCallback('onStart', () => onTransitionStart('in'));
-  transitionTimeline.in.eventCallback('onComplete', () => onTransitionComplete('in'));
-  transitionTimeline.in.eventCallback('onReverseComplete', () => onTransitionComplete('out'));
-  transitionTimeline.in.eventCallback('onUpdate', () =>
-    setupOptions.onUpdate?.(transitionTimeline.in),
-  );
-
-  transitionTimeline.out.eventCallback('onStart', () => onTransitionStart('out'));
-  transitionTimeline.out.eventCallback('onComplete', () => onTransitionComplete('out'));
-  transitionTimeline.out.eventCallback('onUpdate', () =>
-    setupOptions.onUpdate?.(transitionTimeline.out),
-  );
-
-  // Helper method to retrieve the correct setup method based on the direction
-  const getSetupMethod = (direction: TransitionDirection = 'in') =>
-    setupOptions[direction === 'in' ? 'setupTransitionInTimeline' : 'setupTransitionOutTimeline'];
-
-  const killOldTimeline = (direction: TransitionDirection) => {
-    if (!transitionPromise) {
-      return;
-    }
-
-    const hasOutTimeline = transitionTimeline.out.getChildren(true).length > 0;
-    const timeline = transitionTimeline[direction === 'in' && hasOutTimeline ? 'out' : 'in'];
-
-    timeline.kill();
-
-    if (resolveTransitionPromise) {
-      onTransitionComplete(direction);
-    }
+  const timelines: Record<TransitionDirection, gsap.core.Timeline | undefined> = {
+    in: undefined,
+    out: undefined,
   };
 
   const controller: TransitionController = {
     ref: setupOptions.ref,
-    transitionTimeline,
-    getTimeline(direction: TransitionDirection = 'in') {
-      if (direction === 'out') {
-        this.setupTimeline({
-          direction,
-        });
+
+    /**
+     * Function to get one of the timelines
+     */
+    getTimeline(direction: TransitionDirection): gsap.core.Timeline | undefined {
+      return timelines[direction];
+    },
+
+    /**
+     * Create timeline for given direction
+     */
+    setupTimeline({ direction, reset }: SetupTimelineOptions) {
+      const setupTimelineFunction =
+        direction === 'in'
+          ? setupOptions.setupTransitionInTimeline
+          : setupOptions.setupTransitionOutTimeline;
+
+      if (setupTimelineFunction == null) {
+        throw new Error(
+          `Cannot setup timeline because no setup function is defined for '${direction}' direction`,
+        );
       }
 
-      return cloneTimeline(transitionTimeline[direction], direction).play();
-    },
-    // eslint-disable-next-line no-shadow
-    setupTimeline(options: Partial<SetupTimelineOptions> = {}) {
-      const { direction, timeline, reset }: SetupTimelineOptions = {
-        direction: 'in',
-        timeline: transitionTimeline[options.direction || 'in'],
-        reset: false,
-        ...options,
+      let timelineVariables: gsap.TimelineVars = {
+        paused: true,
       };
 
-      if (reset) clearTimeline(timeline);
+      if (direction === 'in') {
+        // Allow external timeline variables for transition in timeline
+        timelineVariables = {
+          ...setupOptions.timelineVars,
+          ...timelineVariables,
+        };
+      }
 
-      // Find the correct setup based on the provided direction
+      let timeline = timelines[direction];
+
+      if (timeline == null) {
+        timeline = gsap.timeline(timelineVariables);
+
+        // Save new timeline for direction
+        timelines[direction] = timeline;
+
+        timeline.eventCallback('onStart', () => setupOptions.onStart?.(direction));
+        timeline.eventCallback('onComplete', () => setupOptions.onComplete?.(direction));
+
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        timeline.eventCallback('onUpdate', () => setupOptions.onUpdate?.(timeline!));
+
+        if (direction === 'in') {
+          timeline.eventCallback('onReverseComplete', () => setupOptions.onComplete?.(direction));
+        }
+      }
+      // Reset timeline when timeline exist and reset option is enabled
+      else if (reset) {
+        clearTimeline(timeline);
+      }
+
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      getSetupMethod(direction)?.(timeline, setupOptions.refs!);
+      setupTimelineFunction(timeline, setupOptions.refs!);
 
       return timeline;
     },
+
+    /**
+     * Start transition for given direction from options
+     */
     async transition(options: TransitionOptionsWithDirection) {
-      killOldTimeline(options.direction);
+      // Transition in timeline is used as a fallback if the out timeline does
+      // not exist. The transition in timeline is reversed if the fallback is used
+      const timeline = timelines[options.direction] ?? timelines.in;
 
-      transitionPromise = new Promise((resolve) => {
-        resolveTransitionPromise = resolve as () => void;
-
-        const timeline = transitionTimeline[options.direction];
-        const timelineHasChildren = timeline.getChildren(true).length > 0;
-
-        options.onStart?.(options.direction);
-
-        if (options.direction === 'in' || (options.direction === 'out' && timelineHasChildren)) {
-          // eslint-disable-next-line babel/no-unused-expressions
-          !timelineHasChildren && onTransitionComplete('in', options.onComplete);
-          timeline.restart(true, true);
-        } else {
-          transitionTimeline.in.reverse(0, true);
-        }
-      }).then(() => options.onComplete?.(options.direction));
-
-      return transitionPromise;
-    },
-    async transitionIn(options?: TransitionOptions) {
-      if (options?.reset) {
-        this.setupTimeline({
-          direction: 'in',
-          reset: true,
-        });
+      if (timeline == null) {
+        throw new Error(
+          'Timeline is undefined, did you forget to call TransitionController.setupTimeline()?',
+        );
       }
 
+      // Timeline should be restarted, the old timeline is killed in case it's active
+      timeline.kill();
+
+      options.onStart?.(options.direction);
+
+      // Reverse in transition when out timeline is empty
+      if (options.direction === 'out' && timelines.out == null) {
+        await timeline.reverse(0, true);
+      } else {
+        await timeline.restart(true, true);
+      }
+
+      options.onComplete?.(options.direction);
+      setupOptions.onComplete?.(options.direction);
+    },
+
+    /**
+     * Shorthand to start transition in
+     */
+    async transitionIn(options?: TransitionOptions) {
       await this.transition({
         ...options,
         direction: 'in',
       });
     },
-    async transitionOut(options?: TransitionOptions) {
-      if (options?.reset || transitionTimeline.out.getChildren(true).length === 0) {
-        this.setupTimeline({
-          direction: 'out',
-          reset: true,
-        });
-      }
 
+    /**
+     * Shorthand to start transition out
+     */
+    async transitionOut(options?: TransitionOptions) {
       await this.transition({
         ...options,
         direction: 'out',
       });
     },
-  };
+  } as const;
 
   return controller;
 }

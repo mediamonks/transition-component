@@ -4,7 +4,7 @@ export function killTransitionControllersTimelines(
   transitionControllers: Set<TransitionController>,
 ): void {
   transitionControllers.forEach((transitionController) => {
-    transitionController.transitionTimeline.in.kill();
-    transitionController.transitionTimeline.out.kill();
+    transitionController.getTimeline('in')?.kill();
+    transitionController.getTimeline('out')?.kill();
   });
 }

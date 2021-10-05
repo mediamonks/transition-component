@@ -1,6 +1,7 @@
 import type { TransitionController } from '@mediamonks/core-transition-component';
 import { useLayoutEffect } from 'react';
 import { useTransitionRouteTransitionControllers } from '../components/TransitionRoute';
+import { noop } from '../lib/noop';
 
 /**
  * Connects transitionController so that it will transitionOut before component
@@ -23,7 +24,9 @@ import { useTransitionRouteTransitionControllers } from '../components/Transitio
  * // Connect the transitionController to the lifecycle
  * useRouteLeaveTimeline(transitionController);
  */
-export function useRouteLeaveTransition(transitionController: TransitionController): void {
+export function useRouteLeaveTransition(
+  transitionController: TransitionController | undefined,
+): void {
   const transitionControllers = useTransitionRouteTransitionControllers();
 
   if (transitionControllers == null) {
@@ -31,6 +34,10 @@ export function useRouteLeaveTransition(transitionController: TransitionControll
   }
 
   useLayoutEffect(() => {
+    if (transitionController == null) {
+      return noop;
+    }
+
     transitionControllers.add(transitionController);
 
     return () => {

@@ -3,6 +3,7 @@ module.exports = {
   rootDir: '../../',
   moduleNameMapper: {
     '@mediamonks/(.*)': ['<rootDir>/packages/$1/dist/cjs'],
+    '^lodash-es$': 'lodash',
   },
   roots: ['<rootDir>/packages/muban-transition-component'],
   globals: {

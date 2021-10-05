@@ -49,6 +49,8 @@ app.mount(
   </div>`,
 );
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 // eslint-disable-next-line no-underscore-dangle
 const { element, elements, component, components } = app._instance?.refs;
 
@@ -63,11 +65,15 @@ describe('transitionRefToElement', () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       component as ComponentRef<ComponentFactory<any>>,
     );
+
     expect(result?.tagName).toBe('SPAN');
   });
 
   it('Should return array of HTMLElements for refCollection', () => {
     const results = transitionRefToElement(elements as CollectionRef<HTMLSpanElement, BindProps>);
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     expect(results.length).toBe(2);
   });
 
@@ -76,6 +82,9 @@ describe('transitionRefToElement', () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       components as ComponentsRef<ComponentFactory<any>>,
     );
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     expect(results.length).toBe(2);
   });
 });

@@ -21,6 +21,10 @@ import { useEffect } from 'react';
  */
 export function useEnterTransition(transitionController: TransitionController): void {
   useEffect(() => {
+    transitionController.setupTimeline({
+      direction: 'in',
+    });
+
     transitionController.transitionIn();
   }, [transitionController]);
 }

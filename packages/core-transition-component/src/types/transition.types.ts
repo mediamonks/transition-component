@@ -4,7 +4,6 @@ export type TransitionDirection = 'in' | 'out';
 export interface SetupTimelineOptions {
   direction: TransitionDirection;
   reset?: boolean;
-  timeline?: gsap.core.Timeline;
 }
 
 export interface TransitionOptionEventHandlers<T = TransitionDirection> {
@@ -23,9 +22,8 @@ export interface TransitionOptionsWithDirection extends TransitionOptions {
 
 export interface TransitionController {
   ref?: unknown;
-  transitionTimeline: Record<TransitionDirection, gsap.core.Timeline>;
-  getTimeline(direction?: TransitionDirection): gsap.core.Timeline;
-  setupTimeline(options?: Partial<SetupTimelineOptions>): gsap.core.Timeline;
+  getTimeline(direction?: TransitionDirection): gsap.core.Timeline | undefined;
+  setupTimeline(options?: SetupTimelineOptions): gsap.core.Timeline;
   transition(options: TransitionOptionsWithDirection): Promise<void>;
   transitionIn(options?: TransitionOptions): Promise<void>;
   transitionOut(options?: TransitionOptions): Promise<void>;

@@ -2,8 +2,7 @@
   "name": "transition-component",
   "private": true,
   "workspaces": [
-    "packages/*",
-    "examples/*"
+    "packages/*"
   ],
   "scripts": {
     "docs": "doctoc --title '**Table of content**' README.md",

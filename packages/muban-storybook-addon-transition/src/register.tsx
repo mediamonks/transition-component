@@ -93,10 +93,9 @@ addons.register(ADDON_ID, () => {
           const progress = parseInt(event.target.value, 10);
           setSeekValue(progress);
 
-          transitionController.current?.transitionTimeline.in.pause(
-            timelineDuration * (progress / 100),
-            false,
-          );
+          transitionController.current
+            ?.getTimeline('in')
+            .pause(timelineDuration * (progress / 100), false);
         },
         [timelineDuration],
       );
