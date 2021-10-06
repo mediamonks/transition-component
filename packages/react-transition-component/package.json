@@ -1,6 +1,6 @@
 {
   "name": "@mediamonks/react-transition-component",
-  "version": "1.0.0-alpha.3",
+  "version": "1.0.0-alpha.4",
   "description": "GreenSock animations for your React components.",
   "keywords": [
     "gsap",
@@ -35,7 +35,7 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@mediamonks/core-transition-component": "^1.0.1-alpha.1",
+    "@mediamonks/core-transition-component": "^1.0.1-alpha.2",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.1.1",
     "@types/history": "^4.7.9",
