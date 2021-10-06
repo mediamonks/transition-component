@@ -32,7 +32,7 @@ export interface TransitionController {
 export interface SetupTransitionOptions<T> extends TransitionOptionEventHandlers {
   ref?: unknown;
   refs?: T;
-  timelineVars?: gsap.TimelineVars;
+  timelineVars?: () => gsap.TimelineVars;
   setupTransitionInTimeline?: (timeline: gsap.core.Timeline, refs: T) => void;
   setupTransitionOutTimeline?: (timeline: gsap.core.Timeline, refs: T) => void;
 }

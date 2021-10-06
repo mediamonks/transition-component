@@ -55,7 +55,7 @@ export function createTransitionController<T>(
       if (direction === 'in') {
         // Allow external timeline variables for transition in timeline
         timelineVariables = {
-          ...setupOptions.timelineVars,
+          ...setupOptions.timelineVars?.(),
           ...timelineVariables,
         };
       }

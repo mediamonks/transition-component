@@ -23,13 +23,13 @@ export function useScrollTransition<T>(
   return useTransitionController({
     ...restOptions,
     ref: trigger,
-    timelineVars: {
-      ...timelineVars,
+    timelineVars: () => ({
+      ...timelineVars?.(),
       scrollTrigger: {
         ...getDefaultScrollTriggerVariables(),
-        ...(timelineVars?.scrollTrigger as ScrollTrigger.Vars),
+        ...(timelineVars?.().scrollTrigger as ScrollTrigger.Vars),
         trigger,
       },
-    },
+    }),
   });
 }
