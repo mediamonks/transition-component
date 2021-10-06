@@ -1,17 +1,23 @@
 import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
-import { useLayoutEffect, useRef } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
 import { unwrapRefs } from '../lib/unwrapRefs';
+import { useScrollTransition } from './useScrollTransition';
 import { useTransitionController } from './useTransitionController';
 
-describe('useTransitionController', () => {
-  it('Should apply initial state when setupTimeline is called', async () => {
+describe('useScrollTransition', () => {
+  it('Should setup in timeline for when using useScrollTransition', async () => {
     function Component() {
       const divRef = useRef<HTMLDivElement>(null);
 
       const transitionController = useTransitionController(() => ({
         refs: {
           divRef,
+        },
+        timelineVars() {
+          return {
+            trigger: divRef.current,
+          };
         },
         setupTransitionInTimeline(timeline, refs) {
           const { divRef: div } = unwrapRefs(refs);
@@ -29,9 +35,13 @@ describe('useTransitionController', () => {
       }));
 
       useLayoutEffect(() => {
-        transitionController.setupTimeline({
-          direction: 'in',
-        });
+        expect(transitionController.getTimeline('in')).toBeUndefined();
+      }, []);
+
+      useScrollTransition(transitionController);
+
+      useLayoutEffect(() => {
+        expect(transitionController.getTimeline('in')).toBeDefined();
       }, []);
 
       return <div ref={divRef}>Component</div>;

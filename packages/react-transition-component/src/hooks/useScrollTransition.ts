@@ -1,5 +1,5 @@
 import type { TransitionController } from '@mediamonks/core-transition-component';
-import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 
 /**
  * Creates gsap.core.Timeline on mount
@@ -19,7 +19,7 @@ import { useEffect } from 'react';
  * useScrollTransition(transitionController);
  */
 export function useScrollTransition(transitionController: TransitionController): void {
-  useEffect(() => {
+  useLayoutEffect(() => {
     transitionController.setupTimeline({
       direction: 'in',
     });
