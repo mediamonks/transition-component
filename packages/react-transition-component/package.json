@@ -1,6 +1,6 @@
 {
   "name": "@mediamonks/react-transition-component",
-  "version": "1.0.0-alpha.5",
+  "version": "1.0.0-alpha.6",
   "description": "GreenSock animations for your React components.",
   "keywords": [
     "gsap",
