@@ -6,6 +6,7 @@ export { TransitionRouter } from './components/TransitionRouter';
 export type { TransitionRouterProps } from './components/TransitionRouter';
 
 // Hooks
+export { useScrollTransition } from './hooks/useScrollTransition';
 export { useEnterTransition } from './hooks/useEnterTransition';
 export { useLeaveTransition } from './hooks/useLeaveTransition';
 export { useRouteLeaveTransition } from './hooks/useRouteLeaveTransition';
