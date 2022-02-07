@@ -1,7 +1,9 @@
 # @mediamonks/core-transition-component
-The core package to provide GreenSock transition functionality to components. 
+
+The core package to provide GreenSock transition functionality to components.
 
 ### 🚀 Getting started
+
 Install this package in your project:
 
 ```sh
@@ -11,4 +13,5 @@ npm i -S @mediamonks/core-transition-component
 ```
 
 ## 📝 License
+
 [MIT](../LICENSE)

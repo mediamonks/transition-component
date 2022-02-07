@@ -1,5 +1,7 @@
-import type { SetupTransitionSignature } from '@mediamonks/core-transition-component';
-import type { TransitionRefElement } from '@mediamonks/muban-transition-component';
+import type {
+  TransitionRefElement,
+  SetupTransitionSignature,
+} from '@mediamonks/muban-transition-component';
 
 type TransitionRefs = {
   bar: TransitionRefElement;
@@ -17,7 +19,7 @@ export const setupTransitionInTimeline: SetupTransitionSignature<TransitionRefs>
     { autoAlpha: 1, duration: 0.4, ease: 'linear.easeNone' },
   );
   timeline.fromTo(container, { y: 300 }, { y: 0, duration: 1, ease: 'Expo.easeOut' }, '<');
-  timeline.add(transitionContext.getTimeline(bar));
+  if (bar) timeline.add(transitionContext.getTimeline(bar));
 };
 
 export const setupTransitionOutTimeline: SetupTransitionSignature<TransitionRefs> = (

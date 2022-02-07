@@ -11,6 +11,7 @@ import {
 import { useGlobalTransitionContext } from '@mediamonks/muban-transition-component';
 import { html } from '@muban/template';
 import type { TransitionController } from '@mediamonks/core-transition-component';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import { Foo } from './components/foo/Foo';
 import { Scroll } from './components/scroll/Scroll';

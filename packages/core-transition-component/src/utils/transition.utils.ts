@@ -14,9 +14,11 @@ import type {
 import type { AbstractTransitionContext } from '../context/AbstractTransitionContext';
 import { clearTimeline, cloneTimeline } from './timeline.utils';
 
-export function getTransitionController<T extends Record<string, R>,
+export function getTransitionController<
+  T extends Record<string, R>,
   R extends TransitionRef,
-  E extends SetupSignatureElements<T>>(
+  E extends SetupSignatureElements<T>
+>(
   container: R,
   setupOptions: SetupTransitionOptions<T, R, E> = {},
   transitionRefToElement: (ref: R) => HTMLElement | Array<HTMLElement> | undefined,
@@ -107,10 +109,12 @@ export function getTransitionController<T extends Record<string, R>,
       // This is not mentioned in the docs, but the method does actually reset the `scrollTrigger` instance and fixes
       // the issue with re-triggering the scroll events.
       try {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         timeline?.scrollTrigger.update(true);
-      } catch(error){
-        console.log('Unable to reset the scrollTrigger instance.', error)
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.log('Unable to reset the scrollTrigger instance.', error);
       }
 
       return timeline;

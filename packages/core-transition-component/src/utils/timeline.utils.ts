@@ -44,7 +44,8 @@ function parseChildTween(
   if (
     direction === 'in' &&
     // When nesting a timeline we should either have a `startAt` or a function target defined.
-    (!child.vars.startAt && !child.targets().find((target) => typeof target === 'function'))
+    !child.vars.startAt &&
+    !child.targets().find((target) => typeof target === 'function')
   ) {
     throw new Error('Do not use from while nesting transitionInTimelines, use fromTo instead!');
   }
