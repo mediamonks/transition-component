@@ -14,7 +14,7 @@
     "test": "lerna run test",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ./{packages,examples}/",
     "fix": "eslint --ext .js,.jsx,.ts,.tsx ./{packages,examples}/ --fix --quiet --cache",
-    "prettify": "prettier --write \"./{packages,examples}/**/*.{css,html,js,jsx,json,less,md,sass,scss,ts,tsx,vue,yaml}\"",
+    "prettify": "prettier --write \"**/*.{css,html,js,jsx,json,less,md,sass,scss,ts,tsx,vue,yaml}\"",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
     "docs:deploy": "./deploy-docs.sh"
