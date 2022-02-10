@@ -42,7 +42,7 @@ export function useScrollTransition<
   });
 
   const removeLeaveViewportObserver = addLeaveViewportObserver(trigger, (position) => {
-    if (!scrollTrigger.scrub && position === 'bottom') {
+    if (!scrollTrigger.scrub && !scrollTrigger.once && position === 'bottom') {
       transitionController?.transitionTimeline.in.pause(0, false);
     }
   });
