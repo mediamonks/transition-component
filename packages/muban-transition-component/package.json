@@ -1,6 +1,6 @@
 {
   "name": "@mediamonks/muban-transition-component",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "GreenSock animations for your Muban components.",
   "keywords": [
     "gsap",
