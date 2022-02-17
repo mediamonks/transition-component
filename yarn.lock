@@ -1966,7 +1966,7 @@
     write-file-atomic "^3.0.3"
 
 "@mediamonks/core-transition-component@file:packages/core-transition-component":
-  version "1.0.0-alpha.14"
+  version "1.0.0"
 
 "@mediamonks/eslint-config-base@^1.0.2":
   version "1.0.2"
@@ -1985,9 +1985,9 @@
     eslint-plugin-unicorn "^27.0.0"
 
 "@mediamonks/muban-transition-component@file:packages/muban-transition-component":
-  version "1.0.0-alpha.18"
+  version "1.0.0"
   dependencies:
-    "@mediamonks/core-transition-component" "file:../../../Library/Caches/Yarn/v6/npm-@mediamonks-muban-transition-component-1.0.0-alpha.18-df63752f-38ed-4d76-9c59-3ed2bbbb94ae-1632983488227/node_modules/@mediamonks/core-transition-component"
+    "@mediamonks/core-transition-component" "file:packages/core-transition-component"
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
@@ -6838,9 +6838,9 @@ flush-write-stream@^1.0.0:
     readable-stream "^2.3.6"
 
 follow-redirects@^1.0.0:
-  version "1.13.3"
-  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.13.3.tgz#e5598ad50174c1bc4e872301e82ac2cd97f90267"
-  integrity sha512-DUgl6+HDzB0iEptNQEXLx/KhTmDb8tZUHSeLqpnjpknR70H0nC2t9N73BK6fN4hOvJ84pKlIQVQ4k5FFlBedKA==
+  version "1.14.8"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.14.8.tgz#016996fb9a11a100566398b1c6839337d7bfa8fc"
+  integrity sha512-1x0S9UVJHsQprFcEC/qnNzBLcIxsjAV905f/UkQxbclCsoTWlacCNOpQa/anodLl2uaEKFhfWOvM2Qg77+15zA==
 
 for-in@^1.0.2:
   version "1.0.2"
