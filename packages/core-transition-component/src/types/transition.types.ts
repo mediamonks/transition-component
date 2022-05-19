@@ -64,6 +64,7 @@ export type SetupTransitionOptions<
   registerTransitionController?: boolean;
   setupTransitionInTimeline?: SetupTransitionSignature<T, R, E>;
   setupTransitionOutTimeline?: SetupTransitionSignature<T, R, E>;
+  preferReduceMotion?: boolean;
 } & Omit<TransitionOptions, 'direction'>;
 
 export type SetupPageTransitionOptions<

@@ -28,7 +28,11 @@ export function getTransitionController<
   if (!transitionRefToElement(container)) return null;
 
   // eslint-disable-next-line no-param-reassign
-  setupOptions = { registerTransitionController: true, ...setupOptions };
+  setupOptions = { 
+    registerTransitionController: true,
+    preferReduceMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+    ...setupOptions
+  };
 
   let transitionPromise = Promise.resolve();
   let resolveTransitionPromise: null | (() => void) = null;
@@ -162,6 +166,13 @@ export function getTransitionController<
 
         const timeline = transitionTimeline[options.direction];
         const timelineHasChildren = timeline.getChildren(true).length > 0;
+
+        if (setupOptions.preferReduceMotion) {
+          timeline.getChildren().forEach((elem) => {
+            elem.duration(0);
+          });
+          timeline.duration(0);
+        }
 
         options.onStart?.(options.direction);
 
