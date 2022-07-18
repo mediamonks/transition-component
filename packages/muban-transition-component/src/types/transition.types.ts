@@ -1,52 +1,38 @@
-import type {
-  CollectionRef,
-  ComponentRef,
-  ComponentsRef,
-  ElementRef,
-} from '@muban/muban/lib/refs/refDefinitions.types';
+export type GuardFunction = (release: () => void) => void;
+export type TransitionDirection = 'in' | 'out';
 
-import type { BindProps } from '@muban/muban/lib/bindings/bindings.types';
-import type { ComponentFactory } from '@muban/muban';
-import type {
-  SignatureRefCollection,
-  SignatureRefElement,
-  SetupTransitionSignature as CoreSetupTransitionSignature,
-  SetupTransitionOptions as CoreSetupTransitionOptions,
-  SetupPageTransitionOptions as CoreSetupPageTransitionOptions,
-} from '@mediamonks/core-transition-component';
+export interface SetupTimelineOptions {
+  direction: TransitionDirection;
+  reset?: boolean;
+}
 
-export type TransitionRefCollection =
-  | CollectionRef<HTMLElement, BindProps>
-  | ComponentsRef<ComponentFactory>;
+export interface TransitionOptionEventHandlers<T = TransitionDirection> {
+  onStart?: (direction: T) => void;
+  onComplete?: (direction: T) => void;
+  onUpdate?: (timeline: gsap.core.Timeline) => void;
+}
 
-export type TransitionRefElement =
-  | ElementRef<HTMLElement, BindProps>
-  | ComponentRef<ComponentFactory>;
+export interface TransitionOptions extends TransitionOptionEventHandlers {
+  reset?: boolean;
+}
 
-export type TransitionRef = TransitionRefCollection | TransitionRefElement;
+export interface TransitionOptionsWithDirection extends TransitionOptions {
+  direction: TransitionDirection;
+}
 
-export type SetupSignatureElements<T extends Record<string, TransitionRef>> = {
-  [K in keyof T]: T[K] extends TransitionRefElement ? SignatureRefElement : SignatureRefCollection;
-} & {
-  container: HTMLElement;
-};
+export interface TransitionController {
+  ref?: unknown;
+  getTimeline(direction?: TransitionDirection): gsap.core.Timeline | undefined;
+  setupTimeline(options?: SetupTimelineOptions): gsap.core.Timeline;
+  transition(options: TransitionOptionsWithDirection): Promise<void>;
+  transitionIn(options?: TransitionOptions): Promise<void>;
+  transitionOut(options?: TransitionOptions): Promise<void>;
+}
 
-// Re-export these types so we get the correctly typed Muban refs
-export type SetupTransitionSignature<
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  T extends Record<string, R> = {},
-  R extends TransitionRef = TransitionRef,
-  E extends SetupSignatureElements<T> = SetupSignatureElements<T>
-> = CoreSetupTransitionSignature<T, R, E>;
-
-export type SetupTransitionOptions<
-  T extends Record<string, R>,
-  R extends TransitionRef = TransitionRef,
-  E extends SetupSignatureElements<T> = SetupSignatureElements<T>
-> = CoreSetupTransitionOptions<T, R, E>;
-
-export type SetupPageTransitionOptions<
-  T extends Record<string, R>,
-  R extends TransitionRef = TransitionRef,
-  E extends SetupSignatureElements<T> = SetupSignatureElements<T>
-> = CoreSetupPageTransitionOptions<T, R, E>;
+export interface SetupTransitionOptions<T> extends TransitionOptionEventHandlers {
+  ref?: unknown;
+  refs?: T;
+  timelineVars?: () => gsap.TimelineVars;
+  setupTransitionInTimeline?: (timeline: gsap.core.Timeline, refs: T) => void;
+  setupTransitionOutTimeline?: (timeline: gsap.core.Timeline, refs: T) => void;
+}

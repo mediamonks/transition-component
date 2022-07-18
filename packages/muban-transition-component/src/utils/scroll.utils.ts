@@ -4,8 +4,10 @@ let viewportLeaveObserver: IntersectionObserver | null = null;
 const observerCallbacks = new Map<Element, (position: ViewportLeavePosition) => void>();
 const observerPositions = new Map<Element, number>();
 
-// Make sure we only have one intersection observer instance that tracks whether or not something is in the viewport,
-// but we still want to be able to polyfill it so create it once it's needed.
+/**
+ * Make sure we only have one intersection observer instance that tracks whether or not something is in the viewport,
+ * but we still want to be able to polyfill it so create it once it's needed.
+ */
 function getViewportLeaveObserver(): IntersectionObserver {
   if (!viewportLeaveObserver) {
     viewportLeaveObserver = new IntersectionObserver(
@@ -30,6 +32,12 @@ function getViewportLeaveObserver(): IntersectionObserver {
   return viewportLeaveObserver;
 }
 
+/**
+ * Add a viewport observer to a desired element.
+ *
+ * @param element
+ * @param onLeaveViewport
+ */
 export function addLeaveViewportObserver(
   element: Element,
   onLeaveViewport: (position: ViewportLeavePosition) => void,

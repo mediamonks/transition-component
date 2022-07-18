@@ -1,49 +1,46 @@
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
-
-import { createContext, onUnmounted } from '@muban/muban';
-import type { SignatureRefElement } from '@mediamonks/core-transition-component';
+import type { ComponentRef, ElementRef } from '@muban/muban';
+import { onUnmounted } from '@muban/muban';
+import { transitionRefToElement } from '../utils/transitionRefToElement';
 import { useTransitionController } from './useTransitionController';
-import type {
-  SetupTransitionOptions,
-  SetupSignatureElements,
-  TransitionRef,
-  TransitionRefElement,
-} from '../types/transition.types';
-import { transitionRefToElement } from '../util/transition.utils';
-import type { ScrollContext } from '../context/ScrollContext';
-import { defaultScrollTriggerVariables } from '../context/ScrollContext';
-import { addLeaveViewportObserver } from '../util/scroll.utils';
+import type { SetupTransitionOptions } from '../types/transition.types';
+import { defaultScrollTriggerVariables, useScrollContext } from '../context/ScrollTriggerContext';
+import { addLeaveViewportObserver } from '../utils/scroll.utils';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export const [provideScrollContext, useScrollContext] = createContext<ScrollContext | undefined>(
-  'scrollContext',
-);
-
-export function useScrollTransition<
-  T extends Record<string, R>,
-  R extends TransitionRef = TransitionRef,
-  E extends SetupSignatureElements<T> = SetupSignatureElements<T>
->(
-  container: TransitionRefElement,
-  { scrollTrigger = {}, ...restOptions }: SetupTransitionOptions<T, R, E>,
+export function useScrollTransition<T>(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  container: ComponentRef<any> | ElementRef<any, any>,
+  { timelineVars, ...restOptions }: SetupTransitionOptions<T>,
 ): ReturnType<typeof useTransitionController> {
-  const trigger: SignatureRefElement = transitionRefToElement(container);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const trigger = transitionRefToElement((container as unknown) as any);
 
-  // If no trigger element is provided we cannot attach any scroll logic, therefore we just return `null`.
-  if (!trigger) return null;
+  if (trigger == null) {
+    throw new Error('container is required as ScrollTrigger trigger');
+  }
 
   const { scrollTriggerVariables = defaultScrollTriggerVariables } = useScrollContext() || {};
-  const transitionController = useTransitionController<T, R, E>(container, {
-    registerTransitionController: false,
-    scrollTrigger: { trigger, ...scrollTriggerVariables, ...scrollTrigger },
+
+  const scrollTrigger = timelineVars?.().scrollTrigger as ScrollTrigger.Vars | undefined;
+  const transitionController = useTransitionController({
     ...restOptions,
+    ref: trigger,
+    timelineVars: () => ({
+      ...timelineVars?.(),
+      scrollTrigger: {
+        ...scrollTriggerVariables,
+        ...scrollTrigger,
+        trigger,
+      },
+    }),
   });
 
   const removeLeaveViewportObserver = addLeaveViewportObserver(trigger, (position) => {
-    if (!scrollTrigger.scrub && !scrollTrigger.once && position === 'bottom') {
-      transitionController?.transitionTimeline.in.pause(0, false);
+    if (!scrollTrigger?.scrub && !scrollTrigger?.once && position === 'bottom') {
+      transitionController.getTimeline('in')?.pause(0, false);
     }
   });
 

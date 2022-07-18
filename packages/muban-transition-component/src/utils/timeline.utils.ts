@@ -1,6 +1,14 @@
 import gsap from 'gsap';
 import type { TransitionDirection } from '../types/transition.types';
 
+/**
+ * This method is used to recursively clone timelines, we need to differentiate them because a timeline can contain
+ * another timeline as well and in that scenario we need to parse it a little differently.
+ *
+ * @param child
+ * @param timeline
+ * @param direction
+ */
 function parseChild(
   child: gsap.core.Timeline | gsap.core.Tween,
   timeline: gsap.core.Timeline,
@@ -15,11 +23,20 @@ function parseChild(
   /* eslint-enable */
 }
 
-const parseChildTimeline = (
+/**
+ * When one of the child elements is another timeline we can simply create a new timeline and add all the child
+ * animations to that specific timeline. This way we can ensure that the timeline is an actual clone and has no references
+ * to the original timeline.
+ *
+ * @param child
+ * @param timeline
+ * @param direction
+ */
+function parseChildTimeline(
   child: gsap.core.Timeline,
   timeline: gsap.core.Timeline,
   direction: TransitionDirection,
-) => {
+): void {
   const subTimeline = gsap.timeline(child.vars);
 
   // Re-call the parse method for each of the children
@@ -28,8 +45,15 @@ const parseChildTimeline = (
 
   // Add the timeline to the parent timeline
   timeline.add(subTimeline.restart(), child.startTime());
-};
+}
 
+/**
+ * When one of the child elements is a Tween we can simply create a clone of that tween to the cloned timeline, this way
+ * we can also ensure the new tween has nothing in common with the original tween.
+ * @param child
+ * @param timeline
+ * @param direction
+ */
 function parseChildTween(
   child: gsap.core.Tween,
   timeline: gsap.core.Timeline,
@@ -41,14 +65,10 @@ function parseChildTween(
     );
   }
 
-  if (
-    direction === 'in' &&
-    // When nesting a timeline we should either have a `startAt` or a function target defined.
-    !child.vars.startAt &&
-    !child.targets().find((target) => typeof target === 'function')
-  ) {
+  if (direction === 'in' && !child.vars.startAt) {
     throw new Error('Do not use from while nesting transitionInTimelines, use fromTo instead!');
   }
+
   const { startAt: from, ...to } = child.vars;
   const targets = child.targets();
   const startTime = child.startTime();
@@ -63,6 +83,13 @@ function parseChildTween(
   }
 }
 
+/**
+ * This method creates a deep clone of a provided timeline, it will recursively loop through all the timeline children
+ * and clone every animation and sub-timeline to a new timeline.
+ *
+ * @param source
+ * @param direction
+ */
 export function cloneTimeline(
   source: gsap.core.Timeline,
   direction: TransitionDirection,
@@ -74,6 +101,12 @@ export function cloneTimeline(
   return timeline;
 }
 
+/**
+ * This method allows you to easily clear a timeline and remove all of the inline styles that have been added by a timeline.
+ *
+ * @param timeline
+ * @param isRoot
+ */
 export function clearTimeline(timeline: gsap.core.Timeline, isRoot: boolean = true): void {
   timeline.getChildren().forEach((child) => {
     if ('getChildren' in child) {

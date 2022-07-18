@@ -20,7 +20,7 @@
     "skipLibCheck": true,
     "declaration": true
   },
-  "references": [{ "path": "packages/core-transition-component" }, { "path": "packages/muban-transition-component" }],
+  "references": [{ "path": "packages/muban-transition-component" }],
   "exclude": ["node_modules", "dist"],
   "include": ["./packages/**/src", "./examples/**/src"]
 }

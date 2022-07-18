@@ -1,18 +1,17 @@
 import {
   bind,
   bindTemplate,
-  computed,
   defineComponent,
   onMounted,
   ref,
   refComponent,
   shallowRef,
 } from '@muban/muban';
-import { useGlobalTransitionContext } from '@mediamonks/muban-transition-component';
 import { html } from '@muban/template';
-import type { TransitionController } from '@mediamonks/core-transition-component';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import ScrollTrigger from 'gsap/ScrollTrigger';
+import { findTransitionController } from '@mediamonks/muban-transition-component';
+import type { TransitionController } from '@mediamonks/muban-transition-component';
 import { Foo } from './components/foo/Foo';
 import { Scroll } from './components/scroll/Scroll';
 
@@ -28,8 +27,7 @@ export const App = defineComponent({
     }),
   },
   setup({ refs }) {
-    const transitionContext = useGlobalTransitionContext();
-    const transitionController = shallowRef<TransitionController | null>(null);
+    const transitionController = shallowRef<TransitionController | undefined>(undefined);
     const events = ref<Array<{ value: string; time: string }>>([]);
 
     const addEvent = (event: string): void => {
@@ -43,15 +41,14 @@ export const App = defineComponent({
     };
 
     onMounted(() => {
-      transitionController.value = transitionContext.getController(refs.foo);
+      transitionController.value = findTransitionController(refs.foo);
       transitionController.value?.transitionIn(eventListeners);
     });
 
     return [
       bindTemplate(
         refs.events,
-        computed(() => ({ events: events.value })),
-        (data) => html`<table class="table">
+        () => html`<table class="table">
           <thead class="table-light">
             <tr>
               <th scope="col">#</th>
@@ -60,7 +57,7 @@ export const App = defineComponent({
             </tr>
           </thead>
           <tbody>
-            ${data.events.map(
+            ${events.value.map(
               (event, index) => html`<tr>
                 <td>${index + 1}</td>
                 <td><span class="badge bg-success">${event.value}</span></td>
@@ -69,7 +66,7 @@ export const App = defineComponent({
             )}
           </tbody>
         </table>`,
-        { renderImmediate: true },
+        { forceImmediateRender: true },
       ),
       bind(refs.transitionInButton, {
         event: {
