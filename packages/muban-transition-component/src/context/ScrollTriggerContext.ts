@@ -1,4 +1,5 @@
 import { createContext } from '@muban/muban';
+import type ScrollTrigger from 'gsap/ScrollTrigger';
 
 export const defaultScrollTriggerVariables: ScrollTrigger.Vars = {
   start: 'top 75%',

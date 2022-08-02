@@ -1,6 +1,6 @@
 {
   "name": "@mediamonks/muban-storybook-addon-transition",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Control your timelines from Storybook.",
   "keywords": [
     "gsap",
@@ -11,40 +11,44 @@
     "storybook"
   ],
   "author": "Lars van Braam <lars@mediamonks.com>",
+  "homepage": "https://github.com/mediamonks/transition-component/tree/main/packages/muban-storybook-addon-transition#readme",
   "license": "MIT",
+  "types": "dist/register.d.ts",
+  "main": "dist/register.js",
+  "directories": {
+    "dist": "dist"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mediamonks/transition-component.git"
   },
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --passWithNoTests --config ../../jest.config.js --rootDir ./"
+  },
   "bugs": {
     "url": "https://github.com/mediamonks/transition-component/issues"
   },
-  "homepage": "https://github.com/mediamonks/transition-component/tree/main/packages/muban-storybook-addon-transition#readme",
-  "private": false,
-  "main": "dist/register.js",
-  "types": "dist/register.d.ts",
-  "scripts": {
-    "build": "tsc",
-    "clean": "rimraf -rf ./dist"
-  },
-  "files": [
-    "dist/**/*",
-    "README.md",
-    "*.js"
-  ],
   "dependencies": {
-    "@mediamonks/muban-transition-component": "file:../muban-transition-component",
-    "@storybook/addons": "^6.2.9",
-    "@storybook/components": "^6.2.9",
-    "@storybook/core-events": "^6.2.9",
-    "@storybook/theming": "^6.2.9"
+    "@mediamonks/muban-transition-component": "^2.0.0",
+    "@storybook/addons": "6.2.9",
+    "@storybook/components": "6.2.9",
+    "@storybook/core-events": "6.2.9",
+    "@storybook/theming": "6.2.9",
+    "@types/webpack-env": "^1.17.0"
   },
   "devDependencies": {
-    "react": "^17.0.2",
-    "rimraf": "^3.0.2"
-  },
-  "peerDependencies": {
+    "gsap": "^3.10.4",
     "react": "^17.0.2"
   },
-  "gitHead": "f47e239a24df9bed4cf73c47a8ef1267d6da8982"
+  "peerDependencies": {
+    "gsap": "^3.10.4",
+    "react": "^17.0.2"
+  }
 }

@@ -65,8 +65,13 @@ function parseChildTween(
     );
   }
 
-  if (direction === 'in' && !child.vars.startAt) {
-    throw new Error('Do not use from while nesting transitionInTimelines, use fromTo instead!');
+  if (
+    direction === 'in' &&
+    !child.vars.startAt &&
+    !child.vars.onComplete &&
+    !child.vars.onReverseComplete
+  ) {
+    throw new Error('Do not use `from` while nesting transitionInTimelines, use `fromTo` instead!');
   }
 
   const { startAt: from, ...to } = child.vars;
@@ -91,9 +96,10 @@ function parseChildTween(
  * @param direction
  */
 export function cloneTimeline(
-  source: gsap.core.Timeline,
+  source: gsap.core.Timeline | undefined,
   direction: TransitionDirection,
-): gsap.core.Timeline {
+): gsap.core.Timeline | undefined {
+  if (source === undefined) return undefined;
   const timeline = gsap.timeline(source.vars);
 
   source.getChildren(false).forEach((child) => parseChild(child, timeline, direction));

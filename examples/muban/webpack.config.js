@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-
 const path = require('path');
 
 module.exports = {
@@ -11,10 +9,10 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
   },
-  devServer: {
-    contentBase: path.resolve(__dirname, './public'),
-    historyApiFallback: true,
+  performance: {
+    hints: false, // No need for the file size warnings
   },
+  devtool: 'cheap-source-map',
   module: {
     rules: [
       {
@@ -31,6 +29,5 @@ module.exports = {
   ],
   resolve: {
     extensions: ['.ts', '.js'],
-    plugins: [new TsconfigPathsPlugin()],
   },
 };

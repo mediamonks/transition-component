@@ -12,27 +12,15 @@ module.exports = {
     ],
     repo: 'mediamonks/transition-component',
     docsDir: 'docs',
-    displayAllHeaders: true,
     sidebarDepth: 3,
     sidebar: [
       {
-        title: 'Guide',
-        path: '/guide/',
-        collapsable: false,
-        children: [
-          {
-            title: 'Muban',
-            path: '/guide/muban/',
-          },
-          {
-            title: 'Vue',
-            path: '/guide/vue/',
-          },
-          {
-            title: 'React',
-            path: '/guide/react/',
-          },
-        ],
+        title: 'Muban',
+        path: 'guide/muban/',
+      },
+      {
+        title: 'React',
+        path: 'guide/react/',
       },
     ],
   },

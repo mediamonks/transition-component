@@ -1,4 +1,10 @@
 {
   "extends": "../../tsconfig.json",
-  "references": [{ "path": "../core-transition-component" }]
+  "compilerOptions": {
+    "outDir": "./dist"
+  },
+  "include": [
+    "./src"
+  ],
+  "exclude": ["src/**/*.test.ts"]
 }

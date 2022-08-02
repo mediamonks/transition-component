@@ -1,9 +1,10 @@
 import { unwrapRefs } from '@mediamonks/muban-transition-component';
 import type gsap from 'gsap';
-import type { ElementRef } from '@muban/muban';
+import type { CollectionRef, ElementRef } from '@muban/muban';
 
 export type TransitionRefs = {
   container: ElementRef;
+  foo: CollectionRef,
 };
 
 export function setupTransitionInTimeline(

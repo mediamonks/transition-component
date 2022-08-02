@@ -1,24 +1,33 @@
 {
-  "name": "muban-example",
-  "license": "MIT",
-  "version": "2.0.1",
+  "name": "muban",
+  "version": "2.0.0",
   "private": true,
+  "description": "> TODO: description",
+  "author": "Lars van Braam <lars@mediamonks.com>",
+  "homepage": "",
+  "license": "MIT",
+  "types": "dist/index.d.ts",
+  "main": "dist/index.js",
+  "directories": {
+    "dist": "dist"
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "dev": "lerna run build && webpack serve -c webpack.config.js",
     "build": "webpack",
-    "clean": "rimraf -rf dist"
+    "dev": "lerna run build && webpack serve -c webpack.config.js"
   },
+  "keywords": [],
   "dependencies": {
-    "@mediamonks/muban-transition-component": "file:../../packages/muban-transition-component",
-    "@muban/muban": "^1.0.0-alpha.27",
-    "@muban/template": "^1.0.0-alpha.1",
-    "html-webpack-plugin": "^5.3.1"
-  },
-  "devDependencies": {
-    "ts-loader": "^8.1.0",
-    "tsconfig-paths-webpack-plugin": "^3.5.1",
-    "webpack": "^5.32.0",
-    "webpack-cli": "^4.6.0",
-    "webpack-dev-server": "^3.11.2"
+    "@mediamonks/muban-transition-component": "^2.0.0",
+    "@muban/muban": "^1.0.0-alpha.34",
+    "@muban/template": "^1.0.0-alpha.3",
+    "html-webpack-plugin": "^5.5.0",
+    "ts-loader": "^9.3.1",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.9.3",
+    "gsap": "^3.10.4"
   }
 }

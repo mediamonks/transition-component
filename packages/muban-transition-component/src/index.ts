@@ -12,10 +12,9 @@ export {
 export { TRANSITION_CONTROLLERS, findTransitionController } from './context/TransitionControllers';
 
 // Utils
-export { transitionRefToElement } from './utils/transitionRefToElement';
 export { addLeaveViewportObserver } from './utils/scroll.utils';
 export { cloneTimeline, clearTimeline } from './utils/timeline.utils';
-export { unwrapRefs } from './utils/transition.utils';
+export { unwrapRef, unwrapRefs } from './utils/ref.utils';
 
 // Types
 export type {

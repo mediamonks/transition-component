@@ -3,7 +3,7 @@ module.exports = {
   parserOptions: {
     project: './tsconfig.eslint.json',
   },
-  ignorePatterns: ['dist'],
+  ignorePatterns: ['dist', 'lib'],
   rules: {
     // Additions
     '@typescript-eslint/consistent-type-imports': ['error'],

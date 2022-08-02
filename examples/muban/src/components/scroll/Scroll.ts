@@ -19,13 +19,12 @@ export const Scroll = defineComponent({
       setupTransitionInTimeline: (timeline, transitionRefs) => {
         const { paragraph } = unwrapRefs(transitionRefs);
 
-        if (paragraph)
-          timeline.from(paragraph, {
-            y: 200,
-            autoAlpha: 0,
-            duration: 1,
-            ease: 'expo.out',
-          });
+        timeline.from(paragraph, {
+          y: 200,
+          autoAlpha: 0,
+          duration: 1,
+          ease: 'expo.out',
+        });
       },
     });
     return [];

@@ -10,8 +10,9 @@ export function setupTransitionInTimeline(
   timeline: gsap.core.Timeline,
   refs: TransitionRefs,
 ): void {
-  const { bar, container } = unwrapRefs(refs);
-  const barTimeline = findTransitionController(bar)?.getTimeline('in');
+  const { container } = unwrapRefs(refs);
+
+  const barTimeline = findTransitionController(refs.bar)?.getTimeline('in');
 
   timeline.set(container, { scale: 1 });
   timeline.fromTo(

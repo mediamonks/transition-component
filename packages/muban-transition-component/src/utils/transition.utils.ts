@@ -1,14 +1,5 @@
 import gsap from 'gsap';
 import type {
-  BindProps,
-  CollectionRef,
-  ComponentFactory,
-  ComponentRef,
-  ComponentsRef,
-  ElementRef,
-  RefElementType,
-} from '@muban/muban';
-import type {
   SetupTimelineOptions,
   SetupTransitionOptions,
   TransitionController,
@@ -16,7 +7,7 @@ import type {
   TransitionOptions,
   TransitionOptionsWithDirection,
 } from '../types/transition.types';
-import { clearTimeline } from './timeline.utils';
+import { clearTimeline, cloneTimeline } from './timeline.utils';
 
 /**
  * Creates the TransitionController
@@ -36,10 +27,17 @@ export function createTransitionController<T>(
     ref: setupOptions.ref,
 
     /**
-     * Function to get one of the timelines
+     * Function to get one of the timelines, not the secondary argument where you can define if you want the source
+     * timeline instead of a clone. In most cases you want to retrieve a clone of the original timeline,
+     * for example when nesting timelines within other timelines
      */
-    getTimeline(direction: TransitionDirection): gsap.core.Timeline | undefined {
-      return timelines[direction];
+    getTimeline(
+      direction: TransitionDirection,
+      isSourceTimeline?: boolean,
+    ): gsap.core.Timeline | undefined {
+
+      if (isSourceTimeline) return timelines[direction];
+      return cloneTimeline(timelines[direction], direction)?.play();
     },
 
     /**
@@ -150,45 +148,4 @@ export function createTransitionController<T>(
   } as const;
 
   return controller;
-}
-
-export function unwrapRefs<
-  T extends Record<
-    string,
-    | ElementRef<RefElementType, BindProps>
-    | CollectionRef<RefElementType, BindProps>
-    | ComponentRef<ComponentFactory>
-    | ComponentsRef<ComponentFactory>
-  >
->(
-  refs: T,
-): {
-  [U in keyof T]: T[U] extends ElementRef<infer E>
-    ? E
-    : T[U] extends CollectionRef<infer E>
-    ? ReadonlyArray<E>
-    : T[U] extends ComponentsRef<ComponentFactory>
-    ? // The component ref doesn't support generic element types, therefore we just return HTMLElement like the library.
-      ReadonlyArray<HTMLElement>
-    : HTMLElement;
-} {
-  return Object.entries(refs).reduce((accumulator, [key, ref]) => {
-    if (ref.type === 'collection') {
-      accumulator[key] = [...ref.getElements()];
-    }
-
-    if (ref.type === 'componentCollection') {
-      accumulator[key] = [...ref.getComponents().map((component) => component?.element)];
-    }
-
-    if (ref.type === 'component') {
-      accumulator[key] = ref.component?.element;
-    }
-
-    if (ref.type === 'element') {
-      accumulator[key] = ref?.element;
-    }
-
-    return accumulator;
-  }, {} as any); // eslint-disable-line @typescript-eslint/no-explicit-any
 }

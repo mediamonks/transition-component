@@ -12,7 +12,7 @@ features:
       features resulting in blazing fast animations
   - title: Multiple frameworks!
     details:
-      The goal is to support multiple frameworks (Muban 2.x, Vue 3.x and React) with the same core!
+      The goal is to support multiple frameworks, including Muban 2.x and React!
   - title: Maintainable
     details:
       Managing your animations has never been easier, separating your animations so they can be

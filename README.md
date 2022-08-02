@@ -6,7 +6,6 @@ Monorepo that contains everything related to the transition-component!
 
 | Package                            | Status                                                                         | Description                                                 |
 | ---------------------------------- | ------------------------------------------------------------------------------ | ----------------------------------------------------------- |
-| [core-transition-component]        | [![core-transition-component-status]][core-transition-component]               | The core package that holds the transition logic.           |
 | [muban-transition-component]       | [![muban-transition-component-status]][muban-transition-component]             | The Muban implementation of the transition-component logic. |
 | [muban-storybook-addon-transition] | [![muban-storybook-addon-transition-status]][muban-storybook-addon-transition] | A Muban-storybook addon to control your timelines.          |
 
@@ -26,9 +25,9 @@ getting started guides.
 > to do the following:
 >
 > 1. Checkout the entire Git repository (not just the example folder).
-> 2. Run `yarn` in the root of the Git repository to install all dependencies.
+> 2. Run `npm install` in the root of the Git repository to install all dependencies.
 > 3. Change directory to the desired example folder, for example `cd examples/muban`.
-> 4. Start up the development server by running `yarn dev`.
+> 4. Start up the development server by running `npm run dev`.
 
 ## 💪 Contributing
 
@@ -41,9 +40,6 @@ Please make sure to update tests as appropriate.
 
 [MIT](./LICENSE)
 
-[core-transition-component]: ./packages/core-transition-component
-[core-transition-component-status]:
-  https://img.shields.io/npm/v/@mediamonks/core-transition-component.svg?colorB=41a6ff
 [muban-transition-component]: ./packages/muban-transition-component
 [muban-transition-component-status]:
   https://img.shields.io/npm/v/@mediamonks/muban-transition-component.svg?colorB=41a6ff

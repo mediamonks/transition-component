@@ -1,106 +1,34 @@
-# Getting started
+# Muban 
 
-## Installing
+## Getting started
 
-::: warning This module only works for **[Muban 2.x](https://github.com/mubanjs/muban)** :::
+:::warning 
+This module only works for **[Muban 2.x](https://github.com/mubanjs/muban)**
+:::
 
-Add `muban-transition-component` to your project:
+Add `@mediamonks/muban-transition-component` to your project:
 
 <code-group>
-<code-block title="YARN">
-```sh
-yarn add @mediamonks/muban-transition-component
-```
-</code-block>
 
 <code-block title="NPM">
 ```sh
 npm i -S @mediamonks/muban-transition-component
 ```
 </code-block>
+
+<code-block title="YARN">
+```sh
+yarn add @mediamonks/muban-transition-component
+```
+</code-block>
 </code-group>
 
-## Add to your project
-
-Before you can start using the GreenSock transitions in your project you will first need to provide
-a `TransitionContext` for all child components.
-
-### Basic implementation
-
-This can be achieved by adding it to your `App` component through the `useGlobalTransitionContext`
-hook.
-
-```ts {2,7}
-import { defineComponent } from '@muban/muban';
-import { useGlobalTransitionContext } from '@mediamonks/muban-transition-component';
-
-const MyComponent = defineComponent({
-  name: 'app',
-  setup() {
-    useGlobalTransitionContext();
-    return [];
-  },
-});
-```
-
-### Storybook implementation
-
-Since Muban Storybook doesn't use the `App` you will have to also make sure the `TransitionContext`
-is available there. Storybook has support for decorators that can be wrapped around your stories and
-this is exactly what we are going to do.
-
-Update the `.storybook/preview.js` file to include the following decorator logic:
-
-```ts {2-4,6    -19}
-...
-import { useGlobalTransitionContext } from '@mediamonks/muban-transition-component';
-import { defineComponent } from '@muban/muban';
-import { createDecoratorComponent } from '@muban/storybook';
-...
-export const decorators = [
-  createDecoratorComponent(({ component }) => {
-    return {
-      component: defineComponent({
-        name: 'global-context',
-        components: [component],
-        setup() {
-          useGlobalTransitionContext();
-          return [];
-        },
-      }),
-    }
-  }),
-]
-```
-
-### Page transition implementation
-
-To enable page transitions you can use add the `usePageTransitions` hook to your `App` component.
-
-```ts {2,7}
-import { defineComponent } from '@muban/muban';
-import { usePageTransitioning } from '@mediamonks/muban-transition-component';
-
-const MyComponent = defineComponent({
-  name: 'app',
-  setup() {
-    usePageTransitioning();
-    return [];
-  },
-});
-```
-
-> This hook is an extension on the `useGlobalTransitionContext` hook described in the previous
-> section.
-
-::: danger The automated `transitionOut` logic is still a todo! :::
-
-## Component transitions
+## Hooks
 
 You can now create transition components by using one of the following hooks:
 
 - `useTransitionController`
-- `usePageTransition`
+- `useEnterTransition`
 - `useScrollTransition`
 
 ### `useTransitionController`
@@ -115,27 +43,30 @@ import { useTransitionController } from '@mediamonks/muban-transition-component'
 const MyComponent = defineComponent({
   name: 'some-component',
   setup({ refs }) {
-    // The first argument is the ref that is used to reference the transition-controller. Usually you would provide the
-    // `self` ref but you could technically provide any ref you want.
-    useTransitionController(refs.self, {
-      // Whether or not you want to be able to access your controller from
-      // the transition-context, defaults to `true`. If this is set to `false` you cannot nest
-      // this timeline inside another timeline.
-      registerTransitionController: false,
+    const controller = useTransitionController({ 
+      // The ref is used to reference the transition-controller, the transition-controller will not be registered if 
+      // this value is not provided. Usually you would provide the `self` ref but you could technically provide any 
+      // ref you want.
+      ref: refs.self,
+      // Any refs that will be forwarded to the `setupTransitionInTimeline` and
+      // `setupTransitionOutTimeline` functions
       refs: {
-        // Any refs that will be forwarded to the `setupTransitionInTimeline` and
-        // `setupTransitionOutTimeline` functions
+        // You can proivde the refs in a `key`: `value` notation.
       },
       // `timeline` - This is the GreenSock timeline where the animations will be added.
-      // `elements` - This is an object that holds all of the unwrapped refs (`HTMLElement|Array<HTMLElement>`) that are provided in the refs object.
-      // `transitionContext` - This context can be used to reference other timelines and nest them in your timeline.
-      setupTransitionInTimeline: (timeline, elements, transitionContext) => {
+      // `refs` - This is an object that holds all of the refs, you can unwrap them with the `unwrapRefs` util.
+      setupTransitionInTimeline: (timeline, refs) => {
         // Add your in timeline here.
       },
-      setupTransitionOutTimeline: (timeline, elements, transitionContext) => {
+      setupTransitionOutTimeline: (timeline, refs) => {
         // Add your out timeline here.
       },
     });
+    
+    onMounted(() => {
+      // Trigger the `transitionIn` whenever you would want to
+      controller?.transitionIn();
+    })
 
     return [];
   },
@@ -148,20 +79,21 @@ Take a look at this working example on CodePen
 
 #### Nesting a timeline
 
-Nesting timelines can be achieved through the `transitionContext`.
+Nesting timelines can be achieved through the `findTransitionController` util, you can use a ref to find the transition-controller associated with it.
 
-You simply call the `getTimeline` method with a ref that references the HTMLElement that was used to
-create the transitionController.
-
-:::tip Make sure the target component has the `registerTransitionController` flag set to `true` to
-ensure it's added to the `transitionContext`. :::
+:::tip 
+Make sure the target component has the `ref` value set to ensure it's registered. 
+:::
 
 ```ts
+import { findTransitionController } from '@mediamonks/muban-transition-component';
+
 ...
 setupTransitionInTimeline: (timeline, { someRef }, transitionContext) => {
-  // Timelines can referenced through the `transitionContext`, use a `ref` or
-  // `HTMLElement` to find the timeline on the context.
-  timeline.add(transitionContext.getTimeline(someRef));
+    // Timelines can referenced through the `transitionContext`, use a `ref` to find the controller
+   const someTimeline = findTransitionController(someRef)?.getTimeline('in')
+   // Make sure to check if the timeline exists before adding it.
+   if(someTimeline) timeline.add(someTimeline);
 },
 ...
 ```
@@ -184,11 +116,12 @@ import { setupTransitionInTimeline } from './SomeComponent.transitions.ts';
 const MyComponent = defineComponent({
   name: 'some-component',
   refs: {
-    someRefElement: refElement('some-ref-element'),
-    someRefCollection: refElements('some-ref-collection'),
+    someRefElement: refElement<HTMLDivElement>('some-ref-element'),
+    someRefCollection: refElements<HTMLDivElement>('some-ref-collection'),
   },
   setup({ refs }) {
-    useTransitionController(refs.self, {
+    useTransitionController({
+      ref: refs.self,
       // Here we provide the refs that we want to use in your transition.
       refs: {
         someRefElement: refs.someRefElement,
@@ -205,23 +138,21 @@ const MyComponent = defineComponent({
 
 ```ts
 // SomeComponent.transitions..ts
-import type {
-  SetupTransitionSignature,
-  TransitionRefElement,
-  TransitionRefCollection,
-} from '@mediamonks/muban-transition-component';
+import type { CollectionRef, ElementRef } from '@muban/muban';
+import { unwrapRefs } from '@mediamonks/muban-transition-component';
 
 // Define the type of refs you are providing, this way we can automatically type the elements returned
 type TransitionRefs = {
-  someRefElement: TransitionRefElement;
-  someRefCollection: TransitionRefCollection;
+  someRefElement: ElementRef<HTMLDivElement>;
+  someRefCollection: CollectionRef<HTMLDivElement>;
 };
 
 export const setupTransitionInTimeline: SetupTransitionSignature<TransitionRefs> = (
   timeline,
-  { someRefElement, someRefCollection },
+  refs,
   transitionContext,
 ) => {
+  const { someRefElement, someRefCollection } = unwrapRefs(refs);
   // `someRefElement` is automatically converted to an `HTMLElement | undefined`.
   // `someRefCollection` is automatically converted to an `Array<HTMLElement>`.
   // Add whatever transition you would want here
@@ -231,14 +162,15 @@ export const setupTransitionInTimeline: SetupTransitionSignature<TransitionRefs>
 #### Defining your TransitionRefs
 
 As you might have noticed we type the `Refs` that are added to the hook configuration, it's
-important to do this to ensure we get the correct typings in your setup function.
+important to do this to ensure we get the correct typings in your setup function. 
+
 
 These types can be grouped into the following two categories:
 
-- `TransitionRefElement`
-- `TransitionRefCollection`
+- Single refs
+- Collection refs
 
-##### TransitionRefElement
+##### Single refs
 
 This group holds all `refs` that are retrieved through one of the following ref definitions in
 Muban:
@@ -246,7 +178,7 @@ Muban:
 - [refElement](https://mubanjs.github.io/muban/api/refs.html#refelement)
 - [refComponent](https://mubanjs.github.io/muban/api/refs.html#refcomponent)
 
-##### TransitionRefCollection
+##### Collection refs
 
 This group holds all `refs` that are retrieved through one of the following ref definitions in
 Muban:
@@ -271,16 +203,17 @@ import { getTimeline } from './SomeComponent.transitions.ts';
 
 ...
  setup({ refs }) {
-    const transitionController = useTransitionController(refs.self, {
-      setupTransitionInTimeline: (timeline, elements, transitionContext) =>
+    const transitionController = useTransitionController({
+      ref: refs.self,
+      setupTransitionInTimeline: (timeline, refs) =>
         // The `getTimeline` method is used to find the correct timeline.
-        getTimeline(props).in(timeline, elements, transitionContext),
+        getTimeline(props).in(timeline, elements),
     });
 
     // In this example we watch some ref that might change due to a
     // window resize or what ever you can think of.
     watch(someRef, () => {
-      transitionController.resetTimeline('in');
+      transitionController?.resetTimeline('in');
     });
 
     return [];
@@ -299,18 +232,18 @@ type SetupTimeline = Record<TransitionDirection, SetupTransitionSignature>;
 
 export const setupTimeline: Record<'default' | 'other', SetupTimeline> = {
   default: {
-    in: (timeline, elements, transitionContext) => {
+    in: (timeline, refs) => {
       // Some in animation.
     },
-    out: (timeline, elements, transitionContext) => {
+    out: (timeline, refs) => {
       // Some out animation.
     },
   },
   other: {
-    in: (timeline, elements, transitionContext) => {
+    in: (timeline, refs) => {
       // Some other in animation.
     },
-    out: (timeline, elements, transitionContext) => {
+    out: (timeline, refs) => {
       // Some other out animation.
     },
   },
@@ -326,19 +259,20 @@ export const getTimeline = (props: SomeComponentProps) => {
 };
 ```
 
-### `usePageTransition`
+### `useEnterTransition`
 
-This hook can be used when you want to create a page transition, it will automatically trigger the
-`transitionIn` when the component has been mounted.
+This hook can be used when you want to create a transition that is started as soon as it's mounted, it will automatically 
+trigger the `transitionIn` when the `onMounted` hook is fired.
 
 ```ts {2,7-10}
 import { defineComponent } from '@muban/muban';
 import { usePageTransition } from '@mediamonks/muban-transition-component';
 
 const MyComponent = defineComponent({
-  name: 'some-page-component',
+  name: 'some-component',
   setup() {
-    usePageTransition(refs.self, {
+    useEnterTransition({
+      ref: refs.self
       // Add your transition configuration.
       // It supports the same as the `useTransitionController` hook.
     });
@@ -363,9 +297,10 @@ import { defineComponent } from '@muban/muban';
 import { useScrollTransition } from '@mediamonks/muban-transition-component';
 
 const MyComponent = defineComponent({
-  name: 'some-page-component',
+  name: 'some-component',
   setup() {
-    useScrollTransition(refs.self, {
+    useScrollTransition({
+      ref: refs.self
       // Add your transition configuration.
       // It supports the same as the `useTransitionController` hook.
     });
@@ -375,7 +310,8 @@ const MyComponent = defineComponent({
 });
 ```
 
-::: warning When using this hook there will be no Promise returned by the `transitionIn` /
+::: warning 
+When using this hook there will be no Promise returned by the `transitionIn` /
 `transitionOut` methods, you can still use the regular event callbacks in the setupOptions though.
 :::
 
@@ -416,16 +352,18 @@ const SomeParentComponent = defineComponent({
 });
 ```
 
-:::tip The child still has the final say on what will be executed. So if you provide the same
+:::
+tip The child still has the final say on what will be executed. So if you provide the same
 properties to the configuration of your child's `useScrollTransition` hook, they will overwrite the
-global ones. :::
+global ones. 
+:::
 
-### Triggering transitions
+## Triggering transitions manually
 
 Transitions can be triggered through the transition controller that is returned by the
 `useTransitionComponent` hook.
 
-#### Transition in timeline
+### Transition in timeline
 
 Transition in can be triggered by calling `transitionIn` on the transition controller
 
@@ -445,23 +383,25 @@ const MyComponent = defineComponent({
     });
 
     // Trigger the transition in once the component has been mounted
-    onMounted(() => transitionController.transitionIn());
+    onMounted(() => transitionController?.transitionIn());
 
     return [];
   },
 });
 ```
 
-#### Transition out timeline
+### Transition out timeline
 
 This triggering this is very similar to triggering the transition out, so please refer to that
 documentation.
 
-#### Looping timelines
+### Looping timelines
 
-::: danger Looping timelines are still a todo! :::
+::: danger 
+Looping timelines are still a todo! 
+:::
 
-### Resetting timelines
+## Resetting timelines
 
 In some scenarios you might want to reset a timeline, for example you want to use a different
 timeline on a certain breakpoint.
@@ -490,14 +430,14 @@ const MyComponent = defineComponent({
     });
 
     // Calling the reset method will re-initialize the timeline
-    transitionController.resetTimeline('in');
+    transitionController?.resetTimeline('in');
 
     return [];
   },
 });
 ```
 
-### Events
+## Events
 
 There are multiple ways to listen to the transition events.
 
@@ -505,33 +445,34 @@ There are multiple ways to listen to the transition events.
 - Transition method callbacks
 - Transition method promise
 
-#### Hook callbacks
+### Hook callbacks
 
 ```ts
 import { defineComponent } from '@muban/muban';
-import { useTransitionController } from '@mediamonks/muban-transition-component';
+import { unwrapRefs, useTransitionController } from '@mediamonks/muban-transition-component';
 
 const MyComponent = defineComponent({
-  name: 'some-component',
-  setup() {
-    const transitionController = useTransitionController(refs.self, {
-      setupTransitionInTimeline: (timeline, elements, transitionContext) => {
-        timeline.from(elements.container, { autoAlpha: 0, duration: 1 });
-      },
-      onStart: () => {
-        // Triggered when a timeline starts, either `transitionIn` or `transitionOut`
-      },
-      onComplete: () => {
-        // Triggered when a timeline is completed, either `transitionIn` or `transitionOut`
-      },
-    });
+   name: 'some-component',
+   setup () {
+      const transitionController = useTransitionController(refs.self, {
+         setupTransitionInTimeline: (timeline, refs) => {
+            const { container } = unwrapRefs(refs);
+            if (container) timeline.from(elements.container, { autoAlpha: 0, duration: 1 });
+         },
+         onStart: () => {
+            // Triggered when a timeline starts, either `transitionIn` or `transitionOut`
+         },
+         onComplete: () => {
+            // Triggered when a timeline is completed, either `transitionIn` or `transitionOut`
+         },
+      });
 
-    return [];
-  },
+      return [];
+   },
 });
 ```
 
-#### Transition method callbacks
+### Transition method callbacks
 
 ```ts
 import { defineComponent } from '@muban/muban';
@@ -541,14 +482,15 @@ const MyComponent = defineComponent({
   name: 'some-component',
   setup() {
     const transitionController = useTransitionController(refs.self, {
-      setupTransitionInTimeline: (timeline, elements, transitionContext) => {
-        timeline.from(elements.container, { autoAlpha: 0, duration: 1 });
+      setupTransitionInTimeline: (timeline, refs) => {
+         const { container } = unwrapRefs(refs);
+         if (container) timeline.from(elements.container, { autoAlpha: 0, duration: 1 });
       },
     });
 
     onMounted(() => {
       // This also works for `transitionOut`
-      transitionController.transitionIn({
+      transitionController?.transitionIn({
         onStart: () => {
           // Triggered when a timeline starts!
         },
@@ -563,7 +505,7 @@ const MyComponent = defineComponent({
 });
 ```
 
-#### Transition method promises
+### Transition method promises
 
 ```ts
 import { defineComponent } from '@muban/muban';
@@ -573,14 +515,15 @@ const MyComponent = defineComponent({
   name: 'some-component',
   setup() {
     const transitionController = useTransitionController(refs.self, {
-      setupTransitionInTimeline: (timeline, elements, transitionContext) => {
-        timeline.from(elements.container, { autoAlpha: 0, duration: 1 });
+      setupTransitionInTimeline: (timeline, refs) => {
+         const { container } = unwrapRefs(refs);
+         if (container) timeline.from(elements.container, { autoAlpha: 0, duration: 1 });
       },
     });
 
     onMounted(async () => {
       // This also works for `transitionOut`
-      await transitionController.transitionIn();
+      await transitionController?.transitionIn();
       // Triggered when a timeline is completed.
     });
 
@@ -619,13 +562,13 @@ module.exports = {
 };
 ```
 
-To make sure the addon can find the timelines you'll have to expose the `TransitionContext` on the
+To make sure the addon can find the timelines you'll have to expose the `findTransitionController` on the
 `Window`. This can be done by updating the `.storybook/preview.js` file and make sure we store the
 return value.
 
 ```ts
 ...
-window.parent.window.transitionContext = useGlobalTransitionContext();
+window.parent.window.findTransitionController = findTransitionController;
 ...
 ```
 

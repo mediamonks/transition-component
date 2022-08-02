@@ -1,33 +1,29 @@
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
-import type { ComponentRef, ElementRef } from '@muban/muban';
+import type { ComponentFactory, ComponentRef, ElementRef } from '@muban/muban';
 import { onUnmounted } from '@muban/muban';
-import { transitionRefToElement } from '../utils/transitionRefToElement';
 import { useTransitionController } from './useTransitionController';
 import type { SetupTransitionOptions } from '../types/transition.types';
 import { defaultScrollTriggerVariables, useScrollContext } from '../context/ScrollTriggerContext';
 import { addLeaveViewportObserver } from '../utils/scroll.utils';
+import { unwrapRef } from '../utils/ref.utils';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export function useScrollTransition<T>(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  container: ComponentRef<any> | ElementRef<any, any>,
+  container: ElementRef | ComponentRef<ComponentFactory>,
   { timelineVars, ...restOptions }: SetupTransitionOptions<T>,
 ): ReturnType<typeof useTransitionController> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const trigger = transitionRefToElement((container as unknown) as any);
+  const trigger = unwrapRef(container);
 
-  if (trigger == null) {
-    throw new Error('container is required as ScrollTrigger trigger');
-  }
+  if (!trigger) throw new Error('container is required as ScrollTrigger trigger');
 
   const { scrollTriggerVariables = defaultScrollTriggerVariables } = useScrollContext() || {};
 
   const scrollTrigger = timelineVars?.().scrollTrigger as ScrollTrigger.Vars | undefined;
   const transitionController = useTransitionController({
     ...restOptions,
-    ref: trigger,
+    ref: container,
     timelineVars: () => ({
       ...timelineVars?.(),
       scrollTrigger: {
@@ -40,7 +36,7 @@ export function useScrollTransition<T>(
 
   const removeLeaveViewportObserver = addLeaveViewportObserver(trigger, (position) => {
     if (!scrollTrigger?.scrub && !scrollTrigger?.once && position === 'bottom') {
-      transitionController.getTimeline('in')?.pause(0, false);
+      transitionController.getTimeline('in', true)?.pause(0, false);
     }
   });
 

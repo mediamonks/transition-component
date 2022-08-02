@@ -20,7 +20,7 @@ export function useTransitionController<T>(
 
   registerTransitionController(controller);
 
-  // Make sure the in-direction is setup by default
+  // Make sure the in-direction is set up by default
   onMounted(() =>
     controller.setupTimeline({
       direction: 'in',

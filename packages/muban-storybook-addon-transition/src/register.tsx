@@ -1,5 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import React, { useCallback, useRef, useState } from 'react';
 import type {
   TransitionDirection,
@@ -50,7 +48,7 @@ addons.register(ADDON_ID, () => {
 
       addons.getChannel().once(STORY_RENDERED, (id) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const { transitionContext } = window as any;
+        const { findTransitionController } = window as any;
         // The transition controller is linked to the component element. I couldn't find a way to
         // retrieve this element through the  Storybook API, so in a not so pretty workaround I use
         // the story name to find the component element in the iframe.
@@ -65,15 +63,15 @@ addons.register(ADDON_ID, () => {
           `[data-component="${componentId}"]`,
         );
 
-        if (element && transitionContext) {
+        if (element && findTransitionController) {
           try {
-            const controller = transitionContext.getController(element);
+            const controller = findTransitionController(element);
             // Retrieve the timeline duration because we use it for seeking
             const duration = controller.transitionTimeline.in.duration();
             // Make sure the timeline is paused at the end by default, the transition in can be
             // triggered by clicking the play button!
             controller.transitionTimeline.in.pause(duration, false);
-            // Store the reference so we can control it from the UI.
+            // Store the reference, so we can control it from the UI.
             transitionController.current = controller;
             setEnableControls(true);
             setTimelineDuration(duration);
@@ -93,10 +91,9 @@ addons.register(ADDON_ID, () => {
           const progress = parseInt(event.target.value, 10);
           setSeekValue(progress);
 
-          transitionController.current?.transitionTimeline.in.pause(
-            timelineDuration * (progress / 100),
-            false,
-          );
+          transitionController.current
+            ?.getTimeline('in')
+            ?.pause(timelineDuration * (progress / 100), false);
         },
         [timelineDuration],
       );

@@ -1,4 +1,6 @@
+import type { ComponentFactory, ComponentRef, ElementRef } from '@muban/muban';
 import type { TransitionController } from '../types/transition.types';
+import { unwrapRef } from '../utils/ref.utils';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle
 const _TRANSITION_CONTROLLERS = new Set<TransitionController>();
@@ -15,7 +17,6 @@ export function registerTransitionController(transitionController: TransitionCon
   if (_TRANSITION_CONTROLLERS.has(transitionController)) {
     throw new Error('TransitionController already registered');
   }
-
   _TRANSITION_CONTROLLERS.add(transitionController);
 }
 
@@ -33,9 +34,14 @@ export function unregisterTransitionController(transitionController: TransitionC
 /**
  * Finds TransitionController for given ref
  */
-export function findTransitionController(ref: unknown): TransitionController | undefined {
+export function findTransitionController(
+  ref: ElementRef | ComponentRef<ComponentFactory>,
+): TransitionController | undefined {
+  const element = unwrapRef(ref);
+
   return Array.from(_TRANSITION_CONTROLLERS).find(
-    (transitionController) => transitionController.ref === ref,
+    (transitionController) =>
+      transitionController.ref && unwrapRef(transitionController.ref) === element,
   );
 }
 
