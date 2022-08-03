@@ -3,6 +3,7 @@ import type ScrollTrigger from 'gsap/ScrollTrigger';
 
 export const defaultScrollTriggerVariables: ScrollTrigger.Vars = {
   start: 'top 75%',
+  toggleActions: 'restart pause resume pause',
 };
 
 export class ScrollContext {
