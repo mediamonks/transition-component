@@ -2,5 +2,5 @@ node_modules/
 lerna-debug.log
 npm-debug.log
 packages/*/dist
-examples/*/dist
+fixtures/*/dist
 .idea
