@@ -35,7 +35,6 @@ export function createTransitionController<T>(
       direction: TransitionDirection,
       isSourceTimeline?: boolean,
     ): gsap.core.Timeline | undefined {
-
       if (isSourceTimeline) return timelines[direction];
       return cloneTimeline(timelines[direction], direction)?.play();
     },
