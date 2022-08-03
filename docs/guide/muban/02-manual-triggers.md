@@ -5,20 +5,24 @@ Transitions can be triggered through the transition controller that is returned 
 
 ## Transition in
 
-Transition in can be triggered by calling `transitionIn` on the transition controller
+Transition in can be triggered by calling `transitionIn` on the transition controller.
 
-```ts {9-13,16}
+```ts {20}
 import { defineComponent } from '@muban/muban';
-import { useTransitionController } from '@mediamonks/muban-transition-component';
+import { unwrapRefs, useTransitionController } from '@mediamonks/muban-transition-component';
 
 const MyComponent = defineComponent({
   name: 'some-component',
-  setup() {
+  setup () {
     // You can use the returned transition controller to manually trigger
     // `transitionIn` or `transitionOut`
-    const transitionController = useTransitionController(refs.self, {
-      setupTransitionInTimeline: (timeline, elements, transitionContext) => {
-        timeline.from(elements.container, { autoAlpha: 0, duration: 1 });
+    const transitionController = useTransitionController({
+      refs: {
+        container: refs.self
+      },
+      setupTransitionInTimeline: (timeline, refs) => {
+        const { container } = unwrapRefs(refs);
+        if (container) timeline.from(container, { autoAlpha: 0, duration: 1 });
       },
     });
 
@@ -30,7 +34,44 @@ const MyComponent = defineComponent({
 });
 ```
 
+:::tip
+Note that this is just an example and this example can also be achieved by using the [useEnterTransition](./01-hooks.md#useentertransition) hook
+:::
+
 ## Transition out
 
-This triggering this is very similar to triggering the transition out, so please refer to that
-documentation.
+Transition in can be triggered by calling `transitionOut` on the transition controller
+
+```ts {26}
+import { defineComponent } from '@muban/muban';
+import { unwrapRefs, useTransitionController } from '@mediamonks/muban-transition-component';
+
+const MyComponent = defineComponent({
+  name: 'some-component',
+  refs: {
+    someButton: 'some-button'
+  },
+  setup () {
+    const transitionController = useTransitionController({
+      refs: {
+        container: refs.self
+      },
+      setupTransitionInTimeline: (timeline, { refs }) => {
+        const { container } = unwrapRefs(refs);
+        if (container) timeline.from(container, { autoAlpha: 0, duration: 1 });
+      },
+    });
+
+    onMounted(() => transitionController?.transitionIn());
+
+    return [
+      bind(refs.someButton, {
+        click () {
+          // Manually trigger the transition out whenever you would want to.
+          transitionController?.transitionOut()
+        }
+      })
+    ];
+  },
+});
+```

@@ -13,16 +13,21 @@ direction.
 
 **Reset the in-transition**
 
-```ts {14}
+```ts {19}
 import { defineComponent } from '@muban/muban';
-import { useTransitionController } from '@mediamonks/muban-transition-component';
+import { unwrapRefs, useTransitionController } from '@mediamonks/muban-transition-component';
 
 const MyComponent = defineComponent({
   name: 'some-component',
-  setup() {
-    const transitionController = useTransitionController(refs.self, {
-      setupTransitionInTimeline: (timeline, elements, transitionContext) => {
-        timeline.from(elements.container, { autoAlpha: 0, duration: 1 });
+  setup () {
+    const transitionController = useTransitionController({
+      refs: {
+        container: refs.self,
+      },
+      setupTransitionInTimeline: (timeline, refs) => {
+        const { container } = unwrapRefs(refs);
+        
+        if (container) timeline.from(container, { autoAlpha: 0, duration: 1 });
       },
     });
 

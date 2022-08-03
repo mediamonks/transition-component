@@ -8,14 +8,17 @@ There are multiple ways to listen to the transition events.
 
 ## Hook callbacks
 
-```ts
+```ts {15,18}
 import { defineComponent } from '@muban/muban';
 import { unwrapRefs, useTransitionController } from '@mediamonks/muban-transition-component';
 
 const MyComponent = defineComponent({
    name: 'some-component',
    setup () {
-      const transitionController = useTransitionController(refs.self, {
+      const transitionController = useTransitionController({
+         refs: {
+           container: refs.self
+         },
          setupTransitionInTimeline: (timeline, refs) => {
             const { container } = unwrapRefs(refs);
             if (container) timeline.from(elements.container, { autoAlpha: 0, duration: 1 });
@@ -35,14 +38,17 @@ const MyComponent = defineComponent({
 
 ## Transition method callbacks
 
-```ts
+```ts {20,23}
 import { defineComponent } from '@muban/muban';
 import { useTransitionController } from '@mediamonks/muban-transition-component';
 
 const MyComponent = defineComponent({
   name: 'some-component',
   setup() {
-    const transitionController = useTransitionController(refs.self, {
+    const transitionController = useTransitionController({
+      refs: {
+        container: refs.self
+      },
       setupTransitionInTimeline: (timeline, refs) => {
          const { container } = unwrapRefs(refs);
          if (container) timeline.from(elements.container, { autoAlpha: 0, duration: 1 });
@@ -68,14 +74,17 @@ const MyComponent = defineComponent({
 
 ## Transition method promises
 
-```ts
+```ts {19}
 import { defineComponent } from '@muban/muban';
 import { useTransitionController } from '@mediamonks/muban-transition-component';
 
 const MyComponent = defineComponent({
   name: 'some-component',
   setup() {
-    const transitionController = useTransitionController(refs.self, {
+    const transitionController = useTransitionController({
+      refs: {
+        container: refs.self
+      },
       setupTransitionInTimeline: (timeline, refs) => {
          const { container } = unwrapRefs(refs);
          if (container) timeline.from(elements.container, { autoAlpha: 0, duration: 1 });

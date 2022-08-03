@@ -6,15 +6,15 @@ still want to be able to preview/test them.
 This can be done by installing `muban-storybook-addon-transition` in your project.
 
  <code-group>
- <code-block title="YARN">
- ```sh
- yarn add @mediamonks/muban-storybook-addon-transition
- ```
- </code-block>
-
  <code-block title="NPM">
  ```sh
  npm i -S @mediamonks/muban-storybook-addon-transition
+ ```
+ </code-block>
+
+ <code-block title="YARN">
+ ```sh
+ yarn add @mediamonks/muban-storybook-addon-transition
  ```
  </code-block>
  </code-group>

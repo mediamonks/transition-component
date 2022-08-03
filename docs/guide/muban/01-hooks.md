@@ -60,11 +60,11 @@ Nesting timelines can be achieved through the `findTransitionController` util, y
 Make sure the target component has the `ref` value set to ensure it's registered. 
 :::
 
-```ts
+```ts {6,8}
 import { findTransitionController } from '@mediamonks/muban-transition-component';
 
 ...
-setupTransitionInTimeline: (timeline, { someRef }, transitionContext) => {
+setupTransitionInTimeline: (timeline, { someRef }) => {
     // Timelines can referenced through the `transitionContext`, use a `ref` to find the controller
    const someTimeline = findTransitionController(someRef)?.getTimeline('in')
    // Make sure to check if the timeline exists before adding it.
@@ -82,7 +82,7 @@ Take a look at this working example on CodePen
 When your timelines becomes more complex and grows in size you might want to consider moving your
 setup functions to a separate file (for example: `myComponent.transitions.ts`).
 
-```ts
+```ts {4,21}
 // SomeComponent.ts
 import { defineComponent, refElement, refElements } from '@muban/muban';
 import { useTransitionController } from '@mediamonks/muban-transition-component';
@@ -122,11 +122,7 @@ type TransitionRefs = {
   someRefCollection: CollectionRef<HTMLDivElement>;
 };
 
-export const setupTransitionInTimeline: SetupTransitionSignature<TransitionRefs> = (
-  timeline,
-  refs,
-  transitionContext,
-) => {
+export function setupTransitionInTimeline(timeline: gsap.core.Timeline, refs: TransitionRefs):void {
   const { someRefElement, someRefCollection } = unwrapRefs(refs);
   // `someRefElement` is automatically converted to an `HTMLElement | undefined`.
   // `someRefCollection` is automatically converted to an `Array<HTMLElement>`.
@@ -169,7 +165,7 @@ proxying your `setupTransitionInTimeline` method and resetting the timeline when
 > **Note:** There are probably multiple ways of doing this, so please refer to this as just an
 > example!
 
-```ts
+```ts {13}
 // SomeComponent.ts
 ...
 import { watch } from '@muban/muban';
@@ -179,10 +175,12 @@ import { getTimeline } from './SomeComponent.transitions.ts';
 ...
  setup({ refs }) {
     const transitionController = useTransitionController({
-      ref: refs.self,
+      refs: {
+        container: refs.self
+      },
       setupTransitionInTimeline: (timeline, refs) =>
         // The `getTimeline` method is used to find the correct timeline.
-        getTimeline(props).in(timeline, elements),
+        getTimeline(props).in(timeline, refs),
     });
 
     // In this example we watch some ref that might change due to a
@@ -203,7 +201,12 @@ import {
   SetupTransitionSignature,
 } from '@mediamonks/muban-transition-component';
 
-type SetupTimeline = Record<TransitionDirection, SetupTransitionSignature>;
+
+type TransitionRefs = {
+  container: ElementRef 
+}
+
+type SetupTimeline = Record<TransitionDirection, (timeline: gsap.core.Timeline, refs: TransitionRefs) => void>;
 
 export const setupTimeline: Record<'default' | 'other', SetupTimeline> = {
   default: {
@@ -239,7 +242,7 @@ export const getTimeline = (props: SomeComponentProps) => {
 This hook can be used when you want to create a transition that is started as soon as it's mounted, it will automatically 
 trigger the `transitionIn` when the `onMounted` hook is fired.
 
-```ts {2,7-10}
+```ts
 import { defineComponent } from '@muban/muban';
 import { usePageTransition } from '@mediamonks/muban-transition-component';
 
@@ -247,7 +250,6 @@ const MyComponent = defineComponent({
   name: 'some-component',
   setup() {
     useEnterTransition({
-      ref: refs.self
       // Add your transition configuration.
       // It supports the same as the `useTransitionController` hook.
     });
@@ -267,7 +269,7 @@ differences:
    [ScrollTrigger](https://greensock.com/docs/v3/Plugins/ScrollTrigger).
 2. The default value for the `registerTransitionController` is set to `false`.
 
-```ts {2,7-10}
+```ts
 import { defineComponent } from '@muban/muban';
 import { useScrollTransition } from '@mediamonks/muban-transition-component';
 
@@ -275,7 +277,6 @@ const MyComponent = defineComponent({
   name: 'some-component',
   setup() {
     useScrollTransition({
-      ref: refs.self
       // Add your transition configuration.
       // It supports the same as the `useTransitionController` hook.
     });
@@ -304,7 +305,7 @@ top of your main application. In this scenario you will need to define a
 [scroller](https://greensock.com/docs/v3/Plugins/ScrollTrigger/scroller) to ensure that `gsap` uses
 the correct scrollbar for triggering the transitions.
 
-```ts {2,7,11,13-16}
+```ts
 import { defineComponent, refElement } from '@muban/muban';
 import { provideScrollContext, ScrollContext } from '@mediamonks/muban-transition-component';
 
@@ -347,7 +348,10 @@ const MyComponent = defineComponent({
    setup () {
       // You can use the returned transition controller to manually trigger
       // `transitionIn` or `transitionOut`
-      const transitionController = useTransitionController(refs.self, {
+      const transitionController = useTransitionController({
+         refs: {
+           container: refs.self
+         },
          setupTransitionInTimeline: (timeline, refs) => {
             const { container } = unwrapRefs(refs);
             
@@ -374,6 +378,3 @@ Take a look at this working example on CodePen
 ::: tip
 Make sure that the timeline can be seamlessly looped.
 :::
-
-
-### 
