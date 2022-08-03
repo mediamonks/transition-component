@@ -1,19 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type {
-  BindProps,
   CollectionRef,
   ComponentFactory,
-  ComponentRef,
   ComponentsRef,
   ElementRef,
   RefElementType,
 } from '@muban/muban';
-
-/* eslint-disable @typescript-eslint/no-explicit-any */
-type AnyRef<T extends RefElementType> =
-  | ElementRef<T, BindProps>
-  | CollectionRef<T, BindProps>
-  | ComponentRef<ComponentFactory>
-  | ComponentsRef<ComponentFactory>;
+import type { AnyRef } from '@muban/muban/types/lib/refs/refDefinitions.types';
 
 export function unwrapRef<T extends AnyRef<RefElementType>>(
   ref: T,
