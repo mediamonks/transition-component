@@ -1,4 +1,9 @@
 {
   "extends": "../../tsconfig.json",
-  "references": [{ "path": "../core-transition-component" }]
+  "compilerOptions": {
+    "lib": ["DOM", "ESNext"],
+    "moduleResolution": "Node",
+    "skipLibCheck": true,
+    "esModuleInterop": true
+  }
 }

@@ -14,10 +14,6 @@ export class FlowContext extends AbstractFlowContext<TransitionRefElement> {
 
     const transitionController = this.transitionContext.getController(element);
 
-    if (transitionController === undefined) {
-      throw new Error('No transition controller can be found for the provided element ref');
-    }
-
     // Trigger the transition out and store the Promise reference so we can listen to it on the new page that will load.
     this.transitionOut = transitionController.transitionOut();
 

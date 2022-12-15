@@ -7,13 +7,15 @@ import {
   refElement,
 } from '@muban/muban';
 import { html } from '@muban/template';
-import { transitionRefToElement } from './transition.utils';
 import type { TransitionRefCollection, TransitionRefElement } from '../types/transition.types';
+import { transitionRefToElement } from './transition.utils';
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 const SomeComponent = defineComponent({
   name: 'component',
 });
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 const App = defineComponent({
   name: 'app',
   refs: {
@@ -32,14 +34,16 @@ const app = createApp(App);
 
 app.mount(
   document.createElement('div'),
-  () => html`<div data-component="app">
-    <span data-ref="element"></span>
-    <span data-ref="elements"></span>
-    <span data-ref="elements"></span>
-    <span data-component="component" data-ref="component"></span>
-    <span data-component="component" data-ref="components"></span>
-    <span data-component="component" data-ref="components"></span>
-  </div>`,
+  () => html`
+    <div data-component="app">
+      <span data-ref="element"></span>
+      <span data-ref="elements"></span>
+      <span data-ref="elements"></span>
+      <span data-component="component" data-ref="component"></span>
+      <span data-component="component" data-ref="components"></span>
+      <span data-component="component" data-ref="components"></span>
+    </div>
+  `,
 );
 
 // eslint-disable-next-line no-underscore-dangle

@@ -1,19 +1,19 @@
+/* eslint-disable @typescript-eslint/no-redundant-type-constituents */
+import type {
+  SetupPageTransitionOptions as CoreSetupPageTransitionOptions,
+  SetupTransitionOptions as CoreSetupTransitionOptions,
+  SetupTransitionSignature as CoreSetupTransitionSignature,
+  SignatureRefCollection,
+  SignatureRefElement,
+} from '@mediamonks/core-transition-component';
+import type { ComponentFactory } from '@muban/muban';
+import type { BindProps } from '@muban/muban/lib/bindings/bindings.types';
 import type {
   CollectionRef,
   ComponentRef,
   ComponentsRef,
   ElementRef,
 } from '@muban/muban/lib/refs/refDefinitions.types';
-
-import type { BindProps } from '@muban/muban/lib/bindings/bindings.types';
-import type { ComponentFactory } from '@muban/muban';
-import type {
-  SignatureRefCollection,
-  SignatureRefElement,
-  SetupTransitionSignature as CoreSetupTransitionSignature,
-  SetupTransitionOptions as CoreSetupTransitionOptions,
-  SetupPageTransitionOptions as CoreSetupPageTransitionOptions,
-} from '@mediamonks/core-transition-component';
 
 export type TransitionRefCollection =
   | CollectionRef<HTMLElement, BindProps>
@@ -33,8 +33,7 @@ export type SetupSignatureElements<T extends Record<string, TransitionRef>> = {
 
 // Re-export these types so we get the correctly typed Muban refs
 export type SetupTransitionSignature<
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  T extends Record<string, R> = {},
+  T extends Record<string, R>,
   R extends TransitionRef = TransitionRef,
   E extends SetupSignatureElements<T> = SetupSignatureElements<T>
 > = CoreSetupTransitionSignature<T, R, E>;

@@ -12,9 +12,9 @@ export type TransitionOptions = {
   direction: TransitionDirection;
   scrollTrigger?: gsap.plugins.ScrollTriggerInstanceVars;
   reset?: boolean;
-  onStart?: (direction: TransitionDirection) => void;
-  onComplete?: (direction: TransitionDirection) => void;
-  onUpdate?: (timeline: gsap.core.Timeline) => void;
+  onStart?(direction: TransitionDirection): void;
+  onComplete?(direction: TransitionDirection): void;
+  onUpdate?(timeline: gsap.core.Timeline): void;
 };
 
 export type TransitionInOptions = Omit<TransitionOptions, 'direction'>;

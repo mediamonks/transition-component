@@ -1,4 +1,3 @@
-import gsap from 'gsap';
 import type {
   TransitionController,
   TransitionDirection,
@@ -16,17 +15,11 @@ export abstract class AbstractTransitionContext<T extends TransitionRef> {
     controller: TransitionController;
   }> = [];
 
-  // Make sure this is overwritten to correctly retrieve the ref element
-  protected abstract getRefElement(ref: T): HTMLElement | null;
-
-  private getRefIndex(element: T): number {
-    const target = this.getRefElement(element);
-    return this.store.findIndex((item) => this.getRefElement(item.element) === target);
-  }
-
   public unregister(element: T): void {
     const index = this.getRefIndex(element);
-    if (index > -1) this.store.splice(index, 1);
+    if (index > -1) {
+      this.store.splice(index, 1);
+    }
   }
 
   public register(element: T, controller: TransitionController): void {
@@ -49,7 +42,7 @@ export abstract class AbstractTransitionContext<T extends TransitionRef> {
     element: T | HTMLElement,
     direction: TransitionDirection = 'in',
   ): gsap.core.Timeline {
-    return this.getController(element)?.getTimeline(direction) || gsap.timeline();
+    return this.getController(element).getTimeline(direction);
   }
 
   public getController(element: T | HTMLElement): TransitionController {
@@ -66,4 +59,12 @@ export abstract class AbstractTransitionContext<T extends TransitionRef> {
 
     return controller;
   }
+
+  private getRefIndex(element: T): number {
+    const target = this.getRefElement(element);
+    return this.store.findIndex((item) => this.getRefElement(item.element) === target);
+  }
+
+  // Make sure this is overwritten to correctly retrieve the ref element
+  protected abstract getRefElement(ref: T): HTMLElement | null;
 }

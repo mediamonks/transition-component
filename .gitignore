@@ -63,7 +63,4 @@ node_modules/
 
 ### Project
 
-dist
-
-tsconfig.tsbuildinfo
-/examples/muban/public/bundle.js
+dist/

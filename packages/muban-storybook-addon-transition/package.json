@@ -33,18 +33,39 @@
     "*.js"
   ],
   "dependencies": {
-    "@mediamonks/muban-transition-component": "file:../muban-transition-component",
-    "@storybook/addons": "^6.2.9",
-    "@storybook/components": "^6.2.9",
-    "@storybook/core-events": "^6.2.9",
-    "@storybook/theming": "^6.2.9"
+    "@mediamonks/muban-transition-component": "^1.0.1",
+    "@storybook/addons": "^6.5.14",
+    "@storybook/components": "^6.5.14",
+    "@storybook/core-events": "^6.5.14",
+    "@storybook/theming": "^6.5.14",
+    "@types/react": "^18.0.26",
+    "react": "^18.2.0"
   },
   "devDependencies": {
-    "react": "^17.0.2",
-    "rimraf": "^3.0.2"
+    "@mediamonks/eslint-config": "^2.0.6",
+    "@mediamonks/eslint-config-react": "^2.1.11",
+    "@mediamonks/eslint-config-typescript": "^1.0.8",
+    "@mediamonks/eslint-config-typescript-react": "^1.0.10",
+    "@types/jest": "^29.2.4",
+    "jest": "^29.3.1",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^29.0.3"
   },
   "peerDependencies": {
-    "react": "^17.0.2"
+    "typescript": "^4.9.4"
   },
-  "gitHead": "f47e239a24df9bed4cf73c47a8ef1267d6da8982"
+  "eslintConfig": {
+    "extends": [
+      "@mediamonks/eslint-config",
+      "@mediamonks/eslint-config-react",
+      "@mediamonks/eslint-config-typescript",
+      "@mediamonks/eslint-config-typescript-react"
+    ],
+    "parserOptions": {
+      "project": "./tsconfig.json"
+    },
+    "rules": {
+      "unicorn/prevent-abbreviations": "off"
+    }
+  }
 }

@@ -2,23 +2,13 @@
 
 ## Installing
 
-::: warning This module only works for **[Muban 2.x](https://github.com/mubanjs/muban)** :::
+> warning This module only works for **[Muban 2.x](https://github.com/mubanjs/muban)**
 
 Add `muban-transition-component` to your project:
 
-<code-group>
-<code-block title="YARN">
-```sh
-yarn add @mediamonks/muban-transition-component
-```
-</code-block>
-
-<code-block title="NPM">
 ```sh
 npm i -S @mediamonks/muban-transition-component
 ```
-</code-block>
-</code-group>
 
 ## Add to your project
 
@@ -52,11 +42,10 @@ this is exactly what we are going to do.
 Update the `.storybook/preview.js` file to include the following decorator logic:
 
 ```ts {2-4,6    -19}
-...
 import { useGlobalTransitionContext } from '@mediamonks/muban-transition-component';
 import { defineComponent } from '@muban/muban';
 import { createDecoratorComponent } from '@muban/storybook';
-...
+
 export const decorators = [
   createDecoratorComponent(({ component }) => {
     return {
@@ -68,9 +57,9 @@ export const decorators = [
           return [];
         },
       }),
-    }
+    };
   }),
-]
+];
 ```
 
 ### Page transition implementation
@@ -93,7 +82,7 @@ const MyComponent = defineComponent({
 > This hook is an extension on the `useGlobalTransitionContext` hook described in the previous
 > section.
 
-::: danger The automated `transitionOut` logic is still a todo! :::
+> danger The automated `transitionOut` logic is still a todo!
 
 ## Component transitions
 
@@ -142,9 +131,8 @@ const MyComponent = defineComponent({
 });
 ```
 
-Take a look at this working example on CodePen
-
-<iframe src="https://codesandbox.io/embed/controlling-the-transition-controller-tbv4g?fontsize=14&hidenavigation=1&theme=dark" style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;" title="Controlling the transition-controller" allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking" sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts" ></iframe>
+Take a look at this working example on
+[CodeSandbox](https://codesandbox.io/embed/controlling-the-transition-controller-tbv4g?fontsize=14&hidenavigation=1&theme=dark)
 
 #### Nesting a timeline
 
@@ -153,22 +141,19 @@ Nesting timelines can be achieved through the `transitionContext`.
 You simply call the `getTimeline` method with a ref that references the HTMLElement that was used to
 create the transitionController.
 
-:::tip Make sure the target component has the `registerTransitionController` flag set to `true` to
-ensure it's added to the `transitionContext`. :::
+> tip Make sure the target component has the `registerTransitionController` flag set to `true` to
+> ensure it's added to the `transitionContext`.
 
 ```ts
-...
 setupTransitionInTimeline: (timeline, { someRef }, transitionContext) => {
   // Timelines can referenced through the `transitionContext`, use a `ref` or
   // `HTMLElement` to find the timeline on the context.
   timeline.add(transitionContext.getTimeline(someRef));
-},
-...
+};
 ```
 
-Take a look at this working example on CodePen
-
-<iframe src="https://codesandbox.io/embed/nesting-a-timeline-within-another-timeline-bt78t?fontsize=14&hidenavigation=1&theme=dark" style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;" title="Nesting a timeline within another timeline" allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking" sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"></iframe>
+Take a look at this working example on
+[CodeSandbox](https://codesandbox.io/embed/nesting-a-timeline-within-another-timeline-bt78t?fontsize=14&hidenavigation=1&theme=dark)
 
 #### Separating your transition logic
 
@@ -375,9 +360,8 @@ const MyComponent = defineComponent({
 });
 ```
 
-::: warning When using this hook there will be no Promise returned by the `transitionIn` /
-`transitionOut` methods, you can still use the regular event callbacks in the setupOptions though.
-:::
+> warning When using this hook there will be no Promise returned by the `transitionIn` /
+> `transitionOut` methods, you can still use the regular event callbacks in the setupOptions though.
 
 Take a look at this working example on CodePen
 
@@ -416,9 +400,9 @@ const SomeParentComponent = defineComponent({
 });
 ```
 
-:::tip The child still has the final say on what will be executed. So if you provide the same
-properties to the configuration of your child's `useScrollTransition` hook, they will overwrite the
-global ones. :::
+> tip The child still has the final say on what will be executed. So if you provide the same
+> properties to the configuration of your child's `useScrollTransition` hook, they will overwrite
+> the global ones.
 
 ### Triggering transitions
 
@@ -459,7 +443,7 @@ documentation.
 
 #### Looping timelines
 
-::: danger Looping timelines are still a todo! :::
+> danger Looping timelines are still a todo!
 
 ### Resetting timelines
 
@@ -602,7 +586,7 @@ This can be done by installing `muban-storybook-addon-transition` in your projec
  yarn add @mediamonks/muban-storybook-addon-transition
  ```
  </code-block>
- 
+
  <code-block title="NPM">
  ```sh
  npm i -S @mediamonks/muban-storybook-addon-transition

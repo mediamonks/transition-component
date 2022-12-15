@@ -1,34 +1,33 @@
 import gsap from 'gsap';
 import type { TransitionDirection } from '../types/transition.types';
 
-function parseChild(
+export function parseChild(
   child: gsap.core.Timeline | gsap.core.Tween,
   timeline: gsap.core.Timeline,
   direction: TransitionDirection,
 ): void {
-  /* eslint-disable @typescript-eslint/no-use-before-define */
   if ('getChildren' in child) {
     parseChildTimeline(child, timeline, direction);
   } else {
     parseChildTween(child as gsap.core.Tween, timeline, direction);
   }
-  /* eslint-enable */
 }
 
-const parseChildTimeline = (
+function parseChildTimeline(
   child: gsap.core.Timeline,
   timeline: gsap.core.Timeline,
   direction: TransitionDirection,
-) => {
+): void {
   const subTimeline = gsap.timeline(child.vars);
 
   // Re-call the parse method for each of the children
-  // eslint-disable-next-line no-shadow
-  child.getChildren(false).forEach((child) => parseChild(child, subTimeline, direction));
+  for (const _child of child.getChildren(false)) {
+    parseChild(_child, subTimeline, direction);
+  }
 
   // Add the timeline to the parent timeline
   timeline.add(subTimeline.restart(), child.startTime());
-};
+}
 
 function parseChildTween(
   child: gsap.core.Tween,
@@ -45,7 +44,7 @@ function parseChildTween(
     direction === 'in' &&
     // When nesting a timeline we should either have a `startAt` or a function target defined.
     !child.vars.startAt &&
-    !child.targets().find((target) => typeof target === 'function')
+    !child.targets().some((target) => typeof target === 'function')
   ) {
     throw new Error('Do not use from while nesting transitionInTimelines, use fromTo instead!');
   }
@@ -69,22 +68,26 @@ export function cloneTimeline(
 ): gsap.core.Timeline {
   const timeline = gsap.timeline(source.vars);
 
-  source.getChildren(false).forEach((child) => parseChild(child, timeline, direction));
+  for (const child of source.getChildren(false)) {
+    parseChild(child, timeline, direction);
+  }
 
   return timeline;
 }
 
-export function clearTimeline(timeline: gsap.core.Timeline, isRoot: boolean = true): void {
-  timeline.getChildren().forEach((child) => {
+export function clearTimeline(timeline: gsap.core.Timeline, isRoot = true): void {
+  for (const child of timeline.getChildren()) {
     if ('getChildren' in child) {
       clearTimeline(child, false);
     } else {
       gsap.set(child.targets(), { clearProps: 'all' });
     }
-  });
+  }
 
   timeline.clear();
 
   // Make sure the main timeline is still paused after clearing it.
-  if (isRoot) timeline.pause(0);
+  if (isRoot) {
+    timeline.pause(0);
+  }
 }
