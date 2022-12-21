@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/prevent-abbreviations */
 import { AbstractFlowContext } from '@mediamonks/core-transition-component';
 import type { TransitionRefElement } from '../types/transition.types';
 import { transitionRefToElement } from '../util/transition.utils';

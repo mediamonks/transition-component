@@ -1,0 +1,77 @@
+import { defineComponent } from '@muban/muban';
+import { Meta, Story, Canvas } from '@storybook/blocks';
+import { MubanStory } from '../storybook/MubanStory';
+import { Default } from './useScrollTransition.stories';
+
+<Meta title="hooks/useScrollTransition" />
+
+# useScrollTransition
+
+This hook can be used when you want to attach a timeline GreenSock's ScrollTrigger functionality. It
+basically has the same configuration options as the `useTransitionController` does with two major
+differences:
+
+1. The addition of the `scrollTrigger` key, which has all the same options as
+   [ScrollTrigger](https://greensock.com/docs/v3/Plugins/ScrollTrigger).
+2. The default value for the `registerTransitionController` is set to `false`.
+
+```ts {2,7-10}
+import { defineComponent } from '@muban/muban';
+import { useScrollTransition } from '@mediamonks/muban-transition-component';
+
+const MyComponent = defineComponent({
+  name: 'some-page-component',
+  setup() {
+    useScrollTransition(refs.self, {
+      // Add your transition configuration.
+      // It supports the same as the `useTransitionController` hook.
+    });
+
+    return [];
+  },
+});
+```
+
+> warning When using this hook there will be no Promise returned by the `transitionIn` /
+> `transitionOut` methods, you can still use the regular event callbacks in the setupOptions though.
+
+<Canvas>
+  <MubanStory of={Default} />
+</Canvas>
+
+## Global ScrollTrigger variables
+
+In some scenarios you might want to set some ScrollTrigger variables for all components that are
+children of a certain component.
+
+An example scenario might be a lightbox like component with it's own scrollbar that is displayed on
+top of your main application. In this scenario you will need to define a
+[scroller](https://greensock.com/docs/v3/Plugins/ScrollTrigger/scroller) to ensure that `gsap` uses
+the correct scrollbar for triggering the transitions.
+
+```ts {2,7,11,13-16}
+import { defineComponent, refElement } from '@muban/muban';
+import { provideScrollContext, ScrollContext } from '@mediamonks/muban-transition-component';
+
+const SomeParentComponent = defineComponent({
+  name: 'some-parent-component',
+  refs: {
+    content: refElement('content'),
+  },
+  setup({ refs }) {
+    // Provide the context to set the global properties.
+    provideScrollContext(
+      // You can set all of the properties that are supported by the ScrollTrigger plugin.
+      new ScrollContext({
+        scroller: refs.content.element,
+      }),
+    );
+
+    return [];
+  },
+});
+```
+
+> tip The child still has the final say on what will be executed. So if you provide the same
+> properties to the configuration of your child's `useScrollTransition` hook, they will overwrite
+> the global ones.

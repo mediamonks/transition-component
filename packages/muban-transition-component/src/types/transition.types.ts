@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-redundant-type-constituents */
+/* eslint-disable @typescript-eslint/no-redundant-type-constituents, unicorn/prevent-abbreviations */
 import type {
   SetupPageTransitionOptions as CoreSetupPageTransitionOptions,
   SetupTransitionOptions as CoreSetupTransitionOptions,
@@ -6,22 +6,17 @@ import type {
   SignatureRefCollection,
   SignatureRefElement,
 } from '@mediamonks/core-transition-component';
-import type { ComponentFactory } from '@muban/muban';
-import type { BindProps } from '@muban/muban/lib/bindings/bindings.types';
 import type {
   CollectionRef,
+  ComponentFactory,
   ComponentRef,
   ComponentsRef,
   ElementRef,
-} from '@muban/muban/lib/refs/refDefinitions.types';
+} from '@muban/muban';
 
-export type TransitionRefCollection =
-  | CollectionRef<HTMLElement, BindProps>
-  | ComponentsRef<ComponentFactory>;
+export type TransitionRefCollection = CollectionRef | ComponentsRef<ComponentFactory>;
 
-export type TransitionRefElement =
-  | ElementRef<HTMLElement, BindProps>
-  | ComponentRef<ComponentFactory>;
+export type TransitionRefElement = ElementRef | ComponentRef<ComponentFactory>;
 
 export type TransitionRef = TransitionRefCollection | TransitionRefElement;
 
@@ -35,17 +30,17 @@ export type SetupSignatureElements<T extends Record<string, TransitionRef>> = {
 export type SetupTransitionSignature<
   T extends Record<string, R>,
   R extends TransitionRef = TransitionRef,
-  E extends SetupSignatureElements<T> = SetupSignatureElements<T>
+  E extends SetupSignatureElements<T> = SetupSignatureElements<T>,
 > = CoreSetupTransitionSignature<T, R, E>;
 
 export type SetupTransitionOptions<
   T extends Record<string, R>,
   R extends TransitionRef = TransitionRef,
-  E extends SetupSignatureElements<T> = SetupSignatureElements<T>
+  E extends SetupSignatureElements<T> = SetupSignatureElements<T>,
 > = CoreSetupTransitionOptions<T, R, E>;
 
 export type SetupPageTransitionOptions<
   T extends Record<string, R>,
   R extends TransitionRef = TransitionRef,
-  E extends SetupSignatureElements<T> = SetupSignatureElements<T>
+  E extends SetupSignatureElements<T> = SetupSignatureElements<T>,
 > = CoreSetupPageTransitionOptions<T, R, E>;

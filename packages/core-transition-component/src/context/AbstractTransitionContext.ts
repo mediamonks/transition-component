@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/prevent-abbreviations */
 import type {
   TransitionController,
   TransitionDirection,
@@ -48,8 +49,9 @@ export abstract class AbstractTransitionContext<T extends TransitionRef> {
   public getController(element: T | HTMLElement): TransitionController {
     const target = element instanceof HTMLElement ? element : this.getRefElement(element);
 
-    const controller = this.store.find((item) => this.getRefElement(item.element) === target)
-      ?.controller;
+    const controller = this.store.find(
+      (item) => this.getRefElement(item.element) === target,
+    )?.controller;
 
     if (!controller) {
       throw new Error(

@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/prevent-abbreviations */
 import type { SignatureRefElement } from '@mediamonks/core-transition-component';
 import { createContext, onUnmounted } from '@muban/muban';
 import gsap from 'gsap';
@@ -23,7 +24,7 @@ export const [provideScrollContext, useScrollContext] = createContext<ScrollCont
 export function useScrollTransition<
   T extends Record<string, R>,
   R extends TransitionRef = TransitionRef,
-  E extends SetupSignatureElements<T> = SetupSignatureElements<T>
+  E extends SetupSignatureElements<T> = SetupSignatureElements<T>,
 >(
   container: TransitionRefElement,
   { scrollTrigger = {}, ...restOptions }: SetupTransitionOptions<T, R, E>,

@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/prevent-abbreviations */
 import type {
   SetupTransitionOptions,
   TransitionController,
@@ -22,10 +23,11 @@ import { useTransitionContext } from './useGlobalTransitionContext';
 export function useTransitionController<
   T extends Record<string, R>,
   R extends TransitionRef = TransitionRef,
-  E extends SetupSignatureElements<T> = SetupSignatureElements<T>
+  E extends SetupSignatureElements<T> = SetupSignatureElements<T>,
 >(
   container: TransitionRefElement,
   setupOptions: SetupTransitionOptions<T, R, E> = {},
+  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
 ): TransitionController | null {
   const transitionContext = useTransitionContext();
 
