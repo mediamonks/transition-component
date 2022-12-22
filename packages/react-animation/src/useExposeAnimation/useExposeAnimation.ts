@@ -1,6 +1,11 @@
 import { useEffect } from 'react';
 
-const animations = new Map<unknown, gsap.core.Animation>();
+// eslint-disable-next-line @typescript-eslint/no-namespace
+declare namespace globalThis {
+  let animations: Map<unknown, gsap.core.Animation>;
+}
+
+globalThis.animations = new Map<unknown, gsap.core.Animation>();
 
 /**
  * Tries to get animation from global animations map using given reference
@@ -9,7 +14,7 @@ export function getAnimation(
   reference: unknown,
 ): // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
 gsap.core.Animation | undefined {
-  return animations.get(reference);
+  return globalThis.animations.get(reference);
 }
 
 /**
@@ -22,11 +27,11 @@ export function useExposeAnimation(
 ): void {
   useEffect(() => {
     if (animation) {
-      animations.set(reference, animation);
+      globalThis.animations.set(reference, animation);
     }
 
     return () => {
-      animations.delete(reference);
+      globalThis.animations.delete(reference);
     };
   }, [animation, reference]);
 }
