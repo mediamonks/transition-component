@@ -58,13 +58,13 @@
     "react-dom": "^18.2.0",
     "rimraf": "^3.0.2",
     "storybook": "^7.0.0-beta.13",
-    "ts-jest": "^29.0.3"
+    "ts-jest": "^29.0.3",
+    "typescript": "^4.9.4"
   },
   "peerDependencies": {
     "@muban/muban": "^1.0.0-alpha.27",
     "@muban/template": "^1.0.0-alpha.1",
-    "gsap": "^3.7.0",
-    "typescript": "^4.9.4"
+    "gsap": "^3.7.0"
   },
   "eslintConfig": {
     "overrides": [
