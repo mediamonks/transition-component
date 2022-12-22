@@ -2,10 +2,9 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "jsx": "react-jsx",
-    "lib": ["DOM"],
+    "lib": ["ESNext", "DOM"],
+    "types": ["gsap/types", "jest"],
     "moduleResolution": "Node",
-    "esModuleInterop": true,
-    "outDir": "dist",
-    "declaration": true
+    "esModuleInterop": true
   }
 }

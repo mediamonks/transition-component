@@ -16,14 +16,23 @@
     "url": "https://github.com/mediamonks/transition-component/issues"
   },
   "homepage": "https://github.com/mediamonks/transition-component/tree/main/packages/react-animation#readme",
-  "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "module": "./dist/index.js",
+  "exports": {
+    "import": "./dist/index.js"
+  },
   "type": "module",
+  "files": [
+    "dist/**/*",
+    "README.md"
+  ],
   "scripts": {
     "lint:eslint": "eslint \"./**/*.{js,jsx,ts,tsx}\"",
     "fix:eslint": "npm run lint:eslint -- --fix",
     "test": "jest",
-    "build": "tsc"
+    "build": "npm-run-all -s clean build:*",
+    "build:ts": "tsc -p ./tsconfig.build.json",
+    "clean": "rimraf -rf ./dist"
   },
   "author": "frontend.monks",
   "license": "MIT",

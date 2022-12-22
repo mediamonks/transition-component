@@ -21,15 +21,19 @@
   },
   "homepage": "https://github.com/mediamonks/transition-component/tree/main/packages/muban-transition-component#readme",
   "private": false,
-  "module": "./dist/esm/index.js",
-  "types": "./dist/esm/index.d.ts",
+  "types": "./dist/index.d.ts",
+  "module": "./dist/index.js",
+  "exports": {
+    "import": "./dist/index.js"
+  },
+  "type": "module",
   "files": [
-    "dist/**/*"
+    "dist/**/*",
+    "README.md"
   ],
   "scripts": {
     "build": "npm-run-all -s clean build:*",
     "build:ts": "tsc -p ./tsconfig.build.json",
-    "build:ts-esm": "tsc -p ./tsconfig.build.esm.json",
     "clean": "rimraf -rf ./dist",
     "test": "jest",
     "lint:eslint": "eslint \"./**/*.{js,jsx,ts,tsx}\"",
