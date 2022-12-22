@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/prevent-abbreviations */
 import { createContext } from '@muban/muban';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
@@ -9,7 +10,7 @@ import type {
   TransitionRef,
   TransitionRefElement,
 } from '../types/transition.types';
-import { transitionRefToElement } from '../util/transition.utils';
+import { transitionRefToElement } from '../util/transitionRefToElement';
 import { useTransitionController } from './useTransitionController';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -21,7 +22,7 @@ export const [provideScrollContext, useScrollContext] = createContext<ScrollCont
 export function useScrollTransition<
   T extends Record<string, R>,
   R extends TransitionRef = TransitionRef,
-  E extends SetupSignatureElements<T> = SetupSignatureElements<T>
+  E extends SetupSignatureElements<T> = SetupSignatureElements<T>,
 >(
   container: TransitionRefElement,
   { scrollTrigger = {}, ...restOptions }: SetupTransitionOptions<T, R, E>,
@@ -33,7 +34,7 @@ export function useScrollTransition<
     return null;
   }
 
-  const { scrollTriggerVariables = defaultScrollTriggerVariables } = useScrollContext() || {};
+  const { scrollTriggerVariables = defaultScrollTriggerVariables } = useScrollContext() ?? {};
   const transitionController = useTransitionController<T, R, E>(container, {
     registerTransitionController: false,
     scrollTrigger: {

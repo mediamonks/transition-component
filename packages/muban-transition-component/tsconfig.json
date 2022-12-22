@@ -1,4 +1,10 @@
 {
   "extends": "../../tsconfig.json",
-  "references": [{ "path": "../core-transition-component" }]
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "moduleResolution": "Node",
+    "skipLibCheck": true,
+    "jsx": "react-jsx",
+    "lib": ["DOM", "ESNext"]
+  }
 }

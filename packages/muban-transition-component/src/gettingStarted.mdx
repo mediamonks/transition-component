@@ -1,0 +1,132 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Getting started" />
+
+# Getting started
+
+> warning This module only works for **[Muban 2.x](https://github.com/mubanjs/muban)**
+
+Add `muban-transition-component` to your project:
+
+```sh
+npm install --save @mediamonks/muban-transition-component
+```
+
+## Add to your project
+
+Before you can start using the GreenSock transitions in your project you will first need to provide
+a `TransitionContext` for all child components.
+
+### Basic implementation
+
+This can be achieved by adding it to your `App` component through the `useGlobalTransitionContext`
+hook.
+
+```ts {2,7}
+import { defineComponent } from '@muban/muban';
+import { useGlobalTransitionContext } from '@mediamonks/muban-transition-component';
+
+const MyComponent = defineComponent({
+  name: 'app',
+  setup() {
+    useGlobalTransitionContext();
+    return [];
+  },
+});
+```
+
+### Storybook implementation
+
+Since Muban Storybook doesn't use the `App` you will have to also make sure the `TransitionContext`
+is available there. Storybook has support for decorators that can be wrapped around your stories and
+this is exactly what we are going to do.
+
+Update the `.storybook/preview.js` file to include the following decorator logic:
+
+```ts {2-4,6    -19}
+import { useGlobalTransitionContext } from '@mediamonks/muban-transition-component';
+import { defineComponent } from '@muban/muban';
+import { createDecoratorComponent } from '@muban/storybook';
+
+export const decorators = [
+  createDecoratorComponent(({ component }) => {
+    return {
+      component: defineComponent({
+        name: 'global-context',
+        components: [component],
+        setup() {
+          useGlobalTransitionContext();
+          return [];
+        },
+      }),
+    };
+  }),
+];
+```
+
+### Page transition implementation
+
+To enable page transitions you can use add the `usePageTransitions` hook to your `App` component.
+
+```ts {2,7}
+import { defineComponent } from '@muban/muban';
+import { usePageTransitioning } from '@mediamonks/muban-transition-component';
+
+const MyComponent = defineComponent({
+  name: 'app',
+  setup() {
+    usePageTransitioning();
+    return [];
+  },
+});
+```
+
+> This hook is an extension on the `useGlobalTransitionContext` hook described in the previous
+> section.
+
+> danger The automated `transitionOut` logic is still a todo!
+
+## Component transitions
+
+You can now create transition components by using one of the following hooks:
+
+- `useTransitionController`
+- `usePageTransition`
+- `useScrollTransition`
+
+## Muban Storybook
+
+You might not want to trigger transitions when you open up a component in Storybook, but you might
+still want to be able to preview/test them.
+
+This can be done by installing `muban-storybook-addon-transition` in your project.
+
+```sh
+yarn add @mediamonks/muban-storybook-addon-transition
+```
+
+```sh
+npm install --save @mediamonks/muban-storybook-addon-transition
+```
+
+After installing the package you can add it to the `main.ts` file in the `.storybook` directory.
+
+```ts
+module.exports = {
+  stories: [],
+  addons: ['@mediamonks/muban-storybook-addon-transition'],
+};
+```
+
+To make sure the addon can find the timelines you'll have to expose the `TransitionContext` on the
+`Window`. This can be done by updating the `.storybook/preview.js` file and make sure we store the
+return value.
+
+```ts
+...
+window.parent.window.transitionContext = useGlobalTransitionContext();
+...
+```
+
+After adding the addon you will now have a "Transitions" tab in Storybook that can be used to
+control the timeline for the current active component.

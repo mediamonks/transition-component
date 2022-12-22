@@ -1,0 +1,59 @@
+{
+  "name": "@mediamonks/react-transition-presence",
+  "version": "1.0.0-rc.1",
+  "description": "Component that adds before unmount lifecycle hook",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mediamonks/transition-component.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mediamonks/transition-component/issues"
+  },
+  "homepage": "https://github.com/mediamonks/transition-component/tree/main/packages/react-transition-presence#readme",
+  "types": "./dist/index.d.ts",
+  "module": "./dist/index.js",
+  "exports": {
+    "import": "./dist/index.js"
+  },
+  "type": "module",
+  "files": [
+    "dist/**/*",
+    "README.md"
+  ],
+  "scripts": {
+    "lint:eslint": "eslint \"./**/*.{js,jsx,ts,tsx}\"",
+    "fix:eslint": "npm run lint:eslint -- --fix",
+    "test": "jest",
+    "build": "npm-run-all -s clean build:*",
+    "build:ts": "tsc -p ./tsconfig.build.json",
+    "clean": "rimraf -rf ./dist"
+  },
+  "author": "frontend.monks",
+  "license": "MIT",
+  "devDependencies": {
+    "@mediamonks/eslint-config": "^2.0.6",
+    "@mediamonks/eslint-config-react": "^2.1.11",
+    "@mediamonks/eslint-config-typescript": "^1.0.8",
+    "@mediamonks/eslint-config-typescript-react": "^1.0.10",
+    "@testing-library/react": "^13.4.0",
+    "@types/jest": "^29.2.4",
+    "@types/react": "^18.0.26",
+    "jest": "^29.3.1",
+    "jest-environment-jsdom": "^29.3.1",
+    "ts-jest": "^29.0.3"
+  },
+  "peerDependencies": {
+    "react": ">=17"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@mediamonks/eslint-config",
+      "@mediamonks/eslint-config-react",
+      "@mediamonks/eslint-config-typescript",
+      "@mediamonks/eslint-config-typescript-react"
+    ],
+    "parserOptions": {
+      "project": "./tsconfig.eslint.json"
+    }
+  }
+}

@@ -7,35 +7,33 @@
   ],
   "scripts": {
     "prepare": "husky install",
-    "docs": "doctoc --title '**Table of content**' README.md",
-    "clean": "lerna run clean",
     "build": "lerna run build",
-    "publish": "lerna publish",
     "test": "lerna run test",
-    "lint": "eslint --ext .js,.jsx,.ts,.tsx ./{packages,examples}/",
-    "fix": "eslint --ext .js,.jsx,.ts,.tsx ./{packages,examples}/ --fix --quiet --cache",
-    "prettify": "prettier --write \"**/*.{css,html,js,jsx,json,less,md,sass,scss,ts,tsx,vue,yaml}\"",
-    "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs",
-    "docs:deploy": "./deploy-docs.sh"
+    "lint:eslint": "lerna run lint:eslint",
+    "fix:eslint": "lerna run fix:eslint",
+    "format": "prettier --write \"**/*.{css,html,js,jsx,json,less,md,sass,scss,ts,tsx,vue,yaml}\"",
+    "storybook": "storybook dev -p 6006",
+    "storybook:build": "storybook build -o ./docs"
   },
   "devDependencies": {
-    "@mediamonks/eslint-config-base": "^1.0.2",
-    "@types/jest": "^26.0.22",
-    "@typescript-eslint/eslint-plugin": "^4.22.0",
-    "@typescript-eslint/parser": "^4.22.0",
-    "eslint": "^7.24.0",
-    "husky": "^7.0.2",
-    "jest": "^26.6.3",
-    "lerna": "^4.0.0",
-    "lint-staged": "^11.1.2",
+    "@mediamonks/prettier-config": "^1.0.1",
+    "@storybook/addon-essentials": "^7.0.0-beta.13",
+    "@storybook/addon-interactions": "^7.0.0-beta.13",
+    "@storybook/addon-links": "^7.0.0-beta.13",
+    "@storybook/blocks": "^7.0.0-beta.13",
+    "@storybook/cli": "^7.0.0-beta.13",
+    "@storybook/react": "^7.0.0-beta.13",
+    "@storybook/react-vite": "^7.0.0-beta.13",
+    "@storybook/testing-library": "^0.0.13",
+    "husky": "^7.0.4",
+    "lerna": "^6.1.0",
+    "lint-staged": "^11.2.6",
     "npm-run-all": "^4.1.5",
-    "prettier": "^2.2.1",
-    "typescript": "^4.2.4",
-    "vuepress": "^1.7.1"
+    "prettier": "^2.8.1",
+    "storybook": "^7.0.0-beta.13"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": "eslint --cache --fix",
     "*.{css,html,js,jsx,json,less,md,sass,scss,ts,tsx,vue,yaml}": "prettier --write"
-  }
+  },
+  "prettier": "@mediamonks/prettier-config"
 }
