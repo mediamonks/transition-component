@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/prevent-abbreviations */
 import type {
   SetupTransitionOptions,
   TransitionController,
@@ -9,7 +10,7 @@ import type {
   TransitionRef,
   TransitionRefElement,
 } from '../types/transition.types';
-import { transitionRefToElement } from '../util/transition.utils';
+import { transitionRefToElement } from '../util/transitionRefToElement';
 import { useTransitionContext } from './useGlobalTransitionContext';
 
 /**
@@ -22,10 +23,11 @@ import { useTransitionContext } from './useGlobalTransitionContext';
 export function useTransitionController<
   T extends Record<string, R>,
   R extends TransitionRef = TransitionRef,
-  E extends SetupSignatureElements<T> = SetupSignatureElements<T>
+  E extends SetupSignatureElements<T> = SetupSignatureElements<T>,
 >(
   container: TransitionRefElement,
   setupOptions: SetupTransitionOptions<T, R, E> = {},
+  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
 ): TransitionController | null {
   const transitionContext = useTransitionContext();
 

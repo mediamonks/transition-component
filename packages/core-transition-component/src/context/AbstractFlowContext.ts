@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/prevent-abbreviations */
 import type { TransitionRef } from '../types/transition.types';
 import type { AbstractTransitionContext } from './AbstractTransitionContext';
 

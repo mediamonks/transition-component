@@ -11,7 +11,7 @@ export { TransitionContext } from './context/TransitionContext';
 export { ScrollContext } from './context/ScrollContext';
 
 // Utils
-export { transitionRefToElement } from './util/transition.utils';
+export { transitionRefToElement } from './util/transitionRefToElement';
 
 // Types
 export type {
