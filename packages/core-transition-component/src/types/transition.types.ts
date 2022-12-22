@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/prevent-abbreviations */
 import type { AbstractTransitionContext } from '../context/AbstractTransitionContext';
 
 export type GuardFunction = (release: () => void) => void;
@@ -47,7 +48,7 @@ export type SetupTransitionSignature<
   // eslint-disable-next-line @typescript-eslint/ban-types
   T extends Record<string, R> = {},
   R extends TransitionRef = TransitionRef,
-  E extends SetupSignatureElements<T> = SetupSignatureElements<T>
+  E extends SetupSignatureElements<T> = SetupSignatureElements<T>,
 > = (
   timeline: gsap.core.Timeline,
   elements: E,
@@ -57,7 +58,7 @@ export type SetupTransitionSignature<
 export type SetupTransitionOptions<
   T extends Record<string, R>,
   R extends TransitionRef = TransitionRef,
-  E extends SetupSignatureElements<T> = SetupSignatureElements<T>
+  E extends SetupSignatureElements<T> = SetupSignatureElements<T>,
 > = {
   refs?: T;
   scrollTrigger?: gsap.plugins.ScrollTriggerInstanceVars;
@@ -69,7 +70,7 @@ export type SetupTransitionOptions<
 export type SetupPageTransitionOptions<
   T extends Record<string, R>,
   R extends TransitionRef = TransitionRef,
-  E extends SetupSignatureElements<T> = SetupSignatureElements<T>
+  E extends SetupSignatureElements<T> = SetupSignatureElements<T>,
 > = {
   beforeTransitionIn?: GuardFunction;
   beforeTransitionOut?: GuardFunction;

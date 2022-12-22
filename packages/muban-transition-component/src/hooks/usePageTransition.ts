@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/prevent-abbreviations */
 import type { SetupPageTransitionOptions } from '@mediamonks/core-transition-component';
 import { guard } from '@mediamonks/core-transition-component';
 import { onMounted } from '@muban/muban';
@@ -11,7 +12,7 @@ import { useTransitionController } from './useTransitionController';
 export function usePageTransition<
   T extends Record<string, R>,
   R extends TransitionRef = TransitionRef,
-  E extends SetupSignatureElements<T> = SetupSignatureElements<T>
+  E extends SetupSignatureElements<T> = SetupSignatureElements<T>,
 >(
   ref: TransitionRefElement,
   options: SetupPageTransitionOptions<T, R, E>,

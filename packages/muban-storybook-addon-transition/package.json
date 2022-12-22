@@ -25,7 +25,9 @@
   "types": "dist/register.d.ts",
   "scripts": {
     "build": "tsc",
-    "clean": "rimraf -rf ./dist"
+    "clean": "rimraf -rf ./dist",
+    "lint:eslint": "eslint \"./**/*.{js,ts}\"",
+    "fix:eslint": "npm run lint:eslint -- --fix"
   },
   "files": [
     "dist/**/*",
@@ -42,10 +44,10 @@
     "react": "^18.2.0"
   },
   "devDependencies": {
-    "@mediamonks/eslint-config": "^2.0.6",
-    "@mediamonks/eslint-config-react": "^2.1.11",
-    "@mediamonks/eslint-config-typescript": "^1.0.8",
-    "@mediamonks/eslint-config-typescript-react": "^1.0.10",
+    "@mediamonks/eslint-config": "^2.0.7",
+    "@mediamonks/eslint-config-react": "^2.1.12",
+    "@mediamonks/eslint-config-typescript": "^1.0.9",
+    "@mediamonks/eslint-config-typescript-react": "^1.0.11",
     "@types/jest": "^29.2.4",
     "jest": "^29.3.1",
     "rimraf": "^3.0.2",
@@ -55,17 +57,50 @@
     "typescript": "^4.9.4"
   },
   "eslintConfig": {
-    "extends": [
-      "@mediamonks/eslint-config",
-      "@mediamonks/eslint-config-react",
-      "@mediamonks/eslint-config-typescript",
-      "@mediamonks/eslint-config-typescript-react"
-    ],
-    "parserOptions": {
-      "project": "./tsconfig.json"
-    },
-    "rules": {
-      "unicorn/prevent-abbreviations": "off"
-    }
+    "overrides": [
+      {
+        "files": [
+          "**/*.js"
+        ],
+        "extends": [
+          "@mediamonks/eslint-config"
+        ]
+      },
+      {
+        "files": [
+          "**/*.jsx"
+        ],
+        "extends": [
+          "@mediamonks/eslint-config",
+          "@mediamonks/eslint-config-react"
+        ]
+      },
+      {
+        "files": [
+          "**/*.ts"
+        ],
+        "parserOptions": {
+          "project": "./tsconfig.json"
+        },
+        "extends": [
+          "@mediamonks/eslint-config",
+          "@mediamonks/eslint-config-typescript"
+        ]
+      },
+      {
+        "files": [
+          "**/*.tsx"
+        ],
+        "parserOptions": {
+          "project": "./tsconfig.json"
+        },
+        "extends": [
+          "@mediamonks/eslint-config",
+          "@mediamonks/eslint-config-react",
+          "@mediamonks/eslint-config-typescript",
+          "@mediamonks/eslint-config-typescript-react"
+        ]
+      }
+    ]
   }
 }

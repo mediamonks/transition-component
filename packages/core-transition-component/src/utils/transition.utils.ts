@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/prevent-abbreviations */
 import gsap from 'gsap';
 import type { AbstractTransitionContext } from '../context/AbstractTransitionContext';
 import type {
@@ -21,7 +22,7 @@ function noop(): undefined {
 export function getTransitionController<
   T extends Record<string, R>,
   R extends TransitionRef,
-  E extends SetupSignatureElements<T>
+  E extends SetupSignatureElements<T>,
 >(
   container: R,
   setupOptions: SetupTransitionOptions<T, R, E> = {},

@@ -2,6 +2,7 @@ import gsap from 'gsap';
 import type { TransitionDirection } from '../types/transition.types';
 
 export function parseChild(
+  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
   child: gsap.core.Timeline | gsap.core.Tween,
   timeline: gsap.core.Timeline,
   direction: TransitionDirection,

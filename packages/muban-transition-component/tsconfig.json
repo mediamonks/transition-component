@@ -3,7 +3,7 @@
   "compilerOptions": {
     "lib": ["DOM", "ESNext"],
     "moduleResolution": "Node",
-    "skipLibCheck": true,
+    "jsx": "react-jsx",
     "esModuleInterop": true
   }
 }

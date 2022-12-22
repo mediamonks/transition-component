@@ -3,9 +3,9 @@
   "compilerOptions": {
     "target": "ES5",
     "module": "CommonJS",
-    "declaration": true,
     "outDir": "./dist/cjs",
-    "declarationDir": "./dist/cjs"
+    "declarationDir": "./dist/cjs",
+    "declaration": true
   },
-  "exclude": ["**/*.test.ts", "**/*.test.tsx"]
+  "exclude": ["**/*.test.ts", "**/*.test.tsx", "jest.config.ts"]
 }
