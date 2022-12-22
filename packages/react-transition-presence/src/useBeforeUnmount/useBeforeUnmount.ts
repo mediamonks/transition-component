@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from 'react';
 import { useTransitionPresence } from '../TransitionPresence/TransitionPresence.context';
 
-export type BeforeUnmountCallback = (abortSignal: AbortSignal) => Promise<void> | void;
+export type BeforeUnmountCallback = (abortSignal: AbortSignal) => PromiseLike<unknown> | void;
 
 /**
  * Executes async callback to defer unmounting of children in nearest
