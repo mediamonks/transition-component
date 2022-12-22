@@ -21,19 +21,22 @@
   },
   "homepage": "https://github.com/mediamonks/transition-component/tree/main/packages/muban-storybook-addon-transition#readme",
   "private": false,
-  "main": "dist/register.js",
-  "types": "dist/register.d.ts",
+  "types": "./dist/index.d.ts",
+  "module": "./dist/index.js",
+  "exports": {
+    "import": "./dist/index.js"
+  },
+  "type": "module",
+  "files": [
+    "dist/**/*",
+    "README.md"
+  ],
   "scripts": {
     "build": "tsc",
     "clean": "rimraf -rf ./dist",
     "lint:eslint": "eslint \"./**/*.{js,ts}\"",
     "fix:eslint": "npm run lint:eslint -- --fix"
   },
-  "files": [
-    "dist/**/*",
-    "README.md",
-    "*.js"
-  ],
   "dependencies": {
     "@mediamonks/muban-transition-component": "^1.0.1",
     "@storybook/addons": "^6.5.14",
