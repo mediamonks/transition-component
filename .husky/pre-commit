@@ -2,5 +2,6 @@
 . "$(dirname "$0")/_/husky.sh"
 
 npx lint-staged
-npm run lint:eslint
+npm run build
 npm run test
+npm run lint:eslint
