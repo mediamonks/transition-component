@@ -1,9 +1,10 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "lib": ["DOM", "ESNext"],
+    "esModuleInterop": true,
     "moduleResolution": "Node",
+    "skipLibCheck": true,
     "jsx": "react-jsx",
-    "esModuleInterop": true
+    "lib": ["DOM", "ESNext"]
   }
 }
