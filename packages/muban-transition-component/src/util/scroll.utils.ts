@@ -10,16 +10,17 @@ function getViewportLeaveObserver(): IntersectionObserver {
   if (!viewportLeaveObserver) {
     viewportLeaveObserver = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
+        for (const entry of entries) {
           const previousY = observerPositions.get(entry.target) ?? 0;
           const callback = observerCallbacks.get(entry.target);
 
           // Detect if the entry leaves the viewport and where it leaves the viewport
-          if (!entry.isIntersecting)
+          if (!entry.isIntersecting) {
             callback?.(entry.boundingClientRect.y > previousY ? 'bottom' : 'top');
+          }
 
           observerPositions.set(entry.target, entry.boundingClientRect.y);
-        });
+        }
       },
       {
         threshold: [0, 1],
@@ -35,7 +36,11 @@ export function addLeaveViewportObserver(
   onLeaveViewport: (position: ViewportLeavePosition) => void,
 ): () => void {
   const observer = getViewportLeaveObserver();
-  observerCallbacks.set(element, (position) => onLeaveViewport?.(position));
+
+  observerCallbacks.set(element, (position) => {
+    onLeaveViewport(position);
+  });
+
   observer.observe(element);
 
   return () => {

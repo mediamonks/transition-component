@@ -1,14 +1,11 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
-    "allowJs": false,
-    "esModuleInterop": true,
-    "declaration": true,
+    "target": "ES5",
+    "module": "CommonJS",
     "outDir": "./dist/cjs",
-    "declarationDir": "./dist/cjs"
+    "declarationDir": "./dist/cjs",
+    "declaration": true
   },
-  "include": ["src/**/*"],
-  "exclude": ["src/**/*.test.ts"]
+  "exclude": ["**/*.test.ts", "**/*.test.tsx", "jest.config.ts"]
 }

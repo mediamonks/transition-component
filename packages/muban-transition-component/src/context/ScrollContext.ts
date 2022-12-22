@@ -1,5 +1,3 @@
-import type gsap from 'gsap';
-
 export const defaultScrollTriggerVariables: gsap.plugins.ScrollTriggerInstanceVars = {
   start: 'top 75%',
 };

@@ -1,8 +1,11 @@
 {
   "extends": "./tsconfig.build.json",
   "compilerOptions": {
+    "target": "ESNext",
     "module": "ESNext",
+    "declaration": true,
     "outDir": "./dist/esm",
     "declarationDir": "./dist/esm"
-  }
+  },
+  "exclude": ["**/*.test.ts", "**/*.test.tsx"]
 }

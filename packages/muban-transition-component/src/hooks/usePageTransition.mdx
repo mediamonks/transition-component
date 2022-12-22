@@ -1,0 +1,32 @@
+import { defineComponent } from '@muban/muban';
+import { Meta, Story, Canvas } from '@storybook/blocks';
+import { MubanStory } from '../storybook/MubanStory';
+import { Default } from './useScrollTransition.stories';
+
+<Meta title="hooks/usePageTransition" />
+
+# usePageTransition
+
+This hook can be used when you want to create a page transition, it will automatically trigger the
+`transitionIn` when the component has been mounted.
+
+```ts {2,7-10}
+import { defineComponent } from '@muban/muban';
+import { usePageTransition } from '@mediamonks/muban-transition-component';
+
+const MyComponent = defineComponent({
+  name: 'some-page-component',
+  setup() {
+    usePageTransition(refs.self, {
+      // Add your transition configuration.
+      // It supports the same as the `useTransitionController` hook.
+    });
+
+    return [];
+  },
+});
+```
+
+<Canvas>
+  <MubanStory of={Default} />
+</Canvas>

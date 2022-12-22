@@ -1,10 +1,12 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "jsx": "react",
-    "target": "es5",
-    "module": "commonjs",
-    "outDir": "./dist/"
-  },
-  "include": ["src/**/*"]
+    "jsx": "react-jsx",
+    "target": "ES5",
+    "module": "CommonJS",
+    "outDir": "./dist/",
+    "lib": ["DOM", "ESNext"],
+    "skipLibCheck": true,
+    "esModuleInterop": true
+  }
 }

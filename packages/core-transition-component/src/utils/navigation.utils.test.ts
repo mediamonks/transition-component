@@ -10,6 +10,8 @@ test('The callback is triggered immediately', () => {
 test('The callback is triggered after releasing', () => {
   const callback = jest.fn();
 
-  guard(callback, (release) => release());
+  guard(callback, (release) => {
+    release();
+  });
   expect(callback).toHaveBeenCalled();
 });

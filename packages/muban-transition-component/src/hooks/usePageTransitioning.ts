@@ -1,6 +1,6 @@
 import { createContext } from '@muban/muban';
-import { useGlobalTransitionContext } from './useGlobalTransitionContext';
 import { FlowContext } from '../context/FlowContext';
+import { useGlobalTransitionContext } from './useGlobalTransitionContext';
 
 export const [provideFlowContext, useFlowContext] = createContext<FlowContext | undefined>(
   'flowContext',
@@ -16,13 +16,13 @@ export function usePageTransitioning(): ReadonlyArray<
   // Make sure the transition context is provided so all child components can access it.
   provideFlowContext(flowContext);
 
-  const onLeave = async (element: HTMLElement, done: () => void) => {
+  async function onLeave(_element: HTMLElement, done: () => void): Promise<void> {
     // Wait for the page's out-flow to be completed.
-    await flowContext?.transitionOut;
+    await flowContext.transitionOut;
 
     // Continue with the flow after the current active page has been transitioned-out.
     done();
-  };
+  }
 
   return [onLeave];
 }

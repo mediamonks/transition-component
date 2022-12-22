@@ -10,7 +10,7 @@ export function useGlobalTransitionContext(): TransitionContext {
 
   // Create one transition context that is shared in the entire application, this is used to retrieve transition
   // controllers for different components.
-  const transitionContext = parentTransitionContext || new TransitionContext();
+  const transitionContext = parentTransitionContext ?? new TransitionContext();
 
   // Make sure the transition context is provided so all child components can access it.
   provideTransitionContext(transitionContext);
