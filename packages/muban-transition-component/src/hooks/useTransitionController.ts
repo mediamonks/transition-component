@@ -10,7 +10,7 @@ import type {
   TransitionRef,
   TransitionRefElement,
 } from '../types/transition.types';
-import { transitionRefToElement } from '../util/transition.utils';
+import { transitionRefToElement } from '../util/transitionRefToElement';
 import { useTransitionContext } from './useGlobalTransitionContext';
 
 /**

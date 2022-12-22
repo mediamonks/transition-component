@@ -12,7 +12,7 @@ import type {
   TransitionRefElement,
 } from '../types/transition.types';
 import { addLeaveViewportObserver } from '../util/scroll.utils';
-import { transitionRefToElement } from '../util/transition.utils';
+import { transitionRefToElement } from '../util/transitionRefToElement';
 import { useTransitionController } from './useTransitionController';
 
 gsap.registerPlugin(ScrollTrigger);
