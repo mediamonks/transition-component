@@ -1,6 +1,6 @@
 {
   "name": "@mediamonks/muban-transition-component",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "GreenSock animations for your Muban components.",
   "keywords": [
     "gsap",
@@ -42,7 +42,7 @@
     "storybook:build": "storybook build -o ./docs"
   },
   "dependencies": {
-    "@mediamonks/core-transition-component": "^1.0.1"
+    "@mediamonks/core-transition-component": "^1.1.0"
   },
   "devDependencies": {
     "@mediamonks/eslint-config": "^2.0.7",
