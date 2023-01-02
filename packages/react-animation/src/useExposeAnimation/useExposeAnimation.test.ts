@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react';
-import gsap from 'gsap';
-import { useAnimation } from '../useAnimation/useAnimation';
-import { getAnimation, useExposeAnimation } from './useExposeAnimation';
+import { gsap } from 'gsap';
+import { useAnimation } from '../useAnimation/useAnimation.js';
+import { getAnimation, useExposeAnimation } from './useExposeAnimation.js';
 
 describe('useExposeAnimation', () => {
   it('should not crash', () => {
@@ -18,7 +18,7 @@ describe('useExposeAnimation', () => {
     const ref = Symbol('reference');
 
     renderHook(() => {
-      const timeline = useAnimation(() => gsap.timeline(), []);
+      const timeline = useAnimation(() => gsap.to({ value: 0 }, { value: 1 }), []);
 
       useExposeAnimation(timeline, ref);
     });
@@ -30,7 +30,7 @@ describe('useExposeAnimation', () => {
     const ref = Symbol('reference');
 
     renderHook(() => {
-      const timeline = useAnimation(() => gsap.timeline(), []);
+      const timeline = useAnimation(() => gsap.to({ value: 0 }, { value: 1 }), []);
 
       useExposeAnimation(timeline, ref);
     });

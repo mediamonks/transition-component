@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react';
-import { useBeforeUnmount } from './useBeforeUnmount';
+import { useBeforeUnmount } from './useBeforeUnmount.js';
 
 describe('useBeforeUnmount', () => {
   it('should not crash', () => {

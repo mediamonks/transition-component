@@ -1,6 +1,6 @@
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import { useEffect } from 'react';
-import { useAnimation } from '../useAnimation/useAnimation';
+import { useAnimation } from '../useAnimation/useAnimation.js';
 
 export function useScrollAnimation<T extends gsap.core.Animation>(
   callback: () => T | undefined,

@@ -1,3 +1,3 @@
-export * from './TransitionPresence/TransitionPresence';
-export * from './TransitionPresence/TransitionPresence.context';
-export * from './useBeforeUnmount/useBeforeUnmount';
+export * from './TransitionPresence/TransitionPresence.js';
+export * from './TransitionPresence/TransitionPresence.context.js';
+export * from './useBeforeUnmount/useBeforeUnmount.js';

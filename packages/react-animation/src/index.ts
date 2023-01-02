@@ -1,3 +1,4 @@
-export * from './SplitTextWrapper/SplitTextWrapper';
-export * from './useAnimation/useAnimation';
-export * from './useExposeAnimation/useExposeAnimation';
+export * from './SplitTextWrapper/SplitTextWrapper.js';
+export * from './useAnimation/useAnimation.js';
+export * from './useExposeAnimation/useExposeAnimation.js';
+export * from './useScrollAnimation/useScrollAnimation.js';
