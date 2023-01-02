@@ -7,8 +7,11 @@ import {
   type ReactElement,
   type ReactNode,
 } from 'react';
-import { useBeforeUnmount, type BeforeUnmountCallback } from '../useBeforeUnmount/useBeforeUnmount';
-import { TransitionPresenceContext } from './TransitionPresence.context';
+import {
+  useBeforeUnmount,
+  type BeforeUnmountCallback,
+} from '../useBeforeUnmount/useBeforeUnmount.js';
+import { TransitionPresenceContext } from './TransitionPresence.context.js';
 
 export type TransitionPresenceProps = {
   children: ReactNode;

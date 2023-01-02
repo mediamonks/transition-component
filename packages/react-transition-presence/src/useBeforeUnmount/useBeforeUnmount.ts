@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react';
-import { useTransitionPresence } from '../TransitionPresence/TransitionPresence.context';
+import { useTransitionPresence } from '../TransitionPresence/TransitionPresence.context.js';
 
 export type BeforeUnmountCallback = (abortSignal: AbortSignal) => PromiseLike<unknown> | void;
 
