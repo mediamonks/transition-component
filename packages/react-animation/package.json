@@ -1,6 +1,6 @@
 {
   "name": "@mediamonks/react-animation",
-  "version": "1.0.1",
+  "version": "1.0.2-1",
   "description": "Animation components, hooks, utilities for React + GSAP.",
   "keywords": [
     "react",
@@ -53,6 +53,8 @@
     "typescript": "^4.9.4"
   },
   "peerDependencies": {
+    "@mediamonks/react-hooks": "^1.0.3",
+    "gsap": "^3.11.4",
     "react": ">=17",
     "react-dom": ">=17"
   },
@@ -66,9 +68,5 @@
     "parserOptions": {
       "project": "tsconfig.eslint.json"
     }
-  },
-  "dependencies": {
-    "@mediamonks/react-hooks": "^1.0.3",
-    "gsap": "^3.11.4"
   }
 }

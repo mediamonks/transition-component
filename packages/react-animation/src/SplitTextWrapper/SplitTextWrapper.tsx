@@ -1,5 +1,5 @@
 import { ensuredForwardRef } from '@mediamonks/react-hooks';
-import { SplitText } from 'gsap/SplitText';
+import SplitText from 'gsap/SplitText';
 import { useCallback, type ReactElement } from 'react';
 import { renderToString } from 'react-dom/server';
 
