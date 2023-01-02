@@ -53,7 +53,6 @@
     "typescript": "^4.9.4"
   },
   "peerDependencies": {
-    "gsap": ">=3.11",
     "react": ">=17",
     "react-dom": ">=17"
   },
@@ -69,6 +68,7 @@
     }
   },
   "dependencies": {
-    "@mediamonks/react-hooks": "^1.0.3"
+    "@mediamonks/react-hooks": "^1.0.3",
+    "gsap": "^3.11.4"
   }
 }
