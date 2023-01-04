@@ -1,0 +1,62 @@
+name: Update documentation
+
+on:
+  push:
+    branches: ['main']
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: 'pages'
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'npm'
+
+      - name: Build Storybook
+        run: |
+          npm ci
+          npm run storybook:build
+
+      - name: Compose storybook builds
+        run: |
+          mkdir docs
+          cp -r ./packages/*/docs/ ./docs
+
+      - name: Create artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: docs/
+
+  deploy:
+    needs: build
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup Pages
+        uses: actions/configure-pages@v2
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1

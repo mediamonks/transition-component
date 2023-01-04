@@ -11,20 +11,11 @@
     "test": "lerna run test",
     "lint:eslint": "lerna run lint:eslint",
     "fix:eslint": "lerna run fix:eslint",
-    "format": "prettier --write \"**/*.{css,html,js,jsx,json,less,md,sass,scss,ts,tsx,vue,yaml}\"",
-    "storybook": "storybook dev -p 6006",
-    "storybook:build": "storybook build -o ./docs"
+    "storybook:build": "lerna run storybook:build",
+    "format": "prettier --write \"**/*.{css,html,js,jsx,json,less,md,sass,scss,ts,tsx,vue,yaml}\""
   },
   "devDependencies": {
     "@mediamonks/prettier-config": "^1.0.1",
-    "@storybook/addon-essentials": "^7.0.0-beta.13",
-    "@storybook/addon-interactions": "^7.0.0-beta.13",
-    "@storybook/addon-links": "^7.0.0-beta.13",
-    "@storybook/blocks": "^7.0.0-beta.13",
-    "@storybook/cli": "^7.0.0-beta.13",
-    "@storybook/react": "^7.0.0-beta.13",
-    "@storybook/react-vite": "^7.0.0-beta.13",
-    "@storybook/testing-library": "^0.0.13",
     "husky": "^7.0.4",
     "lerna": "^6.1.0",
     "lint-staged": "^11.2.6",
