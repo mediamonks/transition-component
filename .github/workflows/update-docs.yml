@@ -37,13 +37,14 @@ jobs:
 
       - name: Compose storybook builds
         run: |
-          mkdir docs
-          cp -r ./packages/*/docs/ ./docs
+          mkdir .docs
+          cp -r ./packages/*/.docs/ ./.docs
 
       - name: Create artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-artifact@v3
         with:
-          path: docs/
+          name: github-pages
+          path: .docs/*/
 
   deploy:
     needs: build

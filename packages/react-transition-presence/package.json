@@ -28,7 +28,7 @@
     "build:ts": "tsc -p ./tsconfig.build.json",
     "clean": "rimraf -rf ./dist",
     "storybook": "storybook dev -p 6006",
-    "storybook:build": "storybook build -o ./docs/@mediamonks/react-transition-presence"
+    "storybook:build": "storybook build -o ./.docs/react-transition-presence"
   },
   "author": "frontend.monks",
   "license": "MIT",

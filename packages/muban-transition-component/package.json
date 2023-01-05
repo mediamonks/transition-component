@@ -39,7 +39,7 @@
     "lint:eslint": "eslint \"./**/*.{js,jsx,ts,tsx}\"",
     "fix:eslint": "npm run lint:eslint -- --fix",
     "storybook": "storybook dev -p 7000",
-    "storybook:build": "storybook build -o ./docs/@mediamonks/muban-transition-component"
+    "storybook:build": "storybook build -o ./.docs/muban-transition-component"
   },
   "dependencies": {
     "@mediamonks/core-transition-component": "^1.1.0"
