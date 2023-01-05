@@ -36,15 +36,12 @@ jobs:
           npm run storybook:build
 
       - name: Compose storybook builds
-        run: |
-          mkdir .docs
-          cp -r ./packages/*/.docs/ ./.docs
+        run: cp -r ./packages/*/.docs/ ./.docs
 
       - name: Create artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-pages-artifact@v1
         with:
-          name: github-pages
-          path: .docs/*/
+          path: .docs/
 
   deploy:
     needs: build
