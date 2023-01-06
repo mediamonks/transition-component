@@ -33,9 +33,18 @@ getting started guides.
 ## 💪 Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would
-like to change.
+like to change. Please make sure to update tests accordingly.
 
-Please make sure to update tests as appropriate.
+Installation requires a greensock license, create a .npmrc file in the root of the repository with
+the necessary configuration to install the business package.
+
+```
+.npmrc
+
+//npm.greensock.com/:_authToken=<your-auth-token>
+@gsap:registry=https://npm.greensock.com
+
+```
 
 ## 📝 License
 

@@ -1,5 +1,24 @@
-import { Meta } from '@storybook/blocks';
+import { Meta, Canvas, Story, Source } from '@storybook/blocks';
+import { Example } from './SplitTextWrapper.stories';
 
 <Meta title="components/SplitTextWrapper" />
 
 # SplitTextWrapper
+
+The SplitTextWrapper creates a SplitText instance that can be retrieved using a ref. The SplitText
+is available as soon as the just before the components is finished mounting. A new SplitText
+instance is created when the children or variables change.
+
+## Example
+
+<Canvas>
+  <Story name="Example" />
+</Canvas>
+
+## Usage
+
+The SplitTextWrapper accepts 1 child, this child is rendered to HTML inside the component to make
+sure that compnents from the vDOM are not changed on render making them untargetable in the created
+SplitText instance.
+
+<Source name="Example" dark language="tsx" />

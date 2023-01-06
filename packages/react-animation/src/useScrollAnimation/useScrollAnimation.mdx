@@ -1,5 +1,68 @@
-import { Meta } from '@storybook/blocks';
+import { Meta, Canvas, Story, Source } from '@storybook/blocks';
+import { Example } from './useScrollAnimation.stories';
 
 <Meta title="hooks/useScrollAnimation" />
 
 # useScrollAnimation
+
+The `useScrollAnimation` hook is used to created an animation with GSAP that uses ScrollTrigger. The
+animation is killed when the component unmounts, the animation is updated when one of the
+dependencies change. ScrollTrigger is refreshed when an animation instance created with
+`useScrollTrigger` is updated.
+
+## Usage
+
+The function signature for `useScrollAnimation` is exactly the same as `useAnimation`.
+
+An animation is created in the callback function of the useAnimation hook. The callback hook should
+return an animation instance. The `useScrollAnimation` hook returns a RefObject with the animation
+instance, the animation instance is availble on mount.
+
+The callback accepts a `gsap.core.Animation` instance as a return type. You can use tweens
+(`gsap.to`, `gsap.from`, `gsap.fromTo`) and `gsap.timelines` to create an animation.
+
+```tsx
+function ScrollAnimation(): ReactElement {
+  const ref = useRef<HTMLDivElement | null>(null);
+
+  useScrollAnimation(
+    () =>
+      gsap.to(ref.current, {
+        scale: 0.5,
+        ease: 'power3.out',
+        scrollTrigger: {
+          pin: ref.current,
+          scrub: true,
+          markers: true,
+          end: '+=150%',
+        },
+      }),
+    [],
+  );
+
+  return (
+    <div>
+      <div
+        ref={ref}
+        style={{
+          width: '100%',
+          height: '100vh',
+          margin: '0 auto',
+          background: 'purple',
+        }}
+      />
+    </div>
+  );
+}
+```
+
+> Note: do not scrub a React component's root. GSAP modifies the DOM, React won't know what element
+> to unmount when the component with a pinned animation must removed from the vDOM.
+
+## Example
+
+Keep scrolling to see the animation.
+
+<Canvas height="500">
+  <Story of={Example} />
+</Canvas>

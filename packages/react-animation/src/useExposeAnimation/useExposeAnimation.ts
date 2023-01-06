@@ -1,34 +1,8 @@
-import { useEffect, useState } from 'react';
-
-class AnimationsMap extends Map {
-  private readonly callbacks = new Set<() => void>();
-
-  public set(key: unknown, value: gsap.core.Animation): this {
-    const result = super.set(key, value);
-
-    for (const callback of this.callbacks) {
-      callback();
-    }
-
-    return result;
-  }
-
-  public listen(callback: () => void): () => void {
-    this.callbacks.add(callback);
-
-    return () => {
-      this.callbacks.delete(callback);
-    };
-  }
-}
+import { useEffect, useState, type RefObject } from 'react';
+import { animations } from '../animations.js';
 
 /**
- * Global map of animations that can be accessed by reference
- */
-export const animations = new AnimationsMap();
-
-/**
- * Tries to get animation from global animations map using given reference
+ * Tries to get animation from global animations map for given reference
  */
 export function getAnimation(reference: unknown): gsap.core.Animation | undefined {
   return animations.get(reference);
@@ -38,16 +12,19 @@ export function getAnimation(reference: unknown): gsap.core.Animation | undefine
  * Hook to store animation using a reference in global animations map
  */
 export function useExposeAnimation(
-  animation: gsap.core.Animation | undefined,
-  reference: unknown,
+  animation: RefObject<gsap.core.Animation | undefined>,
+  reference: RefObject<unknown>,
 ): void {
   useEffect(() => {
-    if (animation) {
-      animations.set(reference, animation);
+    const _reference = reference.current;
+    const _animation = animation.current;
+
+    if (_animation) {
+      animations.set(_reference, _animation);
     }
 
     return () => {
-      animations.delete(reference);
+      animations.delete(_reference);
     };
   }, [animation, reference]);
 }
@@ -55,13 +32,15 @@ export function useExposeAnimation(
 /**
  * Hook to get animation from global animations map using given reference
  */
-export function useExposedAnimation(ref: unknown): gsap.core.Animation | undefined {
-  const [animation, setAnimation] = useState<gsap.core.Animation | undefined>(animations.get(ref));
+export function useExposedAnimation<T extends gsap.core.Animation>(
+  ref: RefObject<unknown>,
+): T | undefined {
+  const [animation, setAnimation] = useState<T | undefined>();
 
   useEffect(
     () =>
       animations.listen(() => {
-        setAnimation(animations.get(ref));
+        setAnimation(animations.get(ref.current));
       }),
     [ref],
   );

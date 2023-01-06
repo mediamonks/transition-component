@@ -65,3 +65,6 @@ node_modules/
 
 dist/
 .docs/
+
+# npmrc contains auth token for private gsap npm registry
+.npmrc

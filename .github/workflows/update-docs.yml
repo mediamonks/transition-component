@@ -31,10 +31,10 @@ jobs:
 
       - name: Build Storybook
         run: |
-          npm ci
-          npm run build
-          npm run storybook:build
-          cp -r ./packages/*/.docs/ ./.docs
+          npm ci;
+          npm run build;
+          npm run storybook:build;
+          cp -r ./packages/*/.docs/ ./.docs;
 
       - name: Create artifact
         uses: actions/upload-pages-artifact@v1

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { type RefObject, useCallback, useEffect, useRef } from 'react';
 
 /**
  * Create gsap animation via a callback, animation is killed when component is
@@ -7,19 +7,18 @@ import { useCallback, useEffect, useState } from 'react';
 export function useAnimation<T extends gsap.core.Animation>(
   callback: () => T | undefined,
   dependencies: ReadonlyArray<unknown>,
-): T | undefined {
-  const [animation, setAnimation] = useState<T | undefined>();
+): RefObject<T | undefined> {
+  const animation = useRef<T>();
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const _callback = useCallback(callback, dependencies);
 
   useEffect(() => {
     const _animation = _callback();
-
-    setAnimation(_animation);
+    animation.current = _animation;
 
     return () => {
-      _animation?.revert();
+      _animation?.kill();
     };
   }, [_callback]);
 

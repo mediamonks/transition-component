@@ -1,64 +1,16 @@
-import { Meta, Canvas, Story, Source } from '@storybook/blocks';
-import { Tween, Timeline, OnAction } from './useAnimation.stories';
+/* eslint-disable react/jsx-no-literals, react/no-multi-comp */
+import gsap, { Bounce } from 'gsap';
+import { useCallback, useRef, type ReactElement } from 'react';
+import { useAnimation } from './useAnimation.js';
 
-<Meta title="hooks/useAnimation" />
+export default {
+  title: 'hooks/useAnimation',
+};
 
-# useAnimation
-
-The useAnimation hook is used to created an animation with GSAP, the animation is automatically
-killed when the component unmounts. The animation is updated when one of the dependencies changes.
-
-### Timeline
-
-<Canvas>
-  <Story of={Timeline} />
-</Canvas>
-
-### Tween
-
-<Canvas>
-  <Story of={Tween} />
-</Canvas>
-
-### On Action
-
-<Canvas>
-  <Story of={OnAction} />
-</Canvas>
-
-## Usage
-
-An animation is created in the callback function of the useAnimation hook. The callback hook should
-return an animation instance. The `useAnimation` hook returns a RefObject, the animation is availble
-on mount.
-
-The callback accepts a `gsap.core.Animation` instance as a return type. You can use tweens
-(`gsap.to`, `gsap.from`, `gsap.fromTo`) and `gsap.timelines` to create an animation.
-
-```tsx
-import { useAnimation } from '@mediamonks/react-animation';
-import gsap from 'gsap';
-
-function MyComponent(): null {
-  const animation1 = useAnimation(() => {
-    return gsap.to({ value: 0 }, { value: 100 });
-  });
-
-  const animation2 = useAnimation(() => {
-    return gsap.to({ value: 0 }, { value: 100 });
-  });
-
-  return null;
-}
-```
-
-### Timeline
-
-```tsx
 export function Timeline(): ReactElement {
   const ref = useRef<HTMLHeadingElement>(null);
 
-  useAnimation(() => {
+  const animation = useAnimation(() => {
     if (ref.current === null) {
       return;
     }
@@ -97,26 +49,35 @@ export function Timeline(): ReactElement {
       });
   }, []);
 
+  const onReplay = useCallback(() => {
+    animation.current?.play(0);
+  }, [animation]);
+
   return (
-    <div
-      ref={ref}
-      style={{
-        width: 300,
-        height: 300,
-        background: 'purple',
-      }}
-    />
+    <>
+      <div
+        ref={ref}
+        style={{
+          width: 300,
+          height: 300,
+          background: 'purple',
+        }}
+      />
+
+      <br />
+      <br />
+
+      <button onClick={onReplay} type="button">
+        Replay
+      </button>
+    </>
   );
 }
-```
 
-### Tween
-
-```tsx
 export function Tween(): ReactElement {
   const ref = useRef<HTMLHeadingElement>(null);
 
-  useAnimation(() => {
+  const animation = useAnimation(() => {
     if (ref.current === null) {
       return;
     }
@@ -129,25 +90,31 @@ export function Tween(): ReactElement {
     });
   }, []);
 
+  const onReplay = useCallback(() => {
+    animation.current?.play(0);
+  }, [animation]);
+
   return (
-    <div
-      ref={ref}
-      style={{
-        width: 300,
-        height: 300,
-        background: 'purple',
-      }}
-    />
+    <>
+      <div
+        ref={ref}
+        style={{
+          width: 300,
+          height: 300,
+          background: 'purple',
+        }}
+      />
+
+      <br />
+      <br />
+
+      <button onClick={onReplay} type="button">
+        Replay
+      </button>
+    </>
   );
 }
-```
 
-### On Action
-
-The `useAnimation` hooks returns the animation instance, this can be used to control the animation.
-Make sure to pause the animation if you don't want it to start on mount.
-
-```tsx
 export function OnAction(): ReactElement {
   const ref = useRef<HTMLHeadingElement>(null);
 
@@ -192,7 +159,7 @@ export function OnAction(): ReactElement {
           height: 300,
           background: 'purple',
         }}
-      ></div>
+      />
 
       <br />
 
@@ -210,4 +177,3 @@ export function OnAction(): ReactElement {
     </>
   );
 }
-```

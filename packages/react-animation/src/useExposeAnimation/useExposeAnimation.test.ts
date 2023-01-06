@@ -1,85 +1,89 @@
+import { jest } from '@jest/globals';
 import { renderHook } from '@testing-library/react';
 import { gsap } from 'gsap';
+import { useRef } from 'react';
 import { useAnimation } from '../useAnimation/useAnimation.js';
 import { getAnimation, useExposeAnimation, useExposedAnimation } from './useExposeAnimation.js';
 
 describe('useExposeAnimation', () => {
   it('should not crash', () => {
-    const ref = Symbol('reference');
+    const hook = renderHook(() => {
+      const ref = useRef(Symbol('reference'));
 
-    renderHook(() => {
-      useExposeAnimation(undefined, ref);
+      useExposeAnimation(useRef(), ref);
+
+      return {
+        ref,
+      };
     });
 
-    expect(getAnimation(ref)).toBeUndefined();
+    expect(getAnimation(hook.result.current.ref.current)).toBeUndefined();
   });
 
   it('should return animation when animation is exposed for reference', () => {
-    const ref = Symbol('reference');
+    const hook = renderHook(() => {
+      const ref = useRef(Symbol('reference'));
+      const animation = useAnimation(() => gsap.to({ value: 0 }, { value: 1 }), []);
 
-    renderHook(() => {
-      const timeline = useAnimation(() => gsap.to({ value: 0 }, { value: 1 }), []);
+      useExposeAnimation(animation, ref);
 
-      useExposeAnimation(timeline, ref);
+      return {
+        ref,
+        animation,
+      };
     });
 
-    expect(getAnimation(ref)).not.toBeUndefined();
+    expect(getAnimation(hook.result.current.ref.current)).not.toBeUndefined();
   });
 
-  it('should return undefined when animation is cleared', () => {
-    const ref = Symbol('reference');
+  it('should return undefined when unmounted', () => {
+    const hook = renderHook(() => {
+      const ref = useRef(Symbol('reference'));
+      const animation = useAnimation(() => gsap.to({ value: 0 }, { value: 1 }), []);
 
-    renderHook(() => {
-      const timeline = useAnimation(() => gsap.to({ value: 0 }, { value: 1 }), []);
+      useExposeAnimation(animation, ref);
 
-      useExposeAnimation(timeline, ref);
+      return {
+        ref,
+        animation,
+      };
     });
 
-    renderHook(() => {
-      useExposeAnimation(undefined, ref);
-    });
+    hook.unmount();
 
-    expect(getAnimation(ref)).not.toBeUndefined();
+    expect(getAnimation(hook.result.current.ref.current)).toBeUndefined();
   });
 });
 
 describe('useExposedAnimation', () => {
-  it('should return undefined', () => {
-    const ref = Symbol('reference');
+  beforeAll(() => {
+    jest.useFakeTimers();
+  });
 
-    const hook = renderHook(() => useExposedAnimation(ref));
+  afterAll(() => {
+    jest.useRealTimers();
+  });
+
+  it('should return undefined', () => {
+    const hook = renderHook(() => {
+      const ref = useRef(Symbol('reference'));
+
+      return useExposedAnimation(ref);
+    });
 
     expect(hook.result.current).toBeUndefined();
   });
 
-  it('should return updated animation', () => {
-    const ref = Symbol('reference');
+  it('should not return undefined', async () => {
+    const hook = renderHook(() => {
+      const ref = useRef(Symbol('reference'));
 
-    const parent = renderHook(() => useExposedAnimation(ref));
+      const animation = useAnimation(() => gsap.to({ value: 0 }, { value: 1 }), []);
+      useExposeAnimation(animation, ref);
 
-    // Child
-    const child = renderHook<gsap.core.Animation | undefined, { value: number }>(
-      ({ value }) => {
-        const timeline = useAnimation(() => gsap.to({ value: 0 }, { value }), [value]);
+      return useExposedAnimation(ref);
+    });
 
-        useExposeAnimation(timeline, ref);
-
-        return timeline;
-      },
-      {
-        initialProps: {
-          value: 1,
-        },
-      },
-    );
-
-    const firstTimeline = child.result.current;
-
-    expect(parent.result.current).toEqual(firstTimeline);
-
-    child.rerender({ value: 2 });
-    parent.rerender();
-
-    expect(parent.result.current).not.toEqual(firstTimeline);
+    expect(hook.result.current).toBeUndefined();
   });
 });

@@ -4,5 +4,11 @@
     "declaration": true,
     "outDir": "./dist"
   },
-  "exclude": ["**/*.test.ts", "**/*.test.tsx", "jest.config.ts"]
+  "exclude": [
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.stories.tsx",
+    "**/*.stories.ts",
+    "jest.config.ts"
+  ]
 }
