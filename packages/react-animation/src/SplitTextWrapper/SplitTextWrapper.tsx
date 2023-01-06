@@ -1,7 +1,10 @@
 import { ensuredForwardRef } from '@mediamonks/react-hooks';
+import gsap from 'gsap';
 import SplitText from 'gsap/SplitText';
-import { useCallback, type ReactElement } from 'react';
+import { type ReactElement } from 'react';
 import { renderToString } from 'react-dom/server';
+
+gsap.registerPlugin(SplitText);
 
 export type SplitTextWrapperProps = {
   children: ReactElement;
@@ -10,19 +13,21 @@ export type SplitTextWrapperProps = {
 
 export const SplitTextWrapper = ensuredForwardRef<SplitText | null, SplitTextWrapperProps>(
   ({ children, variables = {} }, ref): ReactElement => {
-    const onRef = useCallback(
-      async (element: HTMLDivElement) => {
-        if (ref.current && 'isSplit' in ref.current && ref.current.isSplit) {
-          return;
-        }
+    /**
+     * Not using useCallback on purpose so that a new SplitText instance is
+     * created whenever this component rerenders the children
+     */
+    const onRef = async (element: HTMLDivElement): Promise<void> => {
+      if (ref.current && 'isSplit' in ref.current && ref.current.isSplit) {
+        return;
+      }
 
-        ref.current = new SplitText(element, variables);
-      },
-      [ref, variables],
-    );
+      ref.current = new SplitText(element, variables);
+    };
 
     return (
       <div
+        // eslint-disable-next-line react/jsx-no-bind
         ref={onRef}
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{
