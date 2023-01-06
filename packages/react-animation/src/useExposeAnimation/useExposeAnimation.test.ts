@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react';
 import { gsap } from 'gsap';
 import { useAnimation } from '../useAnimation/useAnimation.js';
-import { getAnimation, useExposeAnimation } from './useExposeAnimation.js';
+import { getAnimation, useExposeAnimation, useExposedAnimation } from './useExposeAnimation.js';
 
 describe('useExposeAnimation', () => {
   it('should not crash', () => {
@@ -40,5 +40,46 @@ describe('useExposeAnimation', () => {
     });
 
     expect(getAnimation(ref)).not.toBeUndefined();
+  });
+});
+
+describe('useExposedAnimation', () => {
+  it('should return undefined', () => {
+    const ref = Symbol('reference');
+
+    const hook = renderHook(() => useExposedAnimation(ref));
+
+    expect(hook.result.current).toBeUndefined();
+  });
+
+  it('should return updated animation', () => {
+    const ref = Symbol('reference');
+
+    const parent = renderHook(() => useExposedAnimation(ref));
+
+    // Child
+    const child = renderHook<gsap.core.Animation | undefined, { value: number }>(
+      ({ value }) => {
+        const timeline = useAnimation(() => gsap.to({ value: 0 }, { value }), [value]);
+
+        useExposeAnimation(timeline, ref);
+
+        return timeline;
+      },
+      {
+        initialProps: {
+          value: 1,
+        },
+      },
+    );
+
+    const firstTimeline = child.result.current;
+
+    expect(parent.result.current).toEqual(firstTimeline);
+
+    child.rerender({ value: 2 });
+    parent.rerender();
+
+    expect(parent.result.current).not.toEqual(firstTimeline);
   });
 });
