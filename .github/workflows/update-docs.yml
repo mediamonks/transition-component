@@ -38,12 +38,14 @@ jobs:
           npm ci
           npm run build
           npm run storybook:build
-          cp -r ./packages/*/.docs/ ./.docs
+
+      - name: Compose doc folders
+        run: cp -vr ./packages/*/.docs/ ./.docs
 
       - name: Create artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: .docs/
+          path: ./.docs/
 
   deploy:
     needs: build
