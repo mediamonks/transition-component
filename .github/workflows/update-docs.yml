@@ -30,11 +30,15 @@ jobs:
           cache: 'npm'
 
       - name: Build Storybook
+        env:
+          GSAP_TOKEN: ${{ secrets.GSAP_TOKEN }}
         run: |
-          npm ci;
-          npm run build;
-          npm run storybook:build;
-          cp -r ./packages/*/.docs/ ./.docs;
+          echo "//npm.greensock.com/:_authToken=$GSAP_TOKEN" > ~/.npmrc
+          echo "@gsap:registry=\"https://npm.greensock.com\"" >> ~/.npmrc
+          npm ci
+          npm run build
+          npm run storybook:build
+          cp -r ./packages/*/.docs/ ./.docs
 
       - name: Create artifact
         uses: actions/upload-pages-artifact@v1
