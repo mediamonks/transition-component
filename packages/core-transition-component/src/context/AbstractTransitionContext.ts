@@ -3,7 +3,7 @@ import type {
   TransitionController,
   TransitionDirection,
   TransitionRef,
-} from '../types/transition.types';
+} from '../types/transition.types.js';
 
 /**
  * The transition context is used to reference the component's transition controllers through refs.

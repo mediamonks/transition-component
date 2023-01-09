@@ -1,4 +1,4 @@
-import { guard } from './navigation.utils';
+import { guard } from './navigation.utils.js';
 
 test('The callback is triggered immediately', () => {
   const callback = jest.fn();
@@ -13,5 +13,6 @@ test('The callback is triggered after releasing', () => {
   guard(callback, (release) => {
     release();
   });
+
   expect(callback).toHaveBeenCalled();
 });

@@ -1,10 +1,10 @@
 import { StorybookConfig } from '@storybook/types';
 
-const config: StorybookConfig = {
+export default {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(ts|tsx)'],
   addons: [
-    '@storybook/addon-essentials',
     '@storybook/addon-links',
+    '@storybook/addon-essentials',
     '@storybook/addon-interactions',
   ],
   framework: {
@@ -12,8 +12,6 @@ const config: StorybookConfig = {
     options: {},
   },
   docs: {
-    docsPage: true,
+    autodocs: true,
   },
-};
-
-export default config;
+} satisfies StorybookConfig;

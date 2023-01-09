@@ -1,6 +1,6 @@
 import type { Config } from 'jest';
 
-const config: Config = {
+export default {
   extensionsToTreatAsEsm: ['.ts', '.tsx'],
   moduleNameMapper: {
     // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -22,6 +22,4 @@ const config: Config = {
       },
     ],
   },
-};
-
-export default config;
+} satisfies Config;

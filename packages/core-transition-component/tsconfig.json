@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "esModuleInterop": true,
-    "moduleResolution": "Node",
+    "moduleResolution": "NodeNext",
     "lib": ["DOM", "ESNext"]
   }
 }

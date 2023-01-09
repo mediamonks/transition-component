@@ -1,6 +1,6 @@
 /* eslint-disable unicorn/prevent-abbreviations */
-import type { TransitionRef } from '../types/transition.types';
-import type { AbstractTransitionContext } from './AbstractTransitionContext';
+import type { TransitionRef } from '../types/transition.types.js';
+import type { AbstractTransitionContext } from './AbstractTransitionContext.js';
 
 export abstract class AbstractFlowContext<T extends TransitionRef> {
   public transitionOut: Promise<void> | null = null;

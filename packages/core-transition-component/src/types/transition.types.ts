@@ -1,5 +1,5 @@
 /* eslint-disable unicorn/prevent-abbreviations */
-import type { AbstractTransitionContext } from '../context/AbstractTransitionContext';
+import type { AbstractTransitionContext } from '../context/AbstractTransitionContext.js';
 
 export type GuardFunction = (release: () => void) => void;
 

@@ -1,5 +1,5 @@
 import gsap from 'gsap';
-import type { TransitionDirection } from '../types/transition.types';
+import type { TransitionDirection } from '../types/transition.types.js';
 
 export function parseChild(
   // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents

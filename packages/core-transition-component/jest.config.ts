@@ -1,8 +1,13 @@
-import type { JestConfigWithTsJest } from 'ts-jest';
+import type { Config } from 'jest';
 
-const jestConfig: JestConfigWithTsJest = {
-  preset: 'ts-jest',
-  testEnvironment: 'jsdom',
-};
-
-export default jestConfig;
+export default {
+  extensionsToTreatAsEsm: ['.ts', '.tsx'],
+  moduleNameMapper: {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    '^(\\.{1,2}/.*)\\.js$': '$1',
+  },
+  transform: {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    '^.+\\.(t|j)sx?$': '@swc/jest',
+  },
+} satisfies Config;

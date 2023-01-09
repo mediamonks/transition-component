@@ -1,6 +1,6 @@
 /* eslint-disable unicorn/prevent-abbreviations */
 import gsap from 'gsap';
-import type { AbstractTransitionContext } from '../context/AbstractTransitionContext';
+import type { AbstractTransitionContext } from '../context/AbstractTransitionContext.js';
 import type {
   SetupSignatureElements,
   SetupTransitionOptions,
@@ -12,8 +12,8 @@ import type {
   TransitionOptions,
   TransitionOutOptions,
   TransitionRef,
-} from '../types/transition.types';
-import { clearTimeline, cloneTimeline } from './timeline.utils';
+} from '../types/transition.types.js';
+import { clearTimeline, cloneTimeline } from './timeline.utils.js';
 
 function noop(): undefined {
   return undefined;
