@@ -1,6 +1,6 @@
 import { Meta } from '@storybook/blocks';
 
-<Meta title="hooks/useExposeAnimation" />
+<Meta title="hooks/getAnimation" />
 
 # useExposeAnimation
 
@@ -10,7 +10,12 @@ reference (not necessarily an HTMLElement).
 ```tsx
 const Component = ensuredForwardRef<HTMLDivElement, unknown>((_, ref): ReactElement => {
   const animation = useAnimation(() => gsap.from(...), []);
-  useExposeAnimation(animation, ref);
+
+  useEffect(() => {
+    const animation = getAnimation(ref.current);
+    // eslint-disable-next-line no-console
+    console.log('getAnimation', animation);
+  }, [ref]);
 
   return <div ref={ref} />;
 });

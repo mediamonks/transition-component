@@ -3,3 +3,10 @@ import { Meta } from '@storybook/blocks';
 <Meta title="useBeforeUnmount" />
 
 # useBeforeUnmount
+
+The `useBeforeUnmount` hook accepts a function that will be called before the component is
+unmounted. The callback function is awaited, it defers the unmounting of the component until the
+function is resolved.
+
+> A common use case for the `useBeforeUnmount` hook is to create an out transition that defers the
+> unmounting of the component until the transition is complete.

@@ -3,3 +3,104 @@ import { Meta } from '@storybook/blocks';
 <Meta title="TransitionPresence" />
 
 # TransitionPresence
+
+`<TransitionPresence />` is a component that allows you to add a unmount transition they are
+unmounted in the virtual DOM. The callback argument used in `useBeforeUnmount` in the context of
+`<TransitionPresence />` will be called when a component is about to be unmounted. The promises that
+are returned from this callback are await before actually unmounting a component, this lifecycle
+will defer unmounting the component.
+
+By default old children unmount before new children are mounted, old _and_ new children will show up
+at the same time with `crossFlow` enabled.
+
+The most common use-case for `<TransitionPresence />` is animations, but it's not limited to this
+use case.
+
+## Children
+
+TransitionPresence accepts a single child, use a `Fragment` when you want to render multiple
+components on the root level,
+
+## Defer flow
+
+By default old children unmount before new children are mounted.
+
+```jsx
+import { TransitionPresence } from '@mediamonks/react-transition-presence';
+
+function Child({ background, onClick }): ReactElement {
+  useBeforeUnmount(() => {
+    // Defer unmounting for 1 second
+    return new Promise((resolve) => {
+      setTimeout(resolve, 1000);
+    });
+  });
+
+  return (
+    <div
+      style={{
+        background,
+        width: 200,
+        height: 200,
+      }}
+      onClick={onClick}
+    />
+  );
+}
+
+function DefaultFlow(): ReactElement {
+  const [isRedChildVisible, setIsRedVisible] = useState(true);
+
+  return (
+    <TransitionPresence crossFlow>
+      {isVisible ? (
+        <Child background="red" onClick={() => setIsRedVisible(true)} />
+      ) : (
+        <Child background="blue" onClick={() => setIsRedVisible(false)} />
+      )}
+    </TransitionPresence>
+  );
+}
+```
+
+## Cross flow
+
+Use the crossFlow prop on `<TransitionPresence />` to enable cross flow
+
+```jsx
+import { TransitionPresence } from '@mediamonks/react-transition-presence';
+
+function Child({ background, onClick }): ReactElement {
+  useBeforeUnmount(() => {
+    // Defer unmounting for 1 second
+    return new Promise((resolve) => {
+      setTimeout(resolve, 1000);
+    });
+  });
+
+  return (
+    <div
+      style={{
+        background,
+        width: 200,
+        height: 200,
+      }}
+      onClick={onClick}
+    />
+  );
+}
+
+function CrossFlow(): ReactElement {
+  const [isRedChildVisible, setIsRedVisible] = useState(true);
+
+  return (
+    <TransitionPresence crossFlow>
+      {isVisible ? (
+        <Child background="red" onClick={() => setIsRedVisible(true)} />
+      ) : (
+        <Child background="blue" onClick={() => setIsRedVisible(false)} />
+      )}
+    </TransitionPresence>
+  );
+}
+```

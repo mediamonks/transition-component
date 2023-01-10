@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="hooks/useExposedAnimation" />
+
+# useExposedAnimation
+
+The `useExposedAnimation` hook is used to get an animation that is exposed in the global animation
+Map for a given reference (not necessarily an HTMLElement). The hook will trigger a rerender when
+the animation for the reference changes.
+
+> Note: The return value will most likely be empty during the first render pass
+
+```tsx
+function MyComponent(): ReactElement {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const animation = useExposedAnimation(ref);
+
+  // eslint-disable-next-line no-console
+  console.log('useExposedAnimation', animation);
+
+  return <Child ref={ref} />;
+}
+```

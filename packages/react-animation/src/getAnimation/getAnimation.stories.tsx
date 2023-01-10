@@ -3,10 +3,11 @@ import { ensuredForwardRef } from '@mediamonks/react-hooks';
 import gsap from 'gsap';
 import { useEffect, useRef, type ReactElement } from 'react';
 import { useAnimation } from '../useAnimation/useAnimation.js';
-import { getAnimation, useExposeAnimation, useExposedAnimation } from './useExposeAnimation.js';
+import { useExposeAnimation } from '../useExposeAnimation/useExposeAnimation.js';
+import { getAnimation } from './getAnimation.js';
 
 export default {
-  title: 'hooks/useExposeAnimation',
+  title: 'hooks/getAnimation',
 };
 
 const Child = ensuredForwardRef<HTMLDivElement, unknown>((_, ref): ReactElement => {
@@ -28,23 +29,13 @@ const Child = ensuredForwardRef<HTMLDivElement, unknown>((_, ref): ReactElement 
   return <div ref={ref}>Check the console to see the result</div>;
 });
 
-export function UseExposedAnimation(): ReactElement {
-  const ref = useRef<HTMLDivElement | null>(null);
-  const animation = useExposedAnimation(ref);
-
-  // eslint-disable-next-line no-console
-  console.log('useExposedAnimation', animation);
-
-  return <Child ref={ref} />;
-}
-
 export function GetAnimation(): ReactElement {
   const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const a = getAnimation(ref.current);
+    const animation = getAnimation(ref.current);
     // eslint-disable-next-line no-console
-    console.log('getAnimation', a);
+    console.log('getAnimation', animation);
   }, [ref]);
 
   return <Child ref={ref} />;
