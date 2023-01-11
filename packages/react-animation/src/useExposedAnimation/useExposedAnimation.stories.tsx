@@ -7,22 +7,11 @@ import { useExposeAnimation } from '../useExposeAnimation/useExposeAnimation.js'
 import { useExposedAnimation } from './useExposedAnimation.js';
 
 export default {
-  title: 'hooks/useExposeAnimation',
+  title: 'hooks/useExposedAnimation',
 };
 
 const Child = ensuredForwardRef<HTMLDivElement, unknown>((_, ref): ReactElement => {
-  const animation = useAnimation(
-    () =>
-      gsap.from(
-        {
-          value: 0,
-        },
-        {
-          value: 1,
-        },
-      ),
-    [],
-  );
+  const animation = useAnimation(() => gsap.from({ value: 0 }, { value: 1 }), []);
 
   useExposeAnimation(animation, ref);
 

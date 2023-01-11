@@ -10,7 +10,7 @@ export default {
   },
 };
 
-export function Example(): ReactElement {
+export function UseScrollAnimation(): ReactElement {
   const ref = useRef<HTMLDivElement | null>(null);
 
   useScrollAnimation(
@@ -34,7 +34,7 @@ export function Example(): ReactElement {
         ref={ref}
         style={{
           width: '100%',
-          height: '100vh',
+          height: '50vh',
           margin: '0 auto',
           background: 'purple',
         }}

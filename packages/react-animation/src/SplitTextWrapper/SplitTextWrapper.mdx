@@ -1,4 +1,5 @@
-import { Meta, Canvas, Story, Source } from '@storybook/blocks';
+import { Meta } from '@storybook/blocks';
+import { Canvas } from './../../.storybook/Canvas';
 import { Example } from './SplitTextWrapper.stories';
 
 <Meta title="components/SplitTextWrapper" />
@@ -9,10 +10,8 @@ The SplitTextWrapper creates a SplitText instance that can be retrieved using a 
 is available as soon as the just before the components is finished mounting. A new SplitText
 instance is created when the children or variables change.
 
-## Example
-
 <Canvas>
-  <Story name="Example" />
+  <Example />
 </Canvas>
 
 ## Usage
@@ -21,4 +20,45 @@ The SplitTextWrapper accepts 1 child, this child is rendered to HTML inside the 
 sure that compnents from the vDOM are not changed on render making them untargetable in the created
 SplitText instance.
 
-<Source name="Example" dark language="tsx" />
+```tsx
+function Example(): ReactElement {
+  const splitTextRef = useRef<SplitText>(null);
+
+  const animation = useAnimation(() => {
+    if (!splitTextRef.current) {
+      return;
+    }
+
+    return gsap.from(splitTextRef.current.words, {
+      y: 20,
+      x: 4,
+      opacity: 0,
+      duration: 0.2,
+      stagger: 0.05,
+    });
+  }, []);
+
+  const onReplay = useCallback(() => {
+    animation.current?.play(0);
+  }, [animation]);
+
+  return (
+    <>
+      <h1>
+        <SplitTextWrapper ref={splitTextRef}>
+          <>
+            Lorem ipsum dolor sit <i>amet consectetur</i>
+            <br /> adipisicing elit. <b>Tenetur perspiciatis</b> eius ea, ratione,
+            <br /> illo molestias, <code>quia sapiente</code> modi quo
+            <br /> molestiae temporibus.
+          </>
+        </SplitTextWrapper>
+      </h1>
+
+      <button onClick={onReplay} type="button" style={{ cursor: 'pointer' }}>
+        Replay
+      </button>
+    </>
+  );
+}
+```

@@ -42,7 +42,7 @@ export function Example(): ReactElement {
         </SplitTextWrapper>
       </h1>
 
-      <button onClick={onReplay} type="button">
+      <button onClick={onReplay} type="button" style={{ cursor: 'pointer' }}>
         Replay
       </button>
     </>

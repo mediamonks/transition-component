@@ -1,4 +1,5 @@
-import { Meta, Canvas, Story, Source } from '@storybook/blocks';
+import { Meta } from '@storybook/blocks';
+import { Canvas } from './../../.storybook/Canvas';
 import { Tween, Timeline, OnAction } from './useAnimation.stories';
 
 <Meta title="hooks/useAnimation" />
@@ -7,24 +8,6 @@ import { Tween, Timeline, OnAction } from './useAnimation.stories';
 
 The useAnimation hook is used to created an animation with GSAP, the animation is automatically
 killed when the component unmounts. The animation is updated when one of the dependencies changes.
-
-### Timeline
-
-<Canvas>
-  <Story of={Timeline} />
-</Canvas>
-
-### Tween
-
-<Canvas>
-  <Story of={Tween} />
-</Canvas>
-
-### On Action
-
-<Canvas>
-  <Story of={OnAction} />
-</Canvas>
 
 ## Usage
 
@@ -39,7 +22,7 @@ The callback accepts a `gsap.core.Animation` instance as a return type. You can 
 import { useAnimation } from '@mediamonks/react-animation';
 import gsap from 'gsap';
 
-function MyComponent(): null {
+function Component(): null {
   const animation1 = useAnimation(() => {
     return gsap.to({ value: 0 }, { value: 100 });
   });
@@ -54,8 +37,14 @@ function MyComponent(): null {
 
 ### Timeline
 
+You can create a GSAP timeline in the `useAnimation` hooks callback function.
+
+<Canvas language="tsx">
+  <Timeline />
+</Canvas>
+
 ```tsx
-export function Timeline(): ReactElement {
+function Timeline(): ReactElement {
   const ref = useRef<HTMLHeadingElement>(null);
 
   useAnimation(() => {
@@ -112,8 +101,14 @@ export function Timeline(): ReactElement {
 
 ### Tween
 
+You can create a GSAP tween in the `useAnimation` hooks callback function.
+
+<Canvas>
+  <Tween />
+</Canvas>
+
 ```tsx
-export function Tween(): ReactElement {
+function Tween(): ReactElement {
   const ref = useRef<HTMLHeadingElement>(null);
 
   useAnimation(() => {
@@ -147,8 +142,12 @@ export function Tween(): ReactElement {
 The `useAnimation` hooks returns the animation instance, this can be used to control the animation.
 Make sure to pause the animation if you don't want it to start on mount.
 
+<Canvas>
+  <OnAction />
+</Canvas>
+
 ```tsx
-export function OnAction(): ReactElement {
+function OnAction(): ReactElement {
   const ref = useRef<HTMLHeadingElement>(null);
 
   const animation = useAnimation(() => {

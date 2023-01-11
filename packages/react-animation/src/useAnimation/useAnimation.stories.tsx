@@ -5,6 +5,7 @@ import { useAnimation } from './useAnimation.js';
 
 export default {
   title: 'hooks/useAnimation',
+  component: Timeline,
 };
 
 export function Timeline(): ReactElement {

@@ -11,12 +11,19 @@ the animation for the reference changes.
 > Note: The return value will most likely be empty during the first render pass
 
 ```tsx
-function MyComponent(): ReactElement {
+const Child = ensuredForwardRef<HTMLDivElement, unknown>((_, ref): ReactElement => {
+  const animation = useAnimation(() => gsap.from({ value: 0 }, { value: 1 }), []);
+
+  useExposeAnimation(animation, ref);
+
+  return <div ref={ref}>Check the console to see the result</div>;
+});
+
+function Parent(): ReactElement {
   const ref = useRef<HTMLDivElement | null>(null);
   const animation = useExposedAnimation(ref);
 
-  // eslint-disable-next-line no-console
-  console.log('useExposedAnimation', animation);
+  console.log(animation);
 
   return <Child ref={ref} />;
 }
