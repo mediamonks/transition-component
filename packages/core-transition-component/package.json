@@ -51,7 +51,7 @@
     "typescript": "^4.9.4"
   },
   "peerDependencies": {
-    "gsap": "^3.7.0"
+    "gsap": "npm:@gsap/business@^3.11.4"
   },
   "eslintConfig": {
     "overrides": [
