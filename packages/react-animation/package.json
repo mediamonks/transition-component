@@ -1,6 +1,6 @@
 {
   "name": "@mediamonks/react-animation",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Animation components, hooks, utilities for React + GSAP.",
   "keywords": [
     "react",
