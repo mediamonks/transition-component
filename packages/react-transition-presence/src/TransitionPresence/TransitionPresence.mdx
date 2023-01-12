@@ -1,6 +1,8 @@
 import { Meta } from '@storybook/blocks';
+import { Canvas } from './../../.storybook/Canvas';
+import { DeferFlow, CrossFlow } from './TransitionPresence.stories';
 
-<Meta title="TransitionPresence" />
+<Meta title="components/TransitionPresence" />
 
 # TransitionPresence
 
@@ -18,26 +20,33 @@ use case.
 
 ## Children
 
-TransitionPresence accepts a single child, use a `Fragment` when you want to render multiple
+`<TransitionPresence />` accepts a single child, use a `Fragment` when you want to render multiple
 components on the root level,
 
 ## Defer flow
 
 By default old children unmount before new children are mounted.
 
-```jsx
-import { TransitionPresence } from '@mediamonks/react-transition-presence';
+```tsx
+type ChildProps = {
+  background: string;
+  onClick(): void;
+};
 
-function Child({ background, onClick }): ReactElement {
-  useBeforeUnmount(() => {
-    // Defer unmounting for 1 second
-    return new Promise((resolve) => {
-      setTimeout(resolve, 1000);
-    });
-  });
+function Child({ background, onClick }: ChildProps): ReactElement {
+  useBeforeUnmount(
+    () =>
+      // Defer unmounting for 1 second
+      new Promise((resolve) => {
+        setTimeout(resolve, 1000);
+      }),
+    [],
+  );
 
   return (
-    <div
+    <button
+      aria-label="Click to change color"
+      type="button"
       style={{
         background,
         width: 200,
@@ -48,38 +57,65 @@ function Child({ background, onClick }): ReactElement {
   );
 }
 
-function DefaultFlow(): ReactElement {
-  const [isRedChildVisible, setIsRedVisible] = useState(true);
+function DeferFlow(): ReactElement {
+  const [isRedVisible, setIsRedVisible] = useState(true);
 
   return (
-    <TransitionPresence crossFlow>
-      {isVisible ? (
-        <Child background="red" onClick={() => setIsRedVisible(true)} />
-      ) : (
-        <Child background="blue" onClick={() => setIsRedVisible(false)} />
-      )}
-    </TransitionPresence>
+    <>
+      <TransitionPresence>
+        {isRedVisible ? (
+          <Child
+            background="red"
+            onClick={(): void => {
+              setIsRedVisible(false);
+            }}
+          />
+        ) : (
+          <Child
+            background="blue"
+            onClick={(): void => {
+              setIsRedVisible(true);
+            }}
+          />
+        )}
+      </TransitionPresence>
+
+      <div style={{ marginTop: 24 }}>Click the square (isRedVisible: {String(isRedVisible)})</div>
+    </>
   );
 }
 ```
+
+### Example
+
+<Canvas>
+  <DeferFlow />
+</Canvas>
 
 ## Cross flow
 
 Use the crossFlow prop on `<TransitionPresence />` to enable cross flow
 
-```jsx
-import { TransitionPresence } from '@mediamonks/react-transition-presence';
+```tsx
+type ChildProps = {
+  background: string;
+  onClick(): void;
+};
 
-function Child({ background, onClick }): ReactElement {
-  useBeforeUnmount(() => {
-    // Defer unmounting for 1 second
-    return new Promise((resolve) => {
-      setTimeout(resolve, 1000);
-    });
-  });
+function Child({ background, onClick }: ChildProps): ReactElement {
+  useBeforeUnmount(
+    () =>
+      // Defer unmounting for 1 second
+      new Promise((resolve) => {
+        setTimeout(resolve, 1000);
+      }),
+    [],
+  );
 
   return (
-    <div
+    <button
+      aria-label="Click to change color"
+      type="button"
       style={{
         background,
         width: 200,
@@ -91,16 +127,38 @@ function Child({ background, onClick }): ReactElement {
 }
 
 function CrossFlow(): ReactElement {
-  const [isRedChildVisible, setIsRedVisible] = useState(true);
+  const [isRedVisible, setIsRedVisible] = useState(true);
 
   return (
-    <TransitionPresence crossFlow>
-      {isVisible ? (
-        <Child background="red" onClick={() => setIsRedVisible(true)} />
-      ) : (
-        <Child background="blue" onClick={() => setIsRedVisible(false)} />
-      )}
-    </TransitionPresence>
+    <>
+      <TransitionPresence crossFlow>
+        {isRedVisible ? (
+          <Child
+            background="red"
+            // eslint-disable-next-line react/jsx-no-bind
+            onClick={(): void => {
+              setIsRedVisible(false);
+            }}
+          />
+        ) : (
+          <Child
+            background="blue"
+            // eslint-disable-next-line react/jsx-no-bind
+            onClick={(): void => {
+              setIsRedVisible(true);
+            }}
+          />
+        )}
+      </TransitionPresence>
+
+      <div style={{ marginTop: 24 }}>Click the square (isRedVisible: {String(isRedVisible)})</div>
+    </>
   );
 }
 ```
+
+### Example
+
+<Canvas>
+  <CrossFlow />
+</Canvas>
