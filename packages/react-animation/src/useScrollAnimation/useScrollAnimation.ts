@@ -5,7 +5,9 @@ import { animations } from '../animations.js';
 import { useExposeAnimation } from '../index.js';
 import { useAnimation } from '../useAnimation/useAnimation.js';
 
-gsap.registerPlugin(ScrollTrigger);
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 /**
  * Hook to create animation that make use of ScrollTrigger, ScrollTrigger is refreshed

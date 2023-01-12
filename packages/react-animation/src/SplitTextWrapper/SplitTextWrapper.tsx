@@ -4,7 +4,9 @@ import SplitText from 'gsap/SplitText';
 import { type ReactElement } from 'react';
 import { renderToString } from 'react-dom/server';
 
-gsap.registerPlugin(SplitText);
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(SplitText);
+}
 
 export type SplitTextWrapperProps = {
   children: ReactElement;
