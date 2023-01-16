@@ -27,8 +27,8 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
       - run: |
-          echo "//npm.greensock.com/:_authToken=$GSAP_TOKEN" > ~/.npmrc
-          echo "@gsap:registry=\"https://npm.greensock.com\"" >> ~/.npmrc
+          echo "//npm.greensock.com/:_authToken=$GSAP_TOKEN" > ./.npmrc
+          echo "@gsap:registry=\"https://npm.greensock.com\"" >> ./.npmrc
       - run: npm ci
       - run: npm run build
       - run: npm run test

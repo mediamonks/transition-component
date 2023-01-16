@@ -42,8 +42,8 @@ jobs:
         env:
           GSAP_TOKEN: ${{ secrets.GSAP_TOKEN }}
         run: |
-          echo "//npm.greensock.com/:_authToken=$GSAP_TOKEN" > ~/.npmrc
-          echo "@gsap:registry=\"https://npm.greensock.com\"" >> ~/.npmrc
+          echo "//npm.greensock.com/:_authToken=$GSAP_TOKEN" > ./.npmrc
+          echo "@gsap:registry=\"https://npm.greensock.com\"" >> ./.npmrc
           npm ci
           npm run build
           npm run storybook:build
