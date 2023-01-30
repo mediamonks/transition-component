@@ -120,6 +120,7 @@ export function getTransitionController<
       if (direction === 'out') {
         this.setupTimeline({
           direction,
+          reset: true,
         });
       }
 
