@@ -1,3 +1,4 @@
+import * as React from 'react';
 import {
   Children,
   useCallback,
@@ -6,6 +7,7 @@ import {
   useState,
   type ReactElement,
   type ReactNode,
+  type Key,
 } from 'react';
 import {
   useBeforeUnmount,
@@ -14,8 +16,10 @@ import {
 import { TransitionPresenceContext } from './TransitionPresence.context.js';
 
 export type TransitionPresenceProps = {
-  children: ReactNode;
+  children: ReactElement | null;
   crossFlow?: boolean;
+  onStart?(): void;
+  onComplete?(): void;
 };
 
 /**
@@ -23,9 +27,14 @@ export type TransitionPresenceProps = {
  * crossFlow is enabled new children are added immediately when deferred
  * children are not the same.
  */
-export function TransitionPresence({ children, crossFlow }: TransitionPresenceProps): ReactElement {
+export function TransitionPresence({
+  children,
+  crossFlow,
+  onStart,
+  onComplete,
+}: TransitionPresenceProps): ReactElement {
   const beforeUnmountCallbacks = useMemo(() => new Set<BeforeUnmountCallback>(), []);
-  const [deferredChildren, setDeferredChildren] = useState<ReactNode>(children);
+  const [deferredChildren, setDeferredChildren] = useState<ReactElement | null>(children);
 
   const beforeUnmount = useCallback(
     async (abortSignal: AbortSignal) => {
@@ -41,32 +50,70 @@ export function TransitionPresence({ children, crossFlow }: TransitionPresencePr
   );
 
   useEffect(() => {
+    if (areChildrenEqual(children, deferredChildren)) {
+      setDeferredChildren(children);
+      return;
+    }
     const abortController = new AbortController();
 
     (async (): Promise<void> => {
+      onStart?.();
       // Defer children update for before unmount lifecycle
       await beforeUnmount(abortController.signal);
 
       setDeferredChildren(children);
+      onComplete?.();
     })();
 
     return () => {
       abortController.abort();
     };
-  }, [children, beforeUnmount, beforeUnmountCallbacks]);
+  }, [children, onStart, onComplete, beforeUnmount, beforeUnmountCallbacks]);
 
   // Apply same effect when TransitionPresence in tree updates
   useBeforeUnmount(beforeUnmount, []);
 
   // Validate that children is only 1 valid React element
-  if (children !== null && children !== false) {
+  if (children !== null) {
     Children.only(children);
   }
+
+  const shouldRenderOldChildren = crossFlow && !areChildrenEqual(children, deferredChildren, true);
 
   return (
     <TransitionPresenceContext.Provider value={beforeUnmountCallbacks}>
       {deferredChildren}
-      {crossFlow && (deferredChildren === children ? null : children)}
+      {shouldRenderOldChildren && children}
     </TransitionPresenceContext.Provider>
   );
+}
+
+function areChildrenEqual(
+  childrenA: ReactElement | null,
+  childrenB: ReactElement | null,
+  showError = false,
+): boolean {
+  if (childrenA === childrenB) {
+    return true;
+  }
+
+  const keyA = getKey(childrenA, showError);
+  const keyB = getKey(childrenB, showError);
+
+  if (!keyA && !keyB) {
+    return false;
+  }
+
+  return keyA === keyB;
+}
+
+function getKey(children: ReactElement | null, showError = false): Key | undefined {
+  const key = children?.key ?? undefined;
+
+  if (showError && !key) {
+    // eslint-disable-next-line no-console
+    console.error('TransitionPresence: Child must have a "key" defined', children);
+  }
+
+  return key;
 }
