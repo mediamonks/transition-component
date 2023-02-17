@@ -18,12 +18,57 @@ at the same time with `crossFlow` enabled.
 The most common use-case for `<TransitionPresence />` is animations, but it's not limited to this
 use case.
 
-## Children
+> A `key` prop is required on the children of `<TransitionPresence />` to make sure the transition is
+only triggered when the key changes.
+
+## Props
+
+### Children
 
 `<TransitionPresence />` accepts a single child, use a `Fragment` when you want to render multiple
 components on the root level,
 
-## Defer flow
+The child element must have a unique `key` prop. When rendering a different component, the key must
+be different.
+
+### onStart
+
+The `onStart` is called when the transition starts.
+
+```tsx
+onStart?: () => void;
+
+<TransitionPresence onStart={() => console.log('start')}>
+```
+
+### onComplete
+
+The `onComplete` is called when the transition completes (i.e. when the beforeUnmount of the previous child finishes).
+
+```tsx
+onComplete?: () => void;
+
+<TransitionPresence onComplete={() => console.log('completed')}>
+```
+
+## Examples
+
+### Basic
+
+```tsx
+<TransitionPresence
+  onStart={() => console.log('start')}
+  onComplete={() => console.log('completed')}
+>
+  {isRedVisible ? (
+    <Child key="red" />
+  ) : (
+    <Child key="blue" />
+  )}
+</TransitionPresence>
+```
+
+### Defer flow
 
 By default old children unmount before new children are mounted.
 
@@ -65,6 +110,7 @@ function DeferFlow(): ReactElement {
       <TransitionPresence>
         {isRedVisible ? (
           <Child
+            key="red"
             background="red"
             onClick={(): void => {
               setIsRedVisible(false);
@@ -72,6 +118,7 @@ function DeferFlow(): ReactElement {
           />
         ) : (
           <Child
+            key="blue"
             background="blue"
             onClick={(): void => {
               setIsRedVisible(true);
@@ -86,13 +133,13 @@ function DeferFlow(): ReactElement {
 }
 ```
 
-### Example
+#### Preview
 
 <Canvas>
   <DeferFlow />
 </Canvas>
 
-## Cross flow
+### Cross flow
 
 Use the crossFlow prop on `<TransitionPresence />` to enable cross flow
 
@@ -134,6 +181,7 @@ function CrossFlow(): ReactElement {
       <TransitionPresence crossFlow>
         {isRedVisible ? (
           <Child
+            key="red"
             background="red"
             // eslint-disable-next-line react/jsx-no-bind
             onClick={(): void => {
@@ -142,6 +190,7 @@ function CrossFlow(): ReactElement {
           />
         ) : (
           <Child
+            key="blue"
             background="blue"
             // eslint-disable-next-line react/jsx-no-bind
             onClick={(): void => {
@@ -157,7 +206,7 @@ function CrossFlow(): ReactElement {
 }
 ```
 
-### Example
+#### Preview
 
 <Canvas>
   <CrossFlow />
