@@ -4,3 +4,4 @@ export * from './useAnimation/useAnimation.js';
 export * from './useScrollAnimation/useScrollAnimation.js';
 export * from './useExposeAnimation/useExposeAnimation.js';
 export * from './useExposedAnimation/useExposedAnimation.js';
+export * from './useExposedAnimations/useExposedAnimations.js';
