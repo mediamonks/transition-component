@@ -4,6 +4,17 @@ class AnimationsMap extends Map {
   private updateQueued = false;
 
   public set(key: unknown, value: gsap.core.Animation): this {
+    if (key === null || key === undefined) {
+      throw new Error(
+        'Cannot set animation with null or undefined key. Make sure the ref you pass correctly has its value set.',
+      );
+    }
+
+    // skip if value is the same, mostly for optimisation
+    if (value === this.get(key)) {
+      return this;
+    }
+
     const result = super.set(key, value);
 
     if (this.updateQueued) {
