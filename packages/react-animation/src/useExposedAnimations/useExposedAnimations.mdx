@@ -1,0 +1,37 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="hooks/useExposedAnimations" />
+
+# useExposedAnimations
+
+The `useExposedAnimations` hook is used to get a collection of animations which are exposed in the global animation
+Map for the given references (not necessarily an HTMLElement). The hook will trigger a rerender when
+the animation for any of the references in the collection changes, is added, or is removed.
+
+> Note: The return value will most likely be an empty array during the first render pass
+
+```tsx
+const ChildItem = ensuredForwardRef<HTMLDivElement, unknown>((_, ref): ReactElement => {
+  const animation = useAnimation(() => gsap.from({ value: 0 }, { value: 1 }), []);
+
+  useExposeAnimation(animation, ref);
+
+  return <div ref={ref}>Child item content</div>;
+});
+
+function Parent(): ReactElement {
+  const ref = useRef<Array<HTMLDivElement | null>>([]);
+  const animations = useExposedAnimations(ref);
+
+  console.log(animations); // array
+
+  return (
+    <>
+      {Array.from({ length: 3 }).map((_, index) => (
+        // eslint-disable-next-line react/no-array-index-key
+        <ChildItem key={index} ref={arrayRef(ref, index)} />
+      ))}
+    </>
+  );
+}
+```
