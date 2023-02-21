@@ -1,6 +1,6 @@
 {
   "name": "@mediamonks/react-transition-presence",
-  "version": "1.0.3",
+  "version": "1.1.1",
   "description": "Component that adds before unmount lifecycle hook",
   "repository": {
     "type": "git",
