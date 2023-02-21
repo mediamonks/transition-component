@@ -25,7 +25,7 @@ describe('TransitionPresence', () => {
   it('should render children', async () => {
     const result = render(
       <TransitionPresence>
-        <Child beforeUnmount={(): Promise<void> => Promise.resolve()} />
+        <Child key="key" beforeUnmount={(): Promise<void> => Promise.resolve()} />
       </TransitionPresence>,
     );
 
@@ -36,6 +36,7 @@ describe('TransitionPresence', () => {
     const result = render(
       <TransitionPresence>
         <Child
+          key="key"
           beforeUnmount={(): Promise<void> =>
             new Promise<void>((resolve) => {
               setTimeout(resolve, 1000);

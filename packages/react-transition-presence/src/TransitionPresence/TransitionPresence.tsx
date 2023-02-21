@@ -6,8 +6,8 @@ import {
   useMemo,
   useState,
   type ReactElement,
-  type ReactNode,
   type Key,
+  useRef,
 } from 'react';
 import {
   useBeforeUnmount,
@@ -33,6 +33,10 @@ export function TransitionPresence({
   onStart,
   onComplete,
 }: TransitionPresenceProps): ReactElement {
+  const lastRenderChildren = useRef<
+    [children: ReactElement | null, deferredChildren: ReactElement | null]
+  >([null, null]);
+  const isReRender = useRef(false);
   const beforeUnmountCallbacks = useMemo(() => new Set<BeforeUnmountCallback>(), []);
   const [deferredChildren, setDeferredChildren] = useState<ReactElement | null>(children);
 
@@ -49,7 +53,23 @@ export function TransitionPresence({
     [beforeUnmountCallbacks],
   );
 
+  // Check if the children or deferredChildren have changed since the previous render
+  isReRender.current = ((): boolean => {
+    const [previousChildren, previousDeferredChildren] = lastRenderChildren.current;
+    lastRenderChildren.current = [children, deferredChildren];
+    return (
+      areChildrenEqual(previousChildren, children) &&
+      areChildrenEqual(previousDeferredChildren, deferredChildren)
+    );
+  })();
+
   useEffect(() => {
+    if (isReRender.current) {
+      // The children and the deferred children are the same,
+      // so we should not trigger a new transition.
+      // If we do, we accidentally animate out new children.
+      return;
+    }
     if (areChildrenEqual(children, deferredChildren)) {
       setDeferredChildren(children);
       return;
@@ -68,7 +88,7 @@ export function TransitionPresence({
     return () => {
       abortController.abort();
     };
-  }, [children, onStart, onComplete, beforeUnmount, beforeUnmountCallbacks]);
+  }, [children, deferredChildren, onStart, onComplete, beforeUnmount, beforeUnmountCallbacks]);
 
   // Apply same effect when TransitionPresence in tree updates
   useBeforeUnmount(beforeUnmount, []);
@@ -78,7 +98,7 @@ export function TransitionPresence({
     Children.only(children);
   }
 
-  const shouldRenderOldChildren = crossFlow && !areChildrenEqual(children, deferredChildren, true);
+  const shouldRenderOldChildren = crossFlow && !areChildrenEqual(children, deferredChildren, false);
 
   return (
     <TransitionPresenceContext.Provider value={beforeUnmountCallbacks}>
@@ -91,14 +111,14 @@ export function TransitionPresence({
 function areChildrenEqual(
   childrenA: ReactElement | null,
   childrenB: ReactElement | null,
-  showError = false,
+  showError = true,
 ): boolean {
+  const keyA = getKey(childrenA, showError);
+  const keyB = getKey(childrenB, showError);
+
   if (childrenA === childrenB) {
     return true;
   }
-
-  const keyA = getKey(childrenA, showError);
-  const keyB = getKey(childrenB, showError);
 
   if (!keyA && !keyB) {
     return false;
@@ -108,7 +128,11 @@ function areChildrenEqual(
 }
 
 function getKey(children: ReactElement | null, showError = false): Key | undefined {
-  const key = children?.key ?? undefined;
+  if (!children) {
+    return undefined;
+  }
+
+  const key = children.key ?? undefined;
 
   if (showError && !key) {
     // eslint-disable-next-line no-console
