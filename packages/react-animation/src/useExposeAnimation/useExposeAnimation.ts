@@ -19,5 +19,14 @@ export function useExposeAnimation(
     return () => {
       animations.delete(_reference);
     };
-  }, [animation, reference]);
+
+    // TODO: We currently rely on the Component where this hook is used,
+    //  and we know that animation will get a new ref.current assigned
+    //  as part of useAnimation, if that has dependencies.
+    //  If that updates (due to a re-render), we should also update
+    //  the animation in the global map.
+    //  This feels a bit flaky, but I can't think of a better way to do this currently.
+    //  We should probably have these hooks more integrated with each other.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [animation, animation.current, reference]);
 }
