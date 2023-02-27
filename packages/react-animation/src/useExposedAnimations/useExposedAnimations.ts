@@ -15,11 +15,26 @@ export function useExposedAnimations(
     () =>
       animations.listen(() => {
         if (arrayRef.current) {
-          setExposedAnimations(arrayRef.current.map((ref) => animations.get(ref)));
+          const newAnimations = arrayRef.current.map((ref) => animations.get(ref));
+          // this should only be done when the refs have been updated, otherwise we're returning
+          // a new array ref with the same values, which will cause a re-render
+          setExposedAnimations((currentAnimations) =>
+            areArraysEqual(currentAnimations, newAnimations) ? currentAnimations : newAnimations,
+          );
         }
       }),
     [arrayRef],
   );
 
   return exposedAnimations;
+}
+
+function areArraysEqual<T>(a: ReadonlyArray<T>, b: ReadonlyArray<T>): boolean {
+  if (a.length !== b.length) {
+    return false;
+  }
+
+  return (
+    a.every((value, index) => value === b[index]) && b.every((value, index) => value === a[index])
+  );
 }
