@@ -1,0 +1,42 @@
+name: Publish dev release for react-animation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'packages/react-animation/**'
+
+jobs:
+  bump-version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'npm'
+
+      - name: Install npm packages
+        run: npm ci
+
+      - name: Setup Git
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+
+      - name: bump version
+        # gets the version from the package.json, removes the quotes and the prerelease part, adds the git hash and sets the version
+        # example: 1.0.0-alpha.0 -> 1.0.0-dev.1234567
+        run: |
+          echo "$(npm pkg get version --prefix packages/react-animation | cut -d '"' -f 2 | cut -d '-' -f 1)-dev.$(git rev-parse --short HEAD)" | xargs npm version --no-git-tag-version
+
+      - name: publish
+        run: |
+          npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
+          npm publish -w packages/react-animation  --tag next
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
