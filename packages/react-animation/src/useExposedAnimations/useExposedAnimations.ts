@@ -19,7 +19,7 @@ export function useExposedAnimations(
           // this should only be done when the refs have been updated, otherwise we're returning
           // a new array ref with the same values, which will cause a re-render
           setExposedAnimations((currentAnimations) =>
-            areArraysEqual(currentAnimations, newAnimations) ? currentAnimations : newAnimations,
+            areArraysEqual(newAnimations, currentAnimations) ? currentAnimations : newAnimations,
           );
         }
       }),
@@ -34,7 +34,11 @@ function areArraysEqual<T>(a: ReadonlyArray<T>, b: ReadonlyArray<T>): boolean {
     return false;
   }
 
-  return (
-    a.every((value, index) => value === b[index]) && b.every((value, index) => value === a[index])
-  );
+  for (const [index, element] of a.entries()) {
+    if (element !== b[index]) {
+      return false;
+    }
+  }
+
+  return true;
 }
