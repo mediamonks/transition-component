@@ -14,6 +14,7 @@ import {
   type BeforeUnmountCallback,
 } from '../useBeforeUnmount/useBeforeUnmount.js';
 import { TransitionPresenceContext } from './TransitionPresence.context.js';
+import { useOld } from './useOld.js';
 
 export type TransitionPresenceProps = {
   children: ReactElement | null;
@@ -33,12 +34,16 @@ export function TransitionPresence({
   onStart,
   onComplete,
 }: TransitionPresenceProps): ReactElement {
-  const lastRenderChildren = useRef<
-    [children: ReactElement | null, deferredChildren: ReactElement | null]
-  >([null, null]);
-  const isReRender = useRef(false);
   const beforeUnmountCallbacks = useMemo(() => new Set<BeforeUnmountCallback>(), []);
   const [deferredChildren, setDeferredChildren] = useState<ReactElement | null>(children);
+
+  const previousChildren = useOld<ReactElement | null>(children) ?? null;
+  const previousDeferredChildren = useOld<ReactElement | null>(deferredChildren) ?? null;
+  const childrenChangedSinceLastRender = useRef(true);
+
+  childrenChangedSinceLastRender.current =
+    !areChildrenEqual(children, previousChildren) ||
+    !areChildrenEqual(deferredChildren, previousDeferredChildren);
 
   const beforeUnmount = useCallback(
     async (abortSignal: AbortSignal) => {
@@ -53,27 +58,26 @@ export function TransitionPresence({
     [beforeUnmountCallbacks],
   );
 
-  // Check if the children or deferredChildren have changed since the previous render
-  isReRender.current = ((): boolean => {
-    const [previousChildren, previousDeferredChildren] = lastRenderChildren.current;
-    lastRenderChildren.current = [children, deferredChildren];
-    return (
-      areChildrenEqual(previousChildren, children) &&
-      areChildrenEqual(previousDeferredChildren, deferredChildren)
-    );
-  })();
-
   useEffect(() => {
-    if (isReRender.current) {
+    // If we have two children with the same key, we should not trigger a new transition.
+    // This is set after the first transition, so that deferredChildren is in the correct state
+    // when the next transition is triggered.
+    if (areChildrenEqual(children, deferredChildren)) {
+      // console.log('    setDeferredChildren early return');
+      setDeferredChildren(children);
+      return;
+    }
+
+    // When nothing has changed since the last render, we should not trigger a new transition.
+    // This check is done on the keys of each. It will still render them properly, it just won't
+    // trigger a transition.
+    if (!childrenChangedSinceLastRender.current) {
       // The children and the deferred children are the same,
       // so we should not trigger a new transition.
       // If we do, we accidentally animate out new children.
       return;
     }
-    if (areChildrenEqual(children, deferredChildren)) {
-      setDeferredChildren(children);
-      return;
-    }
+
     const abortController = new AbortController();
 
     (async (): Promise<void> => {
@@ -81,7 +85,10 @@ export function TransitionPresence({
       // Defer children update for before unmount lifecycle
       await beforeUnmount(abortController.signal);
 
+      // console.log('    setDeferredChildren after unMount children');
       setDeferredChildren(children);
+      // Note: even though we're calling `onComplete` here, the in animation of the new children
+      // could still be running.
       onComplete?.();
     })();
 
@@ -98,6 +105,17 @@ export function TransitionPresence({
     Children.only(children);
   }
 
+  // console.group('TransitionPresence::render');
+  // console.log(
+  //   `children %c${children?.key}`,
+  //   `color: ${String(children?.key).replaceAll(/\d/gu, '')}`,
+  // );
+  // console.log(
+  //   `deferredChildren %c${deferredChildren?.key}`,
+  //   `color: ${String(deferredChildren?.key).replaceAll(/\d/gu, '')}`,
+  // );
+  // console.groupEnd();
+
   const shouldRenderOldChildren = crossFlow && !areChildrenEqual(children, deferredChildren, false);
 
   return (
@@ -108,6 +126,9 @@ export function TransitionPresence({
   );
 }
 
+/**
+ * Checks if two children are equal by comparing their keys.
+ */
 function areChildrenEqual(
   childrenA: ReactElement | null,
   childrenB: ReactElement | null,

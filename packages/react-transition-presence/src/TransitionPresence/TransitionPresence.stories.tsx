@@ -1,8 +1,15 @@
-/* eslint-disable react/no-multi-comp, react/jsx-no-literals,no-console */
+/* eslint-disable react/no-multi-comp, react/jsx-no-literals,no-console,react/jsx-no-bind */
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { useAnimation } from '@mediamonks/react-animation';
 import gsap from 'gsap';
-import { type ReactElement, useCallback, useEffect, useRef, useState } from 'react';
+import {
+  type PropsWithChildren,
+  type ReactElement,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { useBeforeUnmount } from '../useBeforeUnmount/useBeforeUnmount.js';
 import { TransitionPresence } from './TransitionPresence.js';
 
@@ -14,7 +21,7 @@ type ChildProps = {
   background: string;
   duration?: number;
   delayIn?: number;
-  onClick(): void;
+  onClick?(): void;
 };
 
 // Forces a re-render, useful to test for unwanted side-effects
@@ -27,26 +34,39 @@ function useRerender(): () => void {
   };
 }
 
-function Child({ background, onClick, duration = 1, delayIn = 0 }: ChildProps): ReactElement {
+function Child({
+  background,
+  onClick,
+  duration = 1,
+  delayIn = 0,
+  children,
+}: PropsWithChildren<ChildProps>): ReactElement {
   const ref = useRef<HTMLButtonElement>(null);
 
+  const debugLog = useCallback(
+    (message: string): void => {
+      console.log(`%c${message}: ${background}`, `color: ${background}`);
+    },
+    [background],
+  );
+
   useAnimation(() => {
-    console.log('animate-in', background);
+    debugLog(` >> animate-in`);
     return gsap.fromTo(ref.current, { opacity: 0 }, { opacity: 1, duration, delay: delayIn });
   }, []);
 
   // show visible animation during "before unmount" lifecycle
   useBeforeUnmount(async () => {
-    console.log('animate-out', background);
+    debugLog(` << animate-out`);
     return gsap.fromTo(ref.current, { opacity: 1 }, { opacity: 0, duration });
   }, []);
 
   // show when mounted/unmounted
   useEffect(() => {
-    console.log('mounted', background);
+    debugLog('-> mounted');
 
     return () => {
-      console.log('unmounted', background);
+      debugLog('<- unmounted');
     };
   }, []);
 
@@ -62,7 +82,9 @@ function Child({ background, onClick, duration = 1, delayIn = 0 }: ChildProps): 
         height: 200,
       }}
       onClick={onClick}
-    />
+    >
+      {children}
+    </button>
   );
 }
 
@@ -94,6 +116,15 @@ export function DeferFlow(): ReactElement {
       </TransitionPresence>
 
       <div style={{ marginTop: 24 }}>Click the square (isRedVisible: {String(isRedVisible)})</div>
+      <button
+        type="button"
+        /* eslint-disable-next-line react/jsx-no-bind */
+        onClick={(): void => {
+          setIsRedVisible((previous) => !previous);
+        }}
+      >
+        Or click here to switch
+      </button>
     </>
   );
 }
@@ -130,6 +161,10 @@ export function CrossFlow(): ReactElement {
   );
 }
 
+/**
+ * Test to make sure that when a parent rerenders during a crossFlow transition,
+ * the new child is not unmounted or transitioned out.
+ */
 export function CrossFlowRerender(): ReactElement {
   const [isRedVisible, setIsRedVisible] = useState(true);
 
@@ -213,6 +248,11 @@ export function StartCompleteCallbacks(): ReactElement {
 }
 
 const initialItems = ['red', 'blue', 'green', 'yellow'];
+
+/**
+ * Test with crossflow and normal flow where items are moved between indexes.
+ * It should not unmount new children during the transition.
+ */
 export function RerenderUnmountIssue(): ReactElement {
   const [items, setItems] = useState(() => initialItems);
   const rerender = useRerender();
@@ -237,7 +277,7 @@ export function RerenderUnmountIssue(): ReactElement {
       <div style={{ display: 'flex' }}>
         {items.map((item, index) => (
           // eslint-disable-next-line react/no-array-index-key
-          <div key={index} style={{ width: index === 0 ? 400 : 200 }}>
+          <div key={index}>
             <TransitionPresence crossFlow={index <= 1}>
               <Child
                 /* eslint-disable-next-line react/no-array-index-key */
@@ -253,6 +293,60 @@ export function RerenderUnmountIssue(): ReactElement {
       </div>
       <button type="button" onClick={onReset}>
         Reset
+      </button>
+    </div>
+  );
+}
+
+/**
+ * Test case to make sure that children of the components passed to TransitionPresence
+ * are still rerendered when the parent rerenders, and the TransitionPresence doesn't
+ * block the rerender.
+ */
+export function RerenderChildrenIssue(): ReactElement {
+  const rerender = useRerender();
+  const [slideIndex, setSlideIndex] = useState(0);
+  const [childIndex, setChildIndex] = useState(0);
+
+  return (
+    <div>
+      <p>
+        Changing the children should increase the count, even though the slide isn&apos;t updating
+      </p>
+      <div>
+        <TransitionPresence>
+          <Child
+            /* eslint-disable-next-line react/no-array-index-key */
+            key={slideIndex}
+            background="red"
+          >
+            <span>{childIndex}</span>
+          </Child>
+        </TransitionPresence>
+      </div>
+      <button
+        type="button"
+        onClick={(): void => {
+          setSlideIndex((previous) => previous + 1);
+        }}
+      >
+        Change Slide
+      </button>
+      <button
+        type="button"
+        onClick={(): void => {
+          setChildIndex((previous) => previous + 1);
+        }}
+      >
+        Change Slide Children
+      </button>
+      <button
+        type="button"
+        onClick={(): void => {
+          rerender();
+        }}
+      >
+        Rerender
       </button>
     </div>
   );
