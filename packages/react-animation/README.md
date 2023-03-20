@@ -4,3 +4,5 @@
 # @mediamonks/react-animation
 
 Animation components, hooks, utilities for React + GSAP.
+
+You can find this package's documentation [here](https://mediamonks.github.io/transition-component/react-animation/index.html).

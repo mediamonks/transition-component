@@ -4,3 +4,6 @@
 # @mediamonks/react-transition-presence
 
 Animation components, hooks, utilities for React.
+
+You can find this package's documentation [here](https://mediamonks.github.io/transition-component/react-transition-presence/index.html?path=/docs/components-transitionpresence--docs).
+
