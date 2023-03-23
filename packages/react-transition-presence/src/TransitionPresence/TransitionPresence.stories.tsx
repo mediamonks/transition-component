@@ -13,7 +13,7 @@ type ChildProps = {
   background: string;
   duration?: number;
   delayIn?: number;
-  onClick(): void;
+  onClick?(): void;
 };
 
 // Forces a re-render, useful to test for unwanted side-effects
@@ -70,7 +70,7 @@ function Child({ background, onClick, duration = 1, delayIn = 0 }: ChildProps): 
   );
 }
 
-export function DeferFlow(): ReactElement {
+export function DeferFlowExample(): ReactElement {
   const [isRedVisible, setIsRedVisible] = useState(true);
 
   return (
@@ -78,7 +78,6 @@ export function DeferFlow(): ReactElement {
       <TransitionPresence>
         {isRedVisible ? (
           <Child
-            key="red"
             background="red"
             // eslint-disable-next-line react/jsx-no-bind
             onClick={(): void => {
@@ -87,7 +86,6 @@ export function DeferFlow(): ReactElement {
           />
         ) : (
           <Child
-            key="blue"
             background="blue"
             // eslint-disable-next-line react/jsx-no-bind
             onClick={(): void => {
@@ -102,73 +100,42 @@ export function DeferFlow(): ReactElement {
   );
 }
 
-export function CrossFlow(): ReactElement {
+export function DeferFlowFragmentExample(): ReactElement {
   const [isRedVisible, setIsRedVisible] = useState(true);
 
   return (
     <>
-      <TransitionPresence crossFlow>
+      <TransitionPresence>
         {isRedVisible ? (
-          <Child
-            key="red"
-            background="red"
-            // eslint-disable-next-line react/jsx-no-bind
-            onClick={(): void => {
-              setIsRedVisible(false);
-            }}
-          />
+          // eslint-disable-next-line react/jsx-no-useless-fragment
+          <>
+            <Child
+              background="red"
+              // eslint-disable-next-line react/jsx-no-bind
+              onClick={(): void => {
+                setIsRedVisible(false);
+              }}
+            />
+            <Child background="yellow" />
+          </>
         ) : (
-          <Child
-            key="blue"
-            background="blue"
-            // eslint-disable-next-line react/jsx-no-bind
-            onClick={(): void => {
-              setIsRedVisible(true);
-            }}
-          />
+          // eslint-disable-next-line react/jsx-no-useless-fragment
+          <>
+            <Child background="yellow" />
+            <Child
+              background="blue"
+              // eslint-disable-next-line react/jsx-no-bind
+              onClick={(): void => {
+                setIsRedVisible(true);
+              }}
+            />
+          </>
         )}
       </TransitionPresence>
 
-      <div style={{ marginTop: 24 }}>Click the square (isRedVisible: {String(isRedVisible)})</div>
-    </>
-  );
-}
-
-export function CrossFlowRerender(): ReactElement {
-  const [isRedVisible, setIsRedVisible] = useState(true);
-
-  // trigger rerender in the parent to see how it affects the TransitionPresence
-  const rerender = useRerender();
-
-  const onClickBlue = useCallback(() => {
-    setIsRedVisible(true);
-  }, [setIsRedVisible]);
-
-  const onClickRed = useCallback(() => {
-    setIsRedVisible(false);
-  }, [setIsRedVisible]);
-
-  return (
-    <>
-      <TransitionPresence crossFlow>
-        {isRedVisible ? (
-          <Child key="red" background="red" onClick={onClickRed} />
-        ) : (
-          /* remove key to trigger error log */
-          <Child key="blue" background="blue" onClick={onClickBlue} />
-        )}
-      </TransitionPresence>
-
-      <div style={{ marginTop: 24 }}>Click the square (isRedVisible: {String(isRedVisible)})</div>
-      <button
-        type="button"
-        /* eslint-disable-next-line react/jsx-no-bind */
-        onClick={(): void => {
-          rerender();
-        }}
-      >
-        trigger rerender
-      </button>
+      <div style={{ marginTop: 24 }}>
+        Click the blue/red square (isRedVisible: {String(isRedVisible)})
+      </div>
     </>
   );
 }
@@ -176,20 +143,14 @@ export function CrossFlowRerender(): ReactElement {
 export function StartCompleteCallbacks(): ReactElement {
   const [isRedVisible, setIsRedVisible] = useState(true);
 
+  const onTransitionComplete = useCallback(() => {
+    // eslint-disable-next-line no-console
+    console.log('onTransitionComplete');
+  }, []);
+
   return (
     <>
-      <TransitionPresence
-        /* eslint-disable-next-line react/jsx-no-bind,@typescript-eslint/explicit-function-return-type */
-        onStart={() => {
-          // eslint-disable-next-line no-console
-          console.log('start');
-        }}
-        /* eslint-disable-next-line react/jsx-no-bind,@typescript-eslint/explicit-function-return-type */
-        onComplete={() => {
-          // eslint-disable-next-line no-console
-          console.log('completed');
-        }}
-      >
+      <TransitionPresence onTransitionComplete={onTransitionComplete}>
         {isRedVisible ? (
           <Child
             key="red"
@@ -242,15 +203,8 @@ export function RerenderUnmountIssue(): ReactElement {
         {items.map((item, index) => (
           // eslint-disable-next-line react/no-array-index-key
           <div key={index} style={{ width: index === 0 ? 400 : 200 }}>
-            <TransitionPresence crossFlow={index <= 1}>
-              <Child
-                /* eslint-disable-next-line react/no-array-index-key */
-                key={item + index}
-                background={item}
-                onClick={onNextItem}
-                duration={2}
-                delayIn={0}
-              />
+            <TransitionPresence>
+              <Child background={item} onClick={onNextItem} duration={2} delayIn={0} />
             </TransitionPresence>
           </div>
         ))}
