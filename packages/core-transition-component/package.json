@@ -41,7 +41,7 @@
   "devDependencies": {
     "@mediamonks/eslint-config": "^2.0.7",
     "@mediamonks/eslint-config-typescript": "^1.0.9",
-    "rimraf": "^3.0.2",
+    "rimraf": "^5.0.0",
     "@swc/cli": "^0.1.57",
     "@swc/core": "^1.3.24",
     "@swc/jest": "^0.2.24",
