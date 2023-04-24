@@ -4,11 +4,13 @@
     "declaration": true,
     "outDir": "./dist"
   },
+  "include": ["./src/**/*"],
   "exclude": [
     "**/*.test.ts",
     "**/*.test.tsx",
     "**/*.stories.tsx",
     "**/*.stories.ts",
-    "jest.config.ts"
+    "**/*.playwright.tsx",
+    "**/*.playwright.ts"
   ]
 }
