@@ -1,5 +1,4 @@
 import { type ReactElement, type ReactFragment } from 'react';
-import { shallowCompare } from './shallowCompare.js';
 
 export function childrenAreEqual(
   previousChildren: ReactElement | ReactFragment | null,
@@ -9,26 +8,21 @@ export function childrenAreEqual(
     return true;
   }
 
+  // React reconciler will create a new instance when children type changes
   if (
-    (previousChildren === null && nextChildren !== null) ||
-    (previousChildren !== null && nextChildren === null)
+    (previousChildren !== null && 'type' in previousChildren && previousChildren.type) !==
+    (nextChildren !== null && 'type' in nextChildren && nextChildren.type)
   ) {
     return false;
   }
 
+  // React reconciler will create a new instance when children key changes
   if (
-    ('type' in previousChildren! && previousChildren.type) === // eslint-disable-line @typescript-eslint/no-non-null-assertion
-    ('type' in nextChildren! && nextChildren.type) // eslint-disable-line @typescript-eslint/no-non-null-assertion
+    (previousChildren !== null && 'key' in previousChildren && previousChildren.key) !==
+    (nextChildren !== null && 'key' in nextChildren && nextChildren.key)
   ) {
-    if (
-      'props' in previousChildren! && // eslint-disable-line @typescript-eslint/no-non-null-assertion
-      'props' in nextChildren! // eslint-disable-line @typescript-eslint/no-non-null-assertion
-    ) {
-      return shallowCompare(previousChildren.props, nextChildren.props);
-    }
-
-    return true;
+    return false;
   }
 
-  return false;
+  return true;
 }

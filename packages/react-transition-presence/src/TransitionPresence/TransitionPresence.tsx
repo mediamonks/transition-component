@@ -1,11 +1,12 @@
+import { useRefValue } from '@mediamonks/react-hooks';
 import {
   useCallback,
   useEffect,
   useMemo,
-  useRef,
   useState,
   type ReactElement,
   type ReactFragment,
+  type RefObject,
 } from 'react';
 import { childrenAreEqual } from '../_utils/childrenAreEqual.js';
 import { tick } from '../_utils/tick.js';
@@ -17,36 +18,47 @@ import { TransitionPresenceContext } from './TransitionPresence.context.js';
 
 export type TransitionPresenceProps = {
   children: ReactElement | ReactFragment | null;
-  onTransitionComplete?(children: ReactElement | ReactFragment): void | Promise<void>;
+  onPreviousChildrenUnmounting?(
+    previousChildren: ReactElement | ReactFragment | null,
+    children: ReactElement | ReactFragment | null,
+  ): void | Promise<void>;
+  onPreviousChildrenUnmounted?(
+    previousChildren: ReactElement | ReactFragment | null,
+    children: ReactElement | ReactFragment | null,
+  ): void | Promise<void>;
+  onChildrenMounted?(children: ReactElement | ReactFragment | null): void | Promise<void>;
 };
 
 /**
- * Will transition out old children before replacing new children. When
- * crossFlow is enabled new children are added immediately when deferred
- * children are not the same.
+ * Will defer transition in new children by waiting on the
+ * `BeforeUnmountCallback`s that are registered using the `useBeforeUnmount`
+ * hook.
  */
 export function TransitionPresence({
   children,
-  onTransitionComplete,
+  onPreviousChildrenUnmounting,
+  onPreviousChildrenUnmounted,
+  onChildrenMounted,
 }: TransitionPresenceProps): ReactElement {
-  const beforeUnmountCallbacks = useMemo(() => new Set<BeforeUnmountCallback>(), []);
+  const beforeUnmountCallbacks = useMemo(() => new Set<RefObject<BeforeUnmountCallback>>(), []);
   const [previousChildren, setPreviousChildren] = useState<typeof children>(children);
 
-  const beforeUnmount = useCallback(
+  const onPreviousChildrenUnmountingRef = useRefValue(onPreviousChildrenUnmounting);
+  const onPreviousChildrenUnmountedRef = useRefValue(onPreviousChildrenUnmounted);
+  const onChildrenMountedRef = useRefValue(onChildrenMounted);
+
+  const beforeUnmountPreviousChildren = useCallback(
     async (abortSignal: AbortSignal) => {
       const promises: Array<ReturnType<BeforeUnmountCallback>> = [];
 
       for (const callback of beforeUnmountCallbacks) {
-        promises.push(callback(abortSignal));
+        promises.push(callback.current?.(abortSignal));
       }
 
       await Promise.all(promises);
     },
     [beforeUnmountCallbacks],
   );
-
-  const onTransitionCompleteRef = useRef(onTransitionComplete);
-  onTransitionCompleteRef.current = onTransitionComplete;
 
   useEffect(() => {
     if (childrenAreEqual(children, previousChildren)) {
@@ -56,31 +68,41 @@ export function TransitionPresence({
     const abortController = new AbortController();
 
     (async (): Promise<void> => {
+      onPreviousChildrenUnmountingRef.current?.(previousChildren, children);
+
       // Defer children update for before unmount lifecycle
-      await beforeUnmount(abortController.signal);
+      await beforeUnmountPreviousChildren(abortController.signal);
 
-      onTransitionCompleteRef.current?.(
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        previousChildren!,
-      );
-
-      // Remove old children to make sure new children are re-initialized
       setPreviousChildren(null);
+
+      // Wait a tick after removing previous children to make sure new children
+      // are re-initialized
       await tick();
+
+      onPreviousChildrenUnmountedRef.current?.(previousChildren, children);
 
       // Set new children
       setPreviousChildren(children);
       await tick();
+
+      onChildrenMountedRef.current?.(children);
     })();
 
     return () => {
       abortController.abort();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [beforeUnmount, beforeUnmountCallbacks, children]);
+  }, [
+    beforeUnmountCallbacks,
+    beforeUnmountPreviousChildren,
+    children,
+    onChildrenMountedRef,
+    onPreviousChildrenUnmountedRef,
+    onPreviousChildrenUnmountingRef,
+    previousChildren,
+  ]);
 
   // Apply same effect when TransitionPresence in tree updates
-  useBeforeUnmount(beforeUnmount, []);
+  useBeforeUnmount(beforeUnmountPreviousChildren);
 
   return (
     <TransitionPresenceContext.Provider value={beforeUnmountCallbacks}>

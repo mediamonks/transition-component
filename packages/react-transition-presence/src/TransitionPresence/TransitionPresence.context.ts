@@ -1,7 +1,7 @@
-import { createContext, useContext } from 'react';
+import { createContext, useContext, type RefObject } from 'react';
 import type { BeforeUnmountCallback } from '../useBeforeUnmount/useBeforeUnmount.js';
 
-export type TransitionPresenceContextType = Set<BeforeUnmountCallback> | undefined;
+export type TransitionPresenceContextType = Set<RefObject<BeforeUnmountCallback>> | undefined;
 
 export const TransitionPresenceContext = createContext<TransitionPresenceContextType>(undefined);
 

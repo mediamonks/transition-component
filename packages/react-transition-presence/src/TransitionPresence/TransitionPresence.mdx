@@ -1,210 +1,65 @@
-import { Meta } from '@storybook/blocks';
-import { Canvas } from './../../.storybook/Canvas';
-import { DeferFlow, CrossFlow } from './TransitionPresence.stories';
+import { Meta, Canvas, Controls } from '@storybook/blocks';
+import * as stories from './TransitionPresence.stories';
 
-<Meta title="components/TransitionPresence" />
+<Meta title="components/TransitionPresence" of={stories} />
 
 # TransitionPresence
 
-`<TransitionPresence />` is a component that allows you to add a unmount transition they are
-unmounted in the virtual DOM. The callback argument used in `useBeforeUnmount` in the context of
-`<TransitionPresence />` will be called when a component is about to be unmounted. The promises that
-are returned from this callback are await before actually unmounting a component, this lifecycle
-will defer unmounting the component.
+`<TransitionPresence />` is a component that allows you to defer unmount of a component.
 
-By default old children unmount before new children are mounted, old _and_ new children will show up
-at the same time with `crossFlow` enabled.
+The callback function used in `useBeforeUnmount` in components that are rendered in the context of
+`<TransitionPresence />` will be called just before a component is unmounted. The promises that are
+created using the callback are await before unmounting a component.
 
 The most common use-case for `<TransitionPresence />` is animations, but it's not limited to this
 use case.
-
-> A `key` prop is required on the children of `<TransitionPresence />` to make sure the transition
-> is only triggered when the key changes.
 
 ## Props
 
 ### Children
 
 `<TransitionPresence />` accepts a single child, use a `Fragment` when you want to render multiple
-components on the root level,
+components on the root level. New children are rendered when the component type for the children
+(`<p />` to `<div />`) change, or when the key of the children changes (`<p key="one" />` to
+`null`).
 
-The child element must have a unique `key` prop. When rendering a different component, the key must
-be different.
+### onPreviousChildrenUnmounting
 
-### onStart
-
-The `onStart` is called when the transition starts.
-
-```tsx
-onStart?: () => void;
-
-<TransitionPresence onStart={() => console.log('start')}>
-```
-
-### onComplete
-
-The `onComplete` is called when the transition completes (i.e. when the beforeUnmount of the
-previous child finishes).
+The `onPreviousChildrenUnmounting` is called before the unmounting starts.
 
 ```tsx
-onComplete?: () => void;
+onPreviousChildrenUnmounting?: () => void;
 
-<TransitionPresence onComplete={() => console.log('completed')}>
+<TransitionPresence onPreviousChildrenUnmounting={() => console.log('onPreviousChildrenUnmounting')}>
 ```
 
-## Examples
+### onPreviousChildrenUnmounted
+
+The `onPreviousChildrenUnmounted` is called when the unmounting of previous children is done, the
+next children are not rendered yet at this point.
+
+```tsx
+onPreviousChildrenUnmounted?: () => void;
+
+<TransitionPresence onPreviousChildrenUnmounted={() => console.log('onPreviousChildrenUnmounted')}>
+```
+
+### onChildrenMounted
+
+The `onChildrenMounted` is called when the new children are mounted.
+
+```tsx
+onChildrenMounted?: () => void;
+
+<TransitionPresence onChildrenMounted={() => console.log('onChildrenMounted')}>
+```
+
+## Demo
 
 ### Basic
 
-```tsx
-<TransitionPresence
-  onStart={() => console.log('start')}
-  onComplete={() => console.log('completed')}
->
-  {isRedVisible ? <Child key="red" /> : <Child key="blue" />}
-</TransitionPresence>
-```
+<Canvas of={stories.Demo} />
 
-### Defer flow
+### Click to hide
 
-By default old children unmount before new children are mounted.
-
-```tsx
-type ChildProps = {
-  background: string;
-  onClick(): void;
-};
-
-function Child({ background, onClick }: ChildProps): ReactElement {
-  useBeforeUnmount(
-    () =>
-      // Defer unmounting for 1 second
-      new Promise((resolve) => {
-        setTimeout(resolve, 1000);
-      }),
-    [],
-  );
-
-  return (
-    <button
-      aria-label="Click to change color"
-      type="button"
-      style={{
-        background,
-        width: 200,
-        height: 200,
-      }}
-      onClick={onClick}
-    />
-  );
-}
-
-function DeferFlow(): ReactElement {
-  const [isRedVisible, setIsRedVisible] = useState(true);
-
-  return (
-    <>
-      <TransitionPresence>
-        {isRedVisible ? (
-          <Child
-            key="red"
-            background="red"
-            onClick={(): void => {
-              setIsRedVisible(false);
-            }}
-          />
-        ) : (
-          <Child
-            key="blue"
-            background="blue"
-            onClick={(): void => {
-              setIsRedVisible(true);
-            }}
-          />
-        )}
-      </TransitionPresence>
-
-      <div style={{ marginTop: 24 }}>Click the square (isRedVisible: {String(isRedVisible)})</div>
-    </>
-  );
-}
-```
-
-#### Preview
-
-<Canvas>
-  <DeferFlow />
-</Canvas>
-
-### Cross flow
-
-Use the crossFlow prop on `<TransitionPresence />` to enable cross flow
-
-```tsx
-type ChildProps = {
-  background: string;
-  onClick(): void;
-};
-
-function Child({ background, onClick }: ChildProps): ReactElement {
-  useBeforeUnmount(
-    () =>
-      // Defer unmounting for 1 second
-      new Promise((resolve) => {
-        setTimeout(resolve, 1000);
-      }),
-    [],
-  );
-
-  return (
-    <button
-      aria-label="Click to change color"
-      type="button"
-      style={{
-        background,
-        width: 200,
-        height: 200,
-      }}
-      onClick={onClick}
-    />
-  );
-}
-
-function CrossFlow(): ReactElement {
-  const [isRedVisible, setIsRedVisible] = useState(true);
-
-  return (
-    <>
-      <TransitionPresence crossFlow>
-        {isRedVisible ? (
-          <Child
-            key="red"
-            background="red"
-            // eslint-disable-next-line react/jsx-no-bind
-            onClick={(): void => {
-              setIsRedVisible(false);
-            }}
-          />
-        ) : (
-          <Child
-            key="blue"
-            background="blue"
-            // eslint-disable-next-line react/jsx-no-bind
-            onClick={(): void => {
-              setIsRedVisible(true);
-            }}
-          />
-        )}
-      </TransitionPresence>
-
-      <div style={{ marginTop: 24 }}>Click the square (isRedVisible: {String(isRedVisible)})</div>
-    </>
-  );
-}
-```
-
-#### Preview
-
-<Canvas>
-  <CrossFlow />
-</Canvas>
+<Canvas of={stories.DemoClickToHide} />
