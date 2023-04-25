@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="hooks/useAnimationRef" />
+
+# useAnimationRef
+
+The `useAnimationRef` hook is used to handle optional refs for exposed animations.
+
+```tsx
+function Child({ animationRef }: ChildProps): ReactElement {
+  const animation = useAnimation(() => gsap.from({ value: 0 }, { value: 1 }), []);
+
+  useExposeAnimation(animation, useAnimationRef(animationRef));
+
+  ...
+}
+```
+
+## Signature
+
+```tsx
+function useAnimationRef(ref?: MutableRefObject<symbol>): RefObject<symbol>;
+```

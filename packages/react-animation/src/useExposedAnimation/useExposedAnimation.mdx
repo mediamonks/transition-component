@@ -1,14 +1,17 @@
-import { Meta } from '@storybook/blocks';
+import { Meta, Canvas } from '@storybook/blocks';
+import * as stories from './useExposedAnimation.stories';
 
 <Meta title="hooks/useExposedAnimation" />
 
 # useExposedAnimation
 
 The `useExposedAnimation` hook is used to get an animation that is exposed in the global animation
-Map for a given reference (not necessarily an HTMLElement). The hook will trigger a rerender when
-the animation for the reference changes.
+map for a given reference (a reference isn't necessarily an `HTMLElement`). The hook will trigger a
+rerender when the animation for the reference value changes.
 
-> Note: The return value will most likely be empty during the first render pass
+> Note: The return value will most likely be empty during the first render pass because animations
+> are created after components are "mounted". A rerender is necessary to get an animation from a
+> child component.
 
 ```tsx
 const Child = ensuredForwardRef<HTMLDivElement, unknown>((_, ref): ReactElement => {
@@ -26,5 +29,101 @@ function Parent(): ReactElement {
   console.log(animation);
 
   return <Child ref={ref} />;
+}
+```
+
+## Retrieving multiple animations from a child component
+
+If you want to retrieve multiple animations from a child component, you can use multiple unique
+references to retrieve animations.
+
+<Canvas of={stories.MultipleChildComponentAnimations} />
+
+Create multiple `RefObject`s in the parent components using `useAnimationRef`, use the ref in the
+child component in `useExposeAnimation`, you can then retrieve the animations using
+`useExposedAnimation` in the parent.
+
+```tsx
+type ChildProps = {
+  animation1Ref: RefObject<symbol>;
+  animation2Ref: RefObject<symbol>;
+};
+
+const Child = ensuredForwardRef<HTMLDivElement, ChildProps>(
+  ({ animation1Ref, animation2Ref }, ref) => {
+    const ref = useRef<HTMLDivElement | null>(null);
+
+    const animation = useAnimation(() => gsap.from(ref.current, { y: 100, paused: true }), []);
+    useExposeAnimation(animation, ref);
+
+    const animation1 = useAnimation(() => gsap.from(ref.current, { opacity: 0, paused: true }), []);
+    useExposeAnimation(animation1, animation1Ref);
+
+    const animation2 = useAnimation(() => gsap.from(ref.current, { scale: 0, paused: true }), []);
+    useExposeAnimation(animation2, animation2Ref);
+
+    return (
+      <div
+        ref={ref}
+        style={{
+          inlineSize: 50,
+          blockSize: 50,
+          background: 'red',
+        }}
+      />
+    );
+  },
+);
+
+function Parent(): ReactElement {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const animation = useExposedAnimation(ref);
+
+  const animation1Ref = useAnimationRef();
+  const animation1 = useExposedAnimation(animation1Ref);
+
+  const animation2Ref = useAnimationRef();
+  const animation2 = useExposedAnimation(animation2Ref);
+
+  useAnimation(
+    () => gsap.timeline().add(animation).add(animation1).add(animation2),
+    [animation, animation1, animation2],
+  );
+
+  return <Child ref={ref} animation1Ref={animation1Ref} animation2Ref={animation2Ref} />;
+}
+```
+
+#### Making the animation ref optional
+
+The ref parameter in `useExposeAnimation` is mandatory. You can make the ref property of the child
+component optional using the `useAnimationRef` hook. The hook will use the value from the provided
+`RefObject` if it's defined, the fallback value is used when no `RefObject` is provided.
+
+```tsx
+type ChildProps = {
+  animationRef?: RefObject<unknown>;
+};
+
+function Child({ animationRef }: ChildProps): ReactElement {
+  const animation = useAnimation(
+    () => gsap.from({ value: 0 }, { value: 1, onUpdate: console.log }),
+    [],
+  );
+
+  useExposeAnimation(animation, useAnimationRef(animationRef));
+
+  return <div ref={ref}>Check the console to see the result</div>;
+}
+
+function Parent(): ReactElement {
+  const animationRef = useAnimationRef();
+  const childAnimation = useExposedAnimation(animationRef);
+
+  useAnimation(() => {
+    return gsap.timeline().add(childAnimation);
+  }, [childAnimation]);
+
+  return <Child animationRef={animationRef} />;
 }
 ```
