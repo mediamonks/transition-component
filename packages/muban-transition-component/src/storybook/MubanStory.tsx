@@ -7,12 +7,11 @@ export type MubanStoryProps = {
   markup: string;
 };
 
-export function MubanStory({ parameters, ...props }: ComponentProps<typeof Story>): ReactElement {
+export function MubanStory({ ...props }: ComponentProps<typeof Story>): ReactElement {
   return (
     <Story
       {...props}
       parameters={{
-        ...parameters,
         storySource: {
           source: null,
         },
