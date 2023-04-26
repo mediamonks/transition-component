@@ -6,5 +6,12 @@ export type TransitionPresenceContextType = Set<BeforeUnmountCallback> | undefin
 export const TransitionPresenceContext = createContext<TransitionPresenceContextType>(undefined);
 
 export function useTransitionPresence(): TransitionPresenceContextType {
-  return useContext(TransitionPresenceContext);
+  const context = useContext(TransitionPresenceContext);
+
+  if (context === undefined) {
+    // eslint-disable-next-line no-console
+    console.warn('Component is not rendered in the context of a TransitionPresence');
+  }
+
+  return context;
 }
