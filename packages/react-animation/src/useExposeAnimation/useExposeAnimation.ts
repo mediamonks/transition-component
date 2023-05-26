@@ -9,7 +9,9 @@ export function useExposeAnimation(
   reference: RefObject<unknown>,
 ): void {
   useEffect(() => {
+    // eslint-disable-next-line no-underscore-dangle
     const _reference = reference.current;
+    // eslint-disable-next-line no-underscore-dangle
     const _animation = animation.current;
 
     if (_animation) {

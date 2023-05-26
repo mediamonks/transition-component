@@ -1,5 +1,4 @@
-/* eslint-disable react/no-multi-comp, react/jsx-no-literals,no-console */
-// eslint-disable-next-line import/no-extraneous-dependencies
+/* eslint-disable react/no-multi-comp, react/jsx-no-literals */
 import { useAnimation } from '@mediamonks/react-animation';
 import gsap from 'gsap';
 import { type ReactElement, useCallback, useEffect, useRef, useState } from 'react';
@@ -21,6 +20,7 @@ type ChildProps = {
 function useRerender(): () => void {
   // eslint-disable-next-line react/hook-use-state
   const [count, setCount] = useState(0);
+  // eslint-disable-next-line no-console
   console.log('rerender', count);
   return () => {
     setCount((previous) => previous + 1);
@@ -31,24 +31,28 @@ function Child({ background, onClick, duration = 1, delayIn = 0 }: ChildProps): 
   const ref = useRef<HTMLButtonElement>(null);
 
   useAnimation(() => {
+    // eslint-disable-next-line no-console
     console.log('animate-in', background);
     return gsap.fromTo(ref.current, { opacity: 0 }, { opacity: 1, duration, delay: delayIn });
   }, []);
 
   // show visible animation during "before unmount" lifecycle
   useBeforeUnmount(async () => {
+    // eslint-disable-next-line no-console
     console.log('animate-out', background);
     return gsap.fromTo(ref.current, { opacity: 1 }, { opacity: 0, duration });
   }, []);
 
   // show when mounted/unmounted
   useEffect(() => {
+    // eslint-disable-next-line no-console
     console.log('mounted', background);
 
     return () => {
+      // eslint-disable-next-line no-console
       console.log('unmounted', background);
     };
-  }, []);
+  }, [background]);
 
   return (
     <button
