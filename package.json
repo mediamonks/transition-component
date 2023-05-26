@@ -7,7 +7,7 @@
     "examples/*"
   ],
   "scripts": {
-    "build": "npm run build --workspaces --if-present",
+    "build": "nx run-many -t build",
     "fix:eslint": "npm run fix:eslint --workspaces --if-present",
     "fix:prettier": "prettier . --write --loglevel=warn",
     "lint:eslint": "npm run lint:eslint --workspaces --if-present",
@@ -20,6 +20,7 @@
     "husky": "^8.0.3",
     "lerna": "^6.1.0",
     "lint-staged": "^13.1.0",
+    "nx": "^16.2.2",
     "prettier": "^2.8.1"
   },
   "prettier": "@mediamonks/prettier-config"
