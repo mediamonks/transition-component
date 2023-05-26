@@ -4,13 +4,13 @@ Monorepo that contains everything related to animations!
 
 ## 📦 Packages
 
-| Package                                        | Status                                                                                     | Description                                                 |
-| ---------------------------------------------- | ------------------------------------------------------------------------------------------ | ----------------------------------------------------------- |
-| [@mediamonks/core-transition-component]        | [![core-transition-component-status]][@mediamonks/core-transition-component]               | The core package that holds the transition logic.           |
-| [@mediamonks/muban-transition-component]       | [![muban-transition-component-status]][@mediamonks/muban-transition-component]             | The Muban implementation of the transition-component logic. |
-| [@mediamonks/muban-storybook-addon-transition] | [![muban-storybook-addon-transition-status]][@mediamonks/muban-storybook-addon-transition] | A Muban-storybook addon to control your timelines.          |
-| [@mediamonks/react-animation]                  | [![react-animation-status]][@mediamonks/react-animation]                                   | Hooks to control GSAP animations                            |
-| [@mediamonks/react-transition-presence]        | [![react-transition-presence-status]][@mediamonks/react-transition-presence]               | Before unmount lifecycle                                    |
+| Package                                        | Version                                                                                                                                          | Downloads                                                                       |
+| ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------- |
+| `@mediamonks/core-transition-component`        | [![](https://img.shields.io/npm/v/@mediamonks/core-transition-component)](https://npmjs.com/@mediamonks/core-transition-component)               | ![](https://img.shields.io/npm/dm/@mediamonks/core-transition-component)        |
+| `@mediamonks/muban-storybook-addon-transition` | [![](https://img.shields.io/npm/v/@mediamonks/muban-storybook-addon-transition)](https://npmjs.com/@mediamonks/muban-storybook-addon-transition) | ![](https://img.shields.io/npm/dm/@mediamonks/muban-storybook-addon-transition) |
+| `@mediamonks/muban-transition-component`       | [![](https://img.shields.io/npm/v/@mediamonks/muban-transition-component)](https://npmjs.com/@mediamonks/muban-transition-component)             | ![](https://img.shields.io/npm/dm/@mediamonks/muban-transition-component)       |
+| `@mediamonks/react-animation`                  | [![](https://img.shields.io/npm/v/@mediamonks/react-animation)](https://npmjs.com/@mediamonks/react-animation)                                   | ![](https://img.shields.io/npm/dm/@mediamonks/react-animation)                  |
+| `@mediamonks/react-transition-presence`        | [![](https://img.shields.io/npm/v/@mediamonks/react-transition-presence)](https://npmjs.com/@mediamonks/react-transition-presence)               | ![](https://img.shields.io/npm/dm/@mediamonks/react-transition-presence)        |
 
 ## 🎓 Documentation
 
