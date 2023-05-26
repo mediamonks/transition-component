@@ -36,6 +36,9 @@ jobs:
           npm ci
 
       - name: Build
+        run: npm run lint:eslint
+
+      - name: Build
         run: npm run build
 
       - name: Test
