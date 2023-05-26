@@ -46,21 +46,24 @@ jobs:
           node-version: '18'
           cache: 'npm'
 
-      - name: Install npm packages
-        run: npm ci
+      - name: Install dependencies
+        run: |
+          npm config set //npm.greensock.com/:_authToken ${GSAP_TOKEN}
+          npm config set @gsap:registry https://npm.greensock.com
+          npm ci
 
       - name: Setup Git
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
 
-      - name: bump version
+      - name: Bump version
         run: |
           npm version ${{ github.event.inputs.version }} -w packages/${{ github.event.inputs.config }} --no-git-tag-version --preid ${{ github.event.inputs.prereleaseid }}
           git add .
           git commit -m "${{ github.event.inputs.config }} v$(npm pkg get version --prefix packages/${{ github.event.inputs.config }} | tr -d '"')" --no-verify
           git tag @mediamonks/${{ github.event.inputs.config }}@$(npm pkg get version --prefix packages/${{ github.event.inputs.config }} | tr -d '"') -m "${{ github.event.inputs.config }} v$(npm pkg get version --prefix packages/${{ github.event.inputs.config }} | tr -d '"')"
-      - name: publish
+      - name: Publish
         run: |
           npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
           npm publish -w packages/${{ github.event.inputs.config }}

@@ -37,18 +37,26 @@ jobs:
           node-version: 16
           cache: 'npm'
 
+      - name: Install dependencies
+        run: |
+          npm config set //npm.greensock.com/:_authToken ${GSAP_TOKEN}
+          npm config set @gsap:registry https://npm.greensock.com
+          npm ci
+
       - name: Build Storybook
         env:
           GSAP_TOKEN: ${{ secrets.GSAP_TOKEN }}
         run: |
-          echo "//npm.greensock.com/:_authToken=$GSAP_TOKEN" > ./.npmrc
-          echo "@gsap:registry=\"https://npm.greensock.com\"" >> ./.npmrc
-          npm ci
           npm run build
           npm run storybook:build
 
       - name: Compose documentation
-        run: cp -vr ./packages/*/.docs/* ./.docs/
+        run: |
+          mkdir .docs
+          cp -vr ./packages/documentation/.docs/* ./.docs/
+          cp -vr ./packages/muban-transition-component/.docs/* ./.docs/muban-transition-component
+          cp -vr ./packages/react-animation/.docs/* ./.docs/react-animation
+          cp -vr ./packages/react-transition-presence/.docs/* ./.docs/react-transition-presence
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
