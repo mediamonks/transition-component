@@ -22,6 +22,7 @@ function parseChildTimeline(
   const subTimeline = gsap.timeline(child.vars);
 
   // Re-call the parse method for each of the children
+  // eslint-disable-next-line no-underscore-dangle
   for (const _child of child.getChildren(false)) {
     parseChild(_child, subTimeline, direction);
   }

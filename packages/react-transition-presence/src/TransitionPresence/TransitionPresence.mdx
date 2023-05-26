@@ -18,8 +18,8 @@ at the same time with `crossFlow` enabled.
 The most common use-case for `<TransitionPresence />` is animations, but it's not limited to this
 use case.
 
-> A `key` prop is required on the children of `<TransitionPresence />` to make sure the transition is
-only triggered when the key changes.
+> A `key` prop is required on the children of `<TransitionPresence />` to make sure the transition
+> is only triggered when the key changes.
 
 ## Props
 
@@ -43,7 +43,8 @@ onStart?: () => void;
 
 ### onComplete
 
-The `onComplete` is called when the transition completes (i.e. when the beforeUnmount of the previous child finishes).
+The `onComplete` is called when the transition completes (i.e. when the beforeUnmount of the
+previous child finishes).
 
 ```tsx
 onComplete?: () => void;
@@ -60,11 +61,7 @@ onComplete?: () => void;
   onStart={() => console.log('start')}
   onComplete={() => console.log('completed')}
 >
-  {isRedVisible ? (
-    <Child key="red" />
-  ) : (
-    <Child key="blue" />
-  )}
+  {isRedVisible ? <Child key="red" /> : <Child key="blue" />}
 </TransitionPresence>
 ```
 

@@ -24,6 +24,7 @@ export function Layout({ children }: LayoutProps): ReactElement {
   const [app, setApp] = useState<App>();
 
   useEffect(() => {
+    // eslint-disable-next-line no-underscore-dangle
     const _app = createApp(MubanApp);
     setApp(_app);
 

@@ -22,14 +22,21 @@ jobs:
       GSAP_TOKEN: ${{ secrets.GSAP_TOKEN }}
     steps:
       - uses: actions/checkout@v3
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-      - run: |
-          echo "//npm.greensock.com/:_authToken=$GSAP_TOKEN" > ./.npmrc
-          echo "@gsap:registry=\"https://npm.greensock.com\"" >> ./.npmrc
-      - run: npm ci
-      - run: npm run build
-      - run: npm run test
+
+      - name: Install dependencies
+        run: |
+          npm config set //npm.greensock.com/:_authToken ${GSAP_TOKEN}
+          npm config set @gsap:registry https://npm.greensock.com
+          npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Test
+        run: npm run test

@@ -1,11 +1,10 @@
 import { useRef, type RefObject } from 'react';
 
 export function useAnimationRef(ref?: RefObject<symbol>): RefObject<symbol> {
-  const animationRef = useRef(Symbol('useAnimationRef'));
+  const fallbackRef = useRef(Symbol('useAnimationRef'));
+  const animationRef = useRef(fallbackRef.current);
 
-  if (ref?.current) {
-    animationRef.current = ref.current;
-  }
+  animationRef.current = ref?.current ?? fallbackRef.current;
 
   return animationRef;
 }

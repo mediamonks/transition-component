@@ -46,7 +46,9 @@ app.mount(
   `,
 );
 
-const { element, elements, component, components } = app._instance?.refs as never;
+const { element, elements, component, components } =
+  // eslint-disable-next-line no-underscore-dangle
+  app._instance?.refs as never;
 
 describe('transitionRefToElement', () => {
   test('Convert a refElement', () => {
