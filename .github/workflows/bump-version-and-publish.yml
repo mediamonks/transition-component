@@ -57,12 +57,17 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
 
+      - name: Build
+        run: |
+          npm run build -w packages/${{ github.event.inputs.config }}
+
       - name: Bump version
         run: |
           npm version ${{ github.event.inputs.version }} -w packages/${{ github.event.inputs.config }} --no-git-tag-version --preid ${{ github.event.inputs.prereleaseid }}
           git add .
           git commit -m "Publish ${{ github.event.inputs.config }} v$(npm pkg get version --prefix packages/${{ github.event.inputs.config }} | tr -d '"')" --no-verify
           git tag @mediamonks/${{ github.event.inputs.config }}@$(npm pkg get version --prefix packages/${{ github.event.inputs.config }} | tr -d '"') -m "${{ github.event.inputs.config }} v$(npm pkg get version --prefix packages/${{ github.event.inputs.config }} | tr -d '"')"
+
       - name: Publish
         run: |
           npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
