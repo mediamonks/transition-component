@@ -65,7 +65,7 @@ jobs:
           git config user.email github-actions@github.com
 
       - name: Build dependencies
-        if: github.event.inputs.config == 'packages/react-transition-presence'
+        if: github.event.inputs.config == 'react-transition-presence'
         run: |
           npm run build -w packages/react-animation
 
