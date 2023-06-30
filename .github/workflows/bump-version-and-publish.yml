@@ -35,6 +35,10 @@ on:
 jobs:
   bump-version:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
     steps:
       - name: Check out source
         uses: actions/checkout@v3
@@ -74,7 +78,7 @@ jobs:
       - name: Publish
         run: |
           npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
-          npm publish -w packages/${{ github.event.inputs.config }}
+          npm publish -w packages/${{ github.event.inputs.config }} --provenance
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
