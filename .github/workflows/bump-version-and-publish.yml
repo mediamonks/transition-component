@@ -82,7 +82,7 @@ jobs:
 
       - name: Publish
         run: |
-          npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
+          npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
           npm publish -w packages/${{ github.event.inputs.config }} --provenance
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
