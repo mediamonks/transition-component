@@ -27,8 +27,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm config set //npm.greensock.com/:_authToken $GSAP_TOKEN
-          npm config set @gsap:registry https://npm.greensock.com
+          npm config set //npm.greensock.com/:_authToken=$GSAP_TOKEN
+          npm config set @gsap:registry=https://npm.greensock.com
           npm ci
 
       - name: Setup Git
@@ -44,7 +44,7 @@ jobs:
 
       - name: Publish
         run: |
-          npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
+          npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
           npm publish -w packages/react-animation --tag next --provenance
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
