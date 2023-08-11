@@ -1,4 +1,11 @@
-import { useEventListener, useRefValue, useResizeObserver } from '@mediamonks/react-hooks';
+import {
+  useEventListener,
+  useRefValue,
+  useResizeObserver,
+  useRafCallback,
+  useMutationObserver,
+  useStaticValue,
+} from '@mediamonks/react-hooks';
 import gsap from 'gsap';
 import { useCallback, useEffect, useMemo, useRef, type RefObject } from 'react';
 import { useDraggable } from '../../useDraggable/useDraggable.js';
@@ -48,12 +55,7 @@ export function useCarousel({
     [],
   );
 
-  const type = useMemo(
-    () => variables.type ?? CarouselType.X,
-    // type cannot change once draggable is initialized
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
-  );
+  const type = useStaticValue(() => variables.type ?? CarouselType.X);
 
   const transformsRef = useRefValue(transforms);
   const variablesRef = useRefValue(variables);
@@ -70,7 +72,6 @@ export function useCarousel({
     }
 
     const position = gsap.getProperty(proxy, type) as number;
-
     const children = [
       ...(triggerRef.current?.children ?? []),
     ] as unknown as ReadonlyArray<HTMLElement>;
@@ -107,6 +108,14 @@ export function useCarousel({
       maxDuration: variables.maxDuration ?? 1,
       bounds: variables.bounds,
       snap: variables.snap,
+      onDrag() {
+        variables.onDrag?.();
+        onDrag();
+      },
+      onThrowUpdate() {
+        variables.onThrowUpdate?.();
+        onDrag();
+      },
     },
     async onMount() {
       if (draggable.current === null) {
@@ -137,7 +146,7 @@ export function useCarousel({
 
     gsap.set(proxyRef.current, { [type]: position });
     onDrag();
-  }, []);
+  });
 
   // Apply bounds when they change and update the position
   useEffect(() => {
@@ -145,12 +154,12 @@ export function useCarousel({
     onDrag();
   }, [draggable, onDrag, updateBounds, variables.bounds]);
 
-  useEventListener(draggable, 'drag', () => {
+  useEventListener(draggable.current, 'drag', () => {
     variablesRef.current?.onDrag?.();
     onDrag();
   });
 
-  useEventListener(draggable, 'throwupdate', () => {
+  useEventListener(draggable.current, 'throwupdate', () => {
     variablesRef.current?.onThrowUpdate?.();
     onDrag();
   });

@@ -1,8 +1,12 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useEventListener, useRefValue, useStaticValue } from '@mediamonks/react-hooks';
 import { type StoryObj } from '@storybook/react';
-import { useMemo, useRef } from 'react';
+import { useRef } from 'react';
 import { useDraggable } from './useDraggable.js';
+
+export default {
+  title: 'hooks/useDraggable',
+};
 
 export const Demo = {
   render() {

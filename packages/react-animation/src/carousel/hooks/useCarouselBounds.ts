@@ -1,6 +1,5 @@
-import { useResizeObserver } from '@mediamonks/react-hooks';
+import { useResizeObserver, useMutationObserver } from '@mediamonks/react-hooks';
 import { type RefObject, useCallback, useState } from 'react';
-import { useMutationObserver } from '../useMutationObserver';
 import { CarouselType } from './useCarousel.js';
 import { useCarouselCalculations } from './useCarouselCalculations.js';
 
@@ -14,7 +13,7 @@ export function useCarouselBounds(
   const [bounds, setBounds] = useState<Draggable.BoundsMinMax | null>(null);
   const { getElementOffset } = useCarouselCalculations(type);
 
-  const onResize = useCallback(() => {
+  const onUpdateBounds = useCallback(() => {
     if (sliderRef.current === null) {
       // eslint-disable-next-line no-console
       console.warn("Can't set bounds, sliderRef is undefined");
@@ -37,8 +36,8 @@ export function useCarouselBounds(
     setBounds(type === CarouselType.X ? { minX: -size, maxX: 0 } : { minY: -size, maxY: 0 });
   }, [sliderRef, getElementOffset, type]);
 
-  useResizeObserver(sliderRef, onResize);
-  useMutationObserver(sliderRef, onResize, {
+  useResizeObserver(sliderRef, onUpdateBounds);
+  useMutationObserver(sliderRef, onUpdateBounds, {
     childList: true,
   });
 

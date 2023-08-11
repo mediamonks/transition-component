@@ -1,0 +1,247 @@
+/* eslint-disable react-hooks/rules-of-hooks */
+/* eslint-disable react/jsx-no-literals */
+import { type StoryObj } from '@storybook/react';
+import { useCallback, useRef } from 'react';
+import { useCarouselSnap, useCarouselBounds, useCarouselInfiniteTransform } from '../index.js';
+import { CarouselType, useCarousel } from './hooks/useCarousel.js';
+import { useCarouselControls } from './hooks/useCarouselControls.js';
+import { useCarouselIndex } from './hooks/useCarouselIndex.js';
+
+export default {
+  title: 'hooks/useCarousel',
+};
+
+const Amount = 6;
+const Elements = Array.from({ length: Amount });
+
+export const Default = {
+  render() {
+    const triggerRef = useRef<HTMLUListElement | null>(null);
+    useCarousel({
+      triggerRef,
+    });
+
+    return (
+      <ul
+        ref={triggerRef}
+        style={{
+          position: 'relative',
+          listStyle: 'none',
+          display: 'flex',
+          whiteSpace: 'nowrap',
+          width: '100%',
+          height: '100px',
+        }}
+      >
+        {Elements.map((index) => (
+          <li
+            key={`${Amount}_${index}`}
+            style={{
+              display: 'inline-block',
+              flexShrink: 0,
+              width: '500px',
+              background: 'red',
+              border: '1px solid black',
+            }}
+          ></li>
+        ))}
+      </ul>
+    );
+  },
+} as StoryObj;
+
+export const Snap = {
+  render() {
+    const triggerRef = useRef<HTMLUListElement | null>(null);
+
+    const bounds = useCarouselBounds(triggerRef);
+    const snap = useCarouselSnap(triggerRef);
+
+    useCarousel({
+      triggerRef,
+      variables: {
+        bounds,
+        snap,
+      },
+    });
+
+    return (
+      <ul
+        ref={triggerRef}
+        style={{
+          position: 'relative',
+          listStyle: 'none',
+          display: 'flex',
+          whiteSpace: 'nowrap',
+          width: '100%',
+          height: '100px',
+        }}
+      >
+        {Elements.map((index) => (
+          <li
+            key={`${Amount}_${index}`}
+            style={{
+              display: 'inline-block',
+              flexShrink: 0,
+              width: '500px',
+              background: 'red',
+              border: '1px solid black',
+            }}
+          ></li>
+        ))}
+      </ul>
+    );
+  },
+} as StoryObj;
+
+export const ProgressAndControl = {
+  render() {
+    const triggerRef = useRef<HTMLUListElement | null>(null);
+
+    const bounds = useCarouselBounds(triggerRef);
+    const snap = useCarouselSnap(triggerRef);
+
+    const carousel = useCarousel({
+      triggerRef,
+      variables: {
+        bounds,
+        snap,
+      },
+    });
+
+    const activeIndex = useCarouselIndex(carousel);
+    const controls = useCarouselControls(carousel, { snap });
+
+    const onNext = useCallback(() => {
+      controls.next();
+    }, [controls]);
+
+    const onPrevious = useCallback(() => {
+      controls.previous();
+    }, [controls]);
+
+    return (
+      <div>
+        <button onClick={onNext} type="button">
+          Next
+        </button>
+        <button onClick={onPrevious} type="button">
+          Previous
+        </button>
+        <ul
+          ref={triggerRef}
+          style={{
+            position: 'relative',
+            listStyle: 'none',
+            display: 'flex',
+            whiteSpace: 'nowrap',
+            width: '100%',
+            height: '100px',
+          }}
+        >
+          {Elements.map((index) => (
+            <li
+              key={`${Amount}_${index}`}
+              style={{
+                display: 'inline-block',
+                flexShrink: 0,
+                width: '500px',
+                background: 'red',
+                border: '1px solid black',
+              }}
+            ></li>
+          ))}
+        </ul>
+        <span>{activeIndex}</span>
+      </div>
+    );
+  },
+} as StoryObj;
+
+export const Infinite = {
+  render() {
+    const triggerRef = useRef<HTMLUListElement | null>(null);
+
+    const infiniteTransform = useCarouselInfiniteTransform(triggerRef);
+
+    useCarousel({
+      triggerRef,
+      transforms: [infiniteTransform],
+    });
+
+    return (
+      <ul
+        ref={triggerRef}
+        style={{
+          position: 'relative',
+          listStyle: 'none',
+          display: 'flex',
+          padding: '0',
+          width: '100%',
+          height: '100px',
+        }}
+      >
+        {Elements.map((index) => (
+          <li
+            key={`${Amount}_${index}`}
+            style={{
+              display: 'inline-block',
+              flexShrink: 0,
+              width: '500px',
+              background: 'red',
+              border: '1px solid black',
+            }}
+          ></li>
+        ))}
+      </ul>
+    );
+  },
+} as StoryObj;
+
+export const Vertical = {
+  render() {
+    const triggerRef = useRef<HTMLUListElement | null>(null);
+
+    const bounds = useCarouselBounds(triggerRef);
+    const snap = useCarouselSnap(triggerRef, { type: CarouselType.Y });
+
+    useCarousel({
+      triggerRef,
+      variables: {
+        bounds,
+        snap,
+        type: CarouselType.Y,
+      },
+    });
+
+    return (
+      <ul
+        ref={triggerRef}
+        style={{
+          position: 'relative',
+          listStyle: 'none',
+          display: 'flex',
+          flexDirection: 'column',
+          whiteSpace: 'nowrap',
+          width: '100%',
+          height: '600px',
+          background: 'blue',
+        }}
+      >
+        {Elements.map((index) => (
+          <li
+            key={`${Amount}_${index}`}
+            style={{
+              display: 'inline-block',
+              flexShrink: 0,
+              width: '100px',
+              height: '400px',
+              background: 'red',
+              border: '1px solid black',
+            }}
+          ></li>
+        ))}
+      </ul>
+    );
+  },
+} as StoryObj;

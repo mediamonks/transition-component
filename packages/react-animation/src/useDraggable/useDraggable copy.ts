@@ -1,4 +1,4 @@
-import { useIsMounted, useMount, useRefValue, useUnmount } from '@mediamonks/react-hooks';
+import { useMount, useRefValue, useUnmount } from '@mediamonks/react-hooks';
 import gsap from 'gsap';
 import InertiaPlugin from 'gsap/InertiaPlugin';
 import { useRef, type MutableRefObject, type RefObject } from 'react';
@@ -30,6 +30,30 @@ export const getDraggable = async (): Promise<typeof Draggable | undefined> => {
  */
 export type DraggableVariables = Draggable.Vars;
 
+// Omit<
+//   Draggable.Vars,
+//   | 'onClick'
+//   | 'onClickParams'
+//   | 'onDrag'
+//   | 'onDragParams'
+//   | 'onDragStart'
+//   | 'onDragStartParams'
+//   | 'onDragEnd'
+//   | 'onDragEndParams'
+//   | 'onMove'
+//   | 'onMoveParams'
+//   | 'onPress'
+//   | 'onPressParams'
+//   | 'onPressInit'
+//   | 'onPressInitParams'
+//   | 'onRelease'
+//   | 'onReleaseParams'
+//   | 'onThrowComplete'
+//   | 'onThrowCompleteParams'
+//   | 'onThrowUpdate'
+//   | 'onThrowUpdateParams'
+// >;
+
 export type UseDraggableOptions = {
   variables?: DraggableVariables;
   trigger?: MutableRefObject<HTMLElement | null> | null;
@@ -44,26 +68,22 @@ export const useDraggable = (
 
   const onMountRef = useRefValue(onMount);
 
-  const isMounted = useIsMounted();
-
-  const createDraggable = async (): Promise<typeof Draggable | undefined> => {
+  useMount(async () => {
     const draggable = await getDraggable();
 
-    if (!isMounted.current || draggable === undefined || target.current === null) {
+    if (draggable === undefined || target.current === null || trigger?.current === null) {
       return;
     }
+
     [draggableRef.current = null] = draggable.create(target.current, {
       ...variables,
       trigger: trigger?.current,
     });
+
     onMountRef.current?.(
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       draggableRef.current!,
     );
-  };
-
-  useMount(() => {
-    createDraggable();
   });
 
   useUnmount(() => {

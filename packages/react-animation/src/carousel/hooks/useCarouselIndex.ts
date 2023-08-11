@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
-import { getIndex } from './getIndex.js';
+import { getCarouselIndex } from '../util/getCarouselIndex.js';
 import { CarouselType, type CarouselContext } from './useCarousel.js';
-import { useProxyUpdate } from './useProxyUpdate.js';
+import { useCarouselProxyUpdate } from './useCarouselProxyUpdate.js';
 
 export function useCarouselIndex(
   carousel: CarouselContext,
@@ -10,10 +10,10 @@ export function useCarouselIndex(
 ): number {
   const [index, setIndex] = useState(0);
 
-  useProxyUpdate(
+  useCarouselProxyUpdate(
     carousel,
     useCallback(() => {
-      setIndex(getIndex(carousel, type, alignment));
+      setIndex(getCarouselIndex(carousel, type, alignment));
     }, [alignment, carousel, type]),
   );
 

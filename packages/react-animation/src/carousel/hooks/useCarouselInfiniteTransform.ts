@@ -18,9 +18,9 @@ export function useCarouselInfiniteTransform(
   const { getElementSize, getElementOffset } = useCarouselCalculations(type);
 
   const onResize = useCallback(() => {
-    const { left } = offsetElement.current?.getBoundingClientRect() ?? {};
-    offsetRef.current = left ?? 0;
-  }, [offsetElement]);
+    const { [type]: value } = offsetElement.current?.getBoundingClientRect() ?? {};
+    offsetRef.current = value ?? 0;
+  }, [offsetElement, type]);
 
   useResizeObserver(offsetElement, onResize);
 
