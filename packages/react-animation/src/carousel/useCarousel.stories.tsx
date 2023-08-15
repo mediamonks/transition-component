@@ -12,7 +12,8 @@ export default {
 };
 
 const Amount = 6;
-const Elements = Array.from({ length: Amount });
+/* eslint-disable unicorn/new-for-builtins */
+const Elements: Array<number> = [...Array(8).keys()];
 
 export const Default = {
   render() {
@@ -43,7 +44,9 @@ export const Default = {
               background: 'red',
               border: '1px solid black',
             }}
-          ></li>
+          >
+            {index}
+          </li>
         ))}
       </ul>
     );
@@ -87,7 +90,9 @@ export const Snap = {
               background: 'red',
               border: '1px solid black',
             }}
-          ></li>
+          >
+            {index}
+          </li>
         ))}
       </ul>
     );
@@ -163,7 +168,6 @@ export const Infinite = {
     const triggerRef = useRef<HTMLUListElement | null>(null);
 
     const infiniteTransform = useCarouselInfiniteTransform(triggerRef);
-
     useCarousel({
       triggerRef,
       transforms: [infiniteTransform],
@@ -191,7 +195,55 @@ export const Infinite = {
               background: 'red',
               border: '1px solid black',
             }}
-          ></li>
+          >
+            {index}
+          </li>
+        ))}
+      </ul>
+    );
+  },
+} as StoryObj;
+
+export const InfiniteAndSnap = {
+  render() {
+    const triggerRef = useRef<HTMLUListElement | null>(null);
+
+    const infiniteTransform = useCarouselInfiniteTransform(triggerRef);
+    const snap = useCarouselSnap(triggerRef, { infinite: true });
+
+    useCarousel({
+      triggerRef,
+      variables: {
+        snap,
+      },
+      transforms: [infiniteTransform],
+    });
+
+    return (
+      <ul
+        ref={triggerRef}
+        style={{
+          position: 'relative',
+          listStyle: 'none',
+          display: 'flex',
+          padding: '0',
+          width: '100%',
+          height: '100px',
+        }}
+      >
+        {Elements.map((index: number) => (
+          <li
+            key={`${Amount}_${index}`}
+            style={{
+              display: 'inline-block',
+              flexShrink: 0,
+              width: `${100 * (index + 1)}px`,
+              background: 'red',
+              border: '1px solid black',
+            }}
+          >
+            {index}
+          </li>
         ))}
       </ul>
     );
@@ -240,6 +292,59 @@ export const Vertical = {
               border: '1px solid black',
             }}
           ></li>
+        ))}
+      </ul>
+    );
+  },
+} as StoryObj;
+
+export const VerticalInfinite = {
+  render() {
+    const triggerRef = useRef<HTMLUListElement | null>(null);
+
+    const infiniteTransform = useCarouselInfiniteTransform(triggerRef, triggerRef, {
+      type: CarouselType.Y,
+    });
+
+    const snap = useCarouselSnap(triggerRef, { infinite: true, type: CarouselType.Y });
+
+    useCarousel({
+      triggerRef,
+      variables: {
+        snap,
+        type: CarouselType.Y,
+      },
+      transforms: [infiniteTransform],
+    });
+
+    return (
+      <ul
+        ref={triggerRef}
+        style={{
+          position: 'relative',
+          listStyle: 'none',
+          display: 'flex',
+          flexDirection: 'column',
+          whiteSpace: 'nowrap',
+          width: '100%',
+          height: '600px',
+          background: 'blue',
+        }}
+      >
+        {Elements.map((index) => (
+          <li
+            key={`${Amount}_${index}`}
+            style={{
+              display: 'inline-block',
+              flexShrink: 0,
+              width: '100px',
+              height: '400px',
+              background: 'red',
+              border: '1px solid black',
+            }}
+          >
+            {index}
+          </li>
         ))}
       </ul>
     );
