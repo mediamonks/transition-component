@@ -1,11 +1,17 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react/jsx-no-literals */
 import { type StoryObj } from '@storybook/react';
-import { useCallback, useRef } from 'react';
-import { useCarouselSnap, useCarouselBounds, useCarouselInfiniteTransform } from '../index.js';
+import { useCallback, useRef, useState } from 'react';
+import {
+  useCarouselSnap,
+  useCarouselBounds,
+  useCarouselInfiniteTransform,
+  getCarouselSlideProgress,
+} from '../index.js';
 import { CarouselType, useCarousel } from './hooks/useCarousel.js';
 import { useCarouselControls } from './hooks/useCarouselControls.js';
 import { useCarouselIndex } from './hooks/useCarouselIndex.js';
+import { useCarouselProxyUpdate } from './hooks/useCarouselProxyUpdate.js';
 
 export default {
   title: 'hooks/useCarousel',
@@ -243,6 +249,70 @@ export const InfiniteAndSnap = {
             }}
           >
             {index}
+          </li>
+        ))}
+      </ul>
+    );
+  },
+} as StoryObj;
+
+export const InfiniteAndSnapWithSlideProgress = {
+  render() {
+    const triggerRef = useRef<HTMLUListElement | null>(null);
+    const [currentElements, setCurrentElements] = useState(Elements);
+
+    const infiniteTransform = useCarouselInfiniteTransform(triggerRef);
+    const snap = useCarouselSnap(triggerRef, { infinite: true });
+
+    const carousel = useCarousel({
+      triggerRef,
+      variables: {
+        snap,
+      },
+      transforms: [infiniteTransform],
+    });
+
+    useCarouselProxyUpdate(carousel, () => {
+      const children = [
+        ...(carousel.triggerRef.current?.children ?? []),
+      ] as unknown as ReadonlyArray<HTMLElement>;
+
+      for (const [childIndex, child] of children.entries()) {
+        setCurrentElements((previous) =>
+          previous.map((element, elementIndex) =>
+            elementIndex === childIndex
+              ? Number.parseFloat(getCarouselSlideProgress(carousel, child).toFixed(2))
+              : element,
+          ),
+        );
+      }
+    });
+
+    return (
+      <ul
+        ref={triggerRef}
+        style={{
+          position: 'relative',
+          listStyle: 'none',
+          display: 'flex',
+          padding: '0',
+          width: '100%',
+          height: '100px',
+        }}
+      >
+        {currentElements.map((value: number, index: number) => (
+          <li
+            // eslint-disable-next-line react/no-array-index-key
+            key={`${Amount}_${index}`}
+            style={{
+              display: 'inline-block',
+              flexShrink: 0,
+              width: `${100 * (index + 1)}px`,
+              background: 'red',
+              border: '1px solid black',
+            }}
+          >
+            {index} - {value}
           </li>
         ))}
       </ul>

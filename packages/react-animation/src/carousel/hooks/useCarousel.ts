@@ -50,10 +50,7 @@ export function useCarousel({
   variables = {},
   transforms = [],
 }: CarouselOptions): CarouselContext {
-  const proxy = useMemo(
-    () => (typeof window === 'undefined' ? null : document.createElement('div')),
-    [],
-  );
+  const proxy = useMemo(() => globalThis.document?.createElement('div') ?? null, []);
 
   const type = useStaticValue(() => variables.type ?? CarouselType.X);
 

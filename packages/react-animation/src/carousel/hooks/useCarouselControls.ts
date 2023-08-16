@@ -41,7 +41,9 @@ export function useCarouselControls(
   const indexRef = useRefValue(index);
 
   return useMemo<CarouselControls>(() => {
-    function updatePosition<T extends keyof CarouselControls>(control?: T): CarouselControls[T] {
+    function getPositionUpdater<T extends keyof CarouselControls>(
+      control?: T,
+    ): CarouselControls[T] {
       return async (targetIndex?: number) => {
         if (indexRef.current === null || indexRef.current === -1) {
           throw new Error("Can't update position, index is undefined");
@@ -102,9 +104,9 @@ export function useCarouselControls(
     }
 
     return {
-      next: updatePosition('next'),
-      previous: updatePosition('previous'),
-      index: updatePosition(),
+      next: getPositionUpdater('next'),
+      previous: getPositionUpdater('previous'),
+      index: getPositionUpdater(),
     };
   }, [
     _tweenVariables,

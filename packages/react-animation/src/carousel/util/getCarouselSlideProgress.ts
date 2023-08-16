@@ -3,7 +3,7 @@ import { type CarouselContext, CarouselType } from '../hooks/useCarousel.js';
 /**
  * Returns a number between 0 and 1 representing the progress of the target slide.
  *
- * -1 represents the slide being completely off the left side of the carousel.
+ * -1 represents the slide being completely off the left side of the carousel's bounding rect.
  * 1 represents the slide being completely off the right side of the carousel.
  * 0 represents the slide being at the left side of the carousel.
  */

@@ -30,7 +30,7 @@ export function getCarouselIndex(
     0,
     children.findIndex(
       // prettier-ignore
-      (child) => getElementOffset(child) + (getElementSize(child) * alignment) > Math.abs(position % size),
+      (child) => getElementOffset(child) + (getElementSize(child) * alignment) > ((position % size) + size) % size,
     ),
   );
 }
