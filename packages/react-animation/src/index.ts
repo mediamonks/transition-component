@@ -2,7 +2,7 @@ export * from './SplitTextWrapper/SplitTextWrapper.js';
 export * from './carousel/hooks/useCarousel.js';
 export * from './carousel/hooks/useCarouselBounds.js';
 export * from './carousel/hooks/useCarouselCalculations.js';
-// export * from './carousel/hooks/useCarouselIndex.js';
+export * from './carousel/hooks/useCarouselIndex.js';
 export * from './carousel/hooks/useCarouselInfiniteTransform.js';
 export * from './carousel/hooks/useCarouselSnap.js';
 export * from './carousel/hooks/useCarouselUpdate.js';
