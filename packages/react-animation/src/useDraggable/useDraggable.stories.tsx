@@ -17,7 +17,7 @@ export const Demo = {
     const targetRef = useRefValue(proxyElement);
     const triggerRef = useRef<HTMLDivElement | null>(null);
 
-    const draggable = useDraggable(targetRef, {
+    const draggable = useDraggable(triggerRef, {
       trigger: triggerRef,
       variables: {},
     });
