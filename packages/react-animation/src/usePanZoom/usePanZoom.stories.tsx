@@ -19,7 +19,7 @@ export const Demo = {
       (event: React.MouseEvent<HTMLButtonElement>) => {
         const { x, y } = event.currentTarget.getBoundingClientRect();
         if (zoomTo) {
-          zoomTo(x, y, 10);
+          zoomTo(x, y, 2);
         }
       },
       [zoomTo],
