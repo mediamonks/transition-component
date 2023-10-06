@@ -1,3 +1,5 @@
+[![Build and Test CI](https://github.com/mediamonks/transition-component/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/mediamonks/transition-component/actions/workflows/build-and-test.yml)
+
 # @mediamonks/transition-component
 
 Monorepo that contains everything related to animations!
