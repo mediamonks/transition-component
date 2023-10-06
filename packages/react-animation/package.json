@@ -31,7 +31,6 @@
     "fix:eslint": "npm run lint:eslint -- --fix",
     "test": "npm-run-all -s test:*",
     "test:jest": "NODE_NO_WARNINGS=1 NODE_OPTIONS=--experimental-vm-modules jest",
-    "test:playwright": "playwright test -c playwright.config.ts",
     "build": "npm-run-all -s clean build:*",
     "build:ts": "tsc -p ./tsconfig.build.json",
     "clean": "rimraf -rf ./dist",
