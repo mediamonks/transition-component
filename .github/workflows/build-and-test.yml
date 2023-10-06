@@ -30,10 +30,9 @@ jobs:
         env:
           GSAP_TOKEN: ${{ secrets.GSAP_TOKEN }}
         run: |
-          npm config set always-auth=true
           npm config set //npm.greensock.com/:_authToken=$GSAP_TOKEN
           npm config set @gsap:registry=https://npm.greensock.com
-          npm ci
+          npm ci --always-auth
 
       - name: Build
         run: npm run lint:eslint
