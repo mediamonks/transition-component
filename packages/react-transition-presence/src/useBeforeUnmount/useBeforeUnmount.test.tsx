@@ -5,7 +5,7 @@ describe('useBeforeUnmount', () => {
   it('should not crash', () => {
     renderHook(() => {
       // eslint-disable-next-line @typescript-eslint/no-empty-function
-      useBeforeUnmount(() => {}, []);
+      useBeforeUnmount(() => {});
     });
   });
 });

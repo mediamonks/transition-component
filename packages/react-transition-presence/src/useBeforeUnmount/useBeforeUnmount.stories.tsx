@@ -1,4 +1,3 @@
-/* eslint-disable react/no-multi-comp, react/jsx-no-literals */
 import { useState, type ReactElement } from 'react';
 import { TransitionPresence } from '../TransitionPresence/TransitionPresence.js';
 import { useBeforeUnmount } from './useBeforeUnmount.js';
@@ -19,7 +18,6 @@ function Child({ background, onClick }: ChildProps): ReactElement {
       new Promise((resolve) => {
         setTimeout(resolve, 1000);
       }),
-    [],
   );
 
   return (
@@ -61,7 +59,6 @@ export function UseBeforeUnmount(): ReactElement {
           />
         )}
       </TransitionPresence>
-
       <div style={{ marginTop: 24 }}>Click the square (isRedVisible: {String(isRedVisible)})</div>
     </>
   );

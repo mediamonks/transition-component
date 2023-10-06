@@ -1,47 +1,56 @@
-/* eslint-disable react/no-multi-comp, react/jsx-no-literals */
+/* eslint-disable  no-console */
 import { useAnimation } from '@mediamonks/react-animation';
+import { expect } from '@storybook/jest';
+import type { Meta, StoryObj } from '@storybook/react';
+import { within, userEvent } from '@storybook/testing-library';
 import gsap from 'gsap';
-import { type ReactElement, useCallback, useEffect, useRef, useState } from 'react';
+import { Fragment, useCallback, useEffect, useRef, useState, type ReactElement } from 'react';
 import { useBeforeUnmount } from '../useBeforeUnmount/useBeforeUnmount.js';
 import { TransitionPresence } from './TransitionPresence.js';
 
-export default {
+const meta = {
   title: 'components/TransitionPresence',
-};
+} satisfies Meta;
+
+export default meta;
+
+type Story = StoryObj<typeof meta>;
 
 type ChildProps = {
   background: string;
-  duration?: number;
-  delayIn?: number;
-  onClick(): void;
+  onClick?(): void;
 };
 
-// Forces a re-render, useful to test for unwanted side-effects
-function useRerender(): () => void {
-  // eslint-disable-next-line react/hook-use-state
-  const [count, setCount] = useState(0);
-  // eslint-disable-next-line no-console
-  console.log('rerender', count);
-  return () => {
-    setCount((previous) => previous + 1);
-  };
-}
-
-function Child({ background, onClick, duration = 1, delayIn = 0 }: ChildProps): ReactElement {
+function Child({ background, onClick }: ChildProps): ReactElement {
   const ref = useRef<HTMLButtonElement>(null);
 
   useAnimation(() => {
     // eslint-disable-next-line no-console
     console.log('animate-in', background);
-    return gsap.fromTo(ref.current, { opacity: 0 }, { opacity: 1, duration, delay: delayIn });
+    return gsap.fromTo(
+      ref.current,
+      { opacity: 0, scale: 0 },
+      { opacity: 1, scale: 1, duration: 0.3, ease: 'power3.out' },
+    );
   }, []);
 
   // show visible animation during "before unmount" lifecycle
-  useBeforeUnmount(async () => {
+  useBeforeUnmount(async (abortSignal) => {
     // eslint-disable-next-line no-console
     console.log('animate-out', background);
-    return gsap.fromTo(ref.current, { opacity: 1 }, { opacity: 0, duration });
-  }, []);
+
+    const animation = gsap.fromTo(
+      ref.current,
+      { opacity: 1 },
+      { opacity: 0, ease: 'power3.out', duration: 0.6 },
+    );
+
+    abortSignal.addEventListener('abort', () => {
+      animation.pause(0);
+    });
+
+    return animation;
+  });
 
   // show when mounted/unmounted
   useEffect(() => {
@@ -59,8 +68,9 @@ function Child({ background, onClick, duration = 1, delayIn = 0 }: ChildProps): 
       ref={ref}
       aria-label="Click to change color"
       type="button"
+      data-testid={background}
       style={{
-        background,
+        background: `linear-gradient(to bottom right, ${background} 0%, purple 100%)`,
         border: 'none',
         width: 200,
         height: 200,
@@ -70,194 +80,212 @@ function Child({ background, onClick, duration = 1, delayIn = 0 }: ChildProps): 
   );
 }
 
-export function DeferFlow(): ReactElement {
-  const [isRedVisible, setIsRedVisible] = useState(true);
+export const Demo: Story = {
+  render(): ReactElement {
+    const [isRedVisible, setIsRedVisible] = useState(true);
 
-  return (
-    <>
-      <TransitionPresence>
-        {isRedVisible ? (
-          <Child
-            key="red"
-            background="red"
-            // eslint-disable-next-line react/jsx-no-bind
-            onClick={(): void => {
-              setIsRedVisible(false);
-            }}
-          />
-        ) : (
-          <Child
-            key="blue"
-            background="blue"
-            // eslint-disable-next-line react/jsx-no-bind
-            onClick={(): void => {
-              setIsRedVisible(true);
-            }}
-          />
-        )}
-      </TransitionPresence>
+    return (
+      <>
+        <TransitionPresence>
+          {isRedVisible ? (
+            <Child
+              key="red"
+              background="red"
+              // eslint-disable-next-line react/jsx-no-bind
+              onClick={(): void => {
+                setIsRedVisible(false);
+              }}
+            />
+          ) : (
+            <Child
+              key="blue"
+              background="blue"
+              // eslint-disable-next-line react/jsx-no-bind
+              onClick={(): void => {
+                setIsRedVisible(true);
+              }}
+            />
+          )}
+        </TransitionPresence>
 
-      <div style={{ marginTop: 24 }}>Click the square (isRedVisible: {String(isRedVisible)})</div>
-    </>
-  );
-}
+        <div style={{ marginTop: 24 }}>Click the square (isRedVisible: {String(isRedVisible)})</div>
+      </>
+    );
+  },
+  async play({ canvasElement }) {
+    const canvas = within(canvasElement);
 
-export function CrossFlow(): ReactElement {
-  const [isRedVisible, setIsRedVisible] = useState(true);
+    expect(canvas.getByTestId('red')).toBeInTheDocument();
+    expect(canvas.queryByTestId('blue')).toBeNull();
 
-  return (
-    <>
-      <TransitionPresence crossFlow>
-        {isRedVisible ? (
-          <Child
-            key="red"
-            background="red"
-            // eslint-disable-next-line react/jsx-no-bind
-            onClick={(): void => {
-              setIsRedVisible(false);
-            }}
-          />
-        ) : (
-          <Child
-            key="blue"
-            background="blue"
-            // eslint-disable-next-line react/jsx-no-bind
-            onClick={(): void => {
-              setIsRedVisible(true);
-            }}
-          />
-        )}
-      </TransitionPresence>
+    await userEvent.click(canvas.getByTestId('red'));
 
-      <div style={{ marginTop: 24 }}>Click the square (isRedVisible: {String(isRedVisible)})</div>
-    </>
-  );
-}
+    expect(canvas.getByTestId('red')).toBeInTheDocument();
+    expect(canvas.queryByTestId('blue')).toBeNull();
 
-export function CrossFlowRerender(): ReactElement {
-  const [isRedVisible, setIsRedVisible] = useState(true);
+    const blue = await canvas.findByTestId('blue');
 
-  // trigger rerender in the parent to see how it affects the TransitionPresence
-  const rerender = useRerender();
+    expect(blue).toBeInTheDocument();
+    expect(canvas.queryByTestId('red')).toBeNull();
 
-  const onClickBlue = useCallback(() => {
-    setIsRedVisible(true);
-  }, [setIsRedVisible]);
+    await userEvent.click(canvas.getByTestId('blue'));
 
-  const onClickRed = useCallback(() => {
-    setIsRedVisible(false);
-  }, [setIsRedVisible]);
+    expect(canvas.getByTestId('blue')).toBeInTheDocument();
+    expect(canvas.queryByTestId('red')).toBeNull();
 
-  return (
-    <>
-      <TransitionPresence crossFlow>
-        {isRedVisible ? (
-          <Child key="red" background="red" onClick={onClickRed} />
-        ) : (
-          /* remove key to trigger error log */
-          <Child key="blue" background="blue" onClick={onClickBlue} />
-        )}
-      </TransitionPresence>
+    const red = await canvas.findByTestId('red');
 
-      <div style={{ marginTop: 24 }}>Click the square (isRedVisible: {String(isRedVisible)})</div>
-      <button
-        type="button"
-        /* eslint-disable-next-line react/jsx-no-bind */
-        onClick={(): void => {
-          rerender();
-        }}
-      >
-        trigger rerender
-      </button>
-    </>
-  );
-}
+    expect(red).toBeInTheDocument();
+    expect(canvas.queryByTestId('blue')).toBeNull();
+  },
+};
 
-export function StartCompleteCallbacks(): ReactElement {
-  const [isRedVisible, setIsRedVisible] = useState(true);
+export const DemoUsingFragment: Story = {
+  render(): ReactElement {
+    const [isRedVisible, setIsRedVisible] = useState(true);
 
-  return (
-    <>
-      <TransitionPresence
-        /* eslint-disable-next-line react/jsx-no-bind,@typescript-eslint/explicit-function-return-type */
-        onStart={() => {
-          // eslint-disable-next-line no-console
-          console.log('start');
-        }}
-        /* eslint-disable-next-line react/jsx-no-bind,@typescript-eslint/explicit-function-return-type */
-        onComplete={() => {
-          // eslint-disable-next-line no-console
-          console.log('completed');
-        }}
-      >
-        {isRedVisible ? (
-          <Child
-            key="red"
-            background="red"
-            // eslint-disable-next-line react/jsx-no-bind
-            onClick={(): void => {
-              setIsRedVisible(false);
-            }}
-          />
-        ) : (
-          <Child
-            key="blue"
-            background="blue"
-            // eslint-disable-next-line react/jsx-no-bind
-            onClick={(): void => {
-              setIsRedVisible(true);
-            }}
-          />
-        )}
-      </TransitionPresence>
-
-      <div style={{ marginTop: 24 }}>Click the square (isRedVisible: {String(isRedVisible)})</div>
-    </>
-  );
-}
-
-const initialItems = ['red', 'blue', 'green', 'yellow'];
-export function RerenderUnmountIssue(): ReactElement {
-  const [items, setItems] = useState(() => initialItems);
-  const rerender = useRerender();
-
-  const onReset = useCallback(() => {
-    setItems(initialItems);
-  }, [setItems]);
-  const onNextItem = useCallback(() => {
-    setItems((previous) => {
-      const [first, ...rest] = previous;
-      return [...rest, first];
-    });
-    // This would trigger out animations when
-    // not properly handled in the TransitionPresence
-    setTimeout(() => {
-      rerender();
-    }, 100);
-  }, [setItems, rerender]);
-
-  return (
-    <div>
-      <div style={{ display: 'flex' }}>
-        {items.map((item, index) => (
-          // eslint-disable-next-line react/no-array-index-key
-          <div key={index} style={{ width: index === 0 ? 400 : 200 }}>
-            <TransitionPresence crossFlow={index <= 1}>
+    return (
+      <>
+        <TransitionPresence>
+          {isRedVisible ? (
+            <Fragment key="red">
               <Child
-                /* eslint-disable-next-line react/no-array-index-key */
-                key={item + index}
-                background={item}
-                onClick={onNextItem}
-                duration={2}
-                delayIn={0}
+                background="red"
+                // eslint-disable-next-line react/jsx-no-bind
+                onClick={(): void => {
+                  setIsRedVisible(false);
+                }}
               />
-            </TransitionPresence>
-          </div>
-        ))}
-      </div>
-      <button type="button" onClick={onReset}>
-        Reset
-      </button>
-    </div>
-  );
-}
+              <Child background="yellow" />
+            </Fragment>
+          ) : (
+            <Fragment key="blue">
+              <Child background="yellow" />
+              <Child
+                background="blue"
+                // eslint-disable-next-line react/jsx-no-bind
+                onClick={(): void => {
+                  setIsRedVisible(true);
+                }}
+              />
+            </Fragment>
+          )}
+        </TransitionPresence>
+
+        <div style={{ marginTop: 24 }}>
+          Click the blue/red square (isRedVisible: {String(isRedVisible)})
+        </div>
+      </>
+    );
+  },
+  async play({ canvasElement }) {
+    const canvas = within(canvasElement);
+
+    expect(canvas.getByTestId('red')).toBeInTheDocument();
+    expect(canvas.queryByTestId('blue')).toBeNull();
+
+    await userEvent.click(canvas.getByTestId('red'));
+
+    expect(canvas.getByTestId('red')).toBeInTheDocument();
+    expect(canvas.queryByTestId('blue')).toBeNull();
+
+    const blue = await canvas.findByTestId('blue');
+
+    expect(blue).toBeInTheDocument();
+    expect(canvas.queryByTestId('red')).toBeNull();
+
+    await userEvent.click(canvas.getByTestId('blue'));
+
+    expect(canvas.getByTestId('blue')).toBeInTheDocument();
+    expect(canvas.queryByTestId('red')).toBeNull();
+
+    const red = await canvas.findByTestId('red');
+
+    expect(red).toBeInTheDocument();
+    expect(canvas.queryByTestId('blue')).toBeNull();
+  },
+};
+
+export const DemoWithLifecycleCallbacks = {
+  render(): ReactElement {
+    const [isRedVisible, setIsRedVisible] = useState(true);
+
+    const onPreviousChildrenUnmounting = useCallback(() => {
+      // eslint-disable-next-line no-console
+      console.log('onPreviousChildrenUnmounting');
+    }, []);
+
+    const onPreviousChildrenUnmounted = useCallback(() => {
+      // eslint-disable-next-line no-console
+      console.log('onPreviousChildrenUnmounted');
+    }, []);
+
+    const onChildrenMounted = useCallback(() => {
+      // eslint-disable-next-line no-console
+      console.log('onChildrenMounted');
+    }, []);
+
+    return (
+      <>
+        <TransitionPresence
+          onPreviousChildrenUnmounting={onPreviousChildrenUnmounting}
+          onPreviousChildrenUnmounted={onPreviousChildrenUnmounted}
+          onChildrenMounted={onChildrenMounted}
+        >
+          {isRedVisible ? (
+            <Child
+              key="red"
+              background="red"
+              // eslint-disable-next-line react/jsx-no-bind
+              onClick={(): void => {
+                setIsRedVisible(false);
+              }}
+            />
+          ) : (
+            <Child
+              key="blue"
+              background="blue"
+              // eslint-disable-next-line react/jsx-no-bind
+              onClick={(): void => {
+                setIsRedVisible(true);
+              }}
+            />
+          )}
+        </TransitionPresence>
+        <div style={{ marginTop: 24 }}>Click the square (isRedVisible: {String(isRedVisible)})</div>
+      </>
+    );
+  },
+};
+
+export const DemoClickToHide: Story = {
+  render(): ReactElement {
+    const [isVisible, setIsVisible] = useState(true);
+
+    return (
+      <>
+        <TransitionPresence>
+          {isVisible ? (
+            <Child
+              key="red"
+              background="red"
+              // eslint-disable-next-line react/jsx-no-bind
+              onClick={(): void => {
+                setIsVisible(false);
+              }}
+            />
+          ) : null}
+        </TransitionPresence>
+        <div style={{ marginTop: 24 }}>Click the square (isVisible: {String(isVisible)})</div>
+      </>
+    );
+  },
+  async play({ canvasElement }) {
+    const canvas = within(canvasElement);
+    expect(canvas.getByTestId('red')).toBeInTheDocument();
+    await userEvent.click(canvas.getByTestId('red'), {
+      delay: 600,
+    });
+    expect(canvas.queryByTestId('red')).toBeNull();
+  },
+};

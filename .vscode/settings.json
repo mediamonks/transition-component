@@ -1,0 +1,10 @@
+{
+  "eslint.workingDirectories": [
+    "packages/core-transition-component",
+    "packages/documentation",
+    "packages/muban-storybook-addon-transition",
+    "packages/muban-transition-component",
+    "packages/react-animation",
+    "packages/react-transition-presence"
+  ]
+}

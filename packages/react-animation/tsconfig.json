@@ -3,6 +3,6 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "moduleResolution": "NodeNext",
-    "types": ["gsap/types", "jest"]
+    "types": ["jest"]
   }
 }
