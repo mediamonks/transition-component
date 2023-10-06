@@ -5,11 +5,13 @@ import * as stories from './TransitionPresence.stories';
 
 # TransitionPresence
 
-`<TransitionPresence />` is a component that allows you to defer unmount of a component.
+`<TransitionPresence />` is a component that allows you to defer the unmount lifecycle of a
+component.
 
 The callback function used in `useBeforeUnmount` in components that are rendered in the context of
 `<TransitionPresence />` will be called just before a component is unmounted. The promises that are
-created using the callback are await before unmounting a component.
+created using the callback are awaited before unmounting a component. New children are rendered
+after old children are unmounted.
 
 The most common use-case for `<TransitionPresence />` is animations, but it's not limited to this
 use case.
