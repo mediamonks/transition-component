@@ -42,7 +42,7 @@ addons.register(addonId, () => {
   addons.add(panelId, {
     type: types.PANEL,
     title: 'Transitions',
-    render: function Addon({ active, key }): ReactElement {
+    render: function Addon({ active }): ReactElement {
       const transitionController = useRef<TransitionController>(null);
 
       const [seekValue, setSeekValue] = useState<number>(100);
@@ -62,7 +62,7 @@ addons.register(addonId, () => {
         // the following naming convention: `[category]-[id]-[name]--[story name]`. This allows us
         // to use a RegEx to retrieve the part between the category and story name.
         // eslint-disable-next-line prefer-named-capture-group, require-unicode-regexp
-        const [_, componentId] = /-(.*)--/g.exec(id) ?? [];
+        const [, componentId] = /-(.*)--/g.exec(id) ?? [];
 
         // TODO: we might want to find a better way to retrieve the story element.
         const element = iframe?.contentWindow?.document.body.querySelector<HTMLElement>(
@@ -111,7 +111,7 @@ addons.register(addonId, () => {
       );
 
       return (
-        <AddonPanel active={active ?? false} key={key}>
+        <AddonPanel active={active ?? false}>
           <div style={{ padding: 20 }}>
             {enableControls ? (
               <>
@@ -140,7 +140,7 @@ addons.register(addonId, () => {
                 </ControlRow>
               </>
             ) : (
-              <Paragraph>No timeline found for this component!️</Paragraph>
+              <Paragraph>No timeline found for this component!</Paragraph>
             )}
           </div>
         </AddonPanel>
