@@ -39,7 +39,9 @@ jobs:
         # gets the version from the package.json, removes the quotes and the prerelease part, adds the git hash and sets the version
         # example: 1.0.0-alpha.0 -> 1.0.0-dev.1234567
         run: |
-          echo "$(npm pkg get version --prefix packages/react-animation | cut -d '"' -f 2 | cut -d '-' -f 1)-dev.$(git rev-parse --short HEAD)" | xargs npm version --no-git-tag-version
+          cd packages/react-animation
+          npm version prerelease --preid="$(git rev-parse --short HEAD)" --no-git-tag-version
+          cd ../..
 
       - name: Publish
         run: |
