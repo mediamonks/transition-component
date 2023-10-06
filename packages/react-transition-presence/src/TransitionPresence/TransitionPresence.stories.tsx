@@ -1,15 +1,16 @@
 /* eslint-disable  no-console */
 import { useAnimation } from '@mediamonks/react-animation';
-import { type Meta, type StoryObj } from '@storybook/react';
+import { type Meta } from '@storybook/react';
 import gsap from 'gsap';
 import { useCallback, useEffect, useRef, useState, type ReactElement, Fragment } from 'react';
 import { useBeforeUnmount } from '../useBeforeUnmount/useBeforeUnmount.js';
 import { TransitionPresence } from './TransitionPresence.js';
 
-export default {
+const meta = {
   title: 'components/TransitionPresence',
-  component: TransitionPresence,
-} as Meta<typeof TransitionPresence>;
+} satisfies Meta;
+
+export default meta;
 
 type ChildProps = {
   background: string;
@@ -106,7 +107,7 @@ export const Demo = {
       </>
     );
   },
-} satisfies StoryObj<typeof TransitionPresence>;
+};
 
 export const DemoUsingFragment = {
   render(): ReactElement {
@@ -218,7 +219,6 @@ export const DemoClickToHide = {
             />
           ) : null}
         </TransitionPresence>
-
         <div style={{ marginTop: 24 }}>Click the square (isVisible: {String(isVisible)})</div>
       </>
     );
