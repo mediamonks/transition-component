@@ -1,7 +1,2 @@
 dist/
 .docs/
-
-# Playwright output
-test-results/
-playwright-report/
-playwright/.cache/

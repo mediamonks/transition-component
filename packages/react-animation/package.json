@@ -46,7 +46,6 @@
     "@mediamonks/eslint-config-react": "^2.1.11",
     "@mediamonks/eslint-config-typescript": "^1.0.8",
     "@mediamonks/eslint-config-typescript-react": "^1.0.10",
-    "@playwright/experimental-ct-react": "^1.32.3",
     "@storybook/addon-essentials": "^7.4.6",
     "@storybook/addon-interactions": "^7.4.6",
     "@storybook/addon-links": "^7.4.6",
@@ -95,9 +94,7 @@
       {
         "files": [
           "**/*.stories.tsx",
-          "**/*.stories.ts",
-          "**/*.playwright.ts",
-          "**/*.playwright.tsx"
+          "**/*.stories.ts"
         ],
         "rules": {
           "react-hooks/rules-of-hooks": "off",

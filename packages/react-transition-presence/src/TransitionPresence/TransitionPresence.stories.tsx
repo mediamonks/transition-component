@@ -1,8 +1,10 @@
 /* eslint-disable  no-console */
 import { useAnimation } from '@mediamonks/react-animation';
-import { type Meta } from '@storybook/react';
+import { expect } from '@storybook/jest';
+import type { Meta, StoryObj } from '@storybook/react';
+import { within, userEvent } from '@storybook/testing-library';
 import gsap from 'gsap';
-import { useCallback, useEffect, useRef, useState, type ReactElement, Fragment } from 'react';
+import { Fragment, useCallback, useEffect, useRef, useState, type ReactElement } from 'react';
 import { useBeforeUnmount } from '../useBeforeUnmount/useBeforeUnmount.js';
 import { TransitionPresence } from './TransitionPresence.js';
 
@@ -11,6 +13,8 @@ const meta = {
 } satisfies Meta;
 
 export default meta;
+
+type Story = StoryObj<typeof meta>;
 
 type ChildProps = {
   background: string;
@@ -64,6 +68,7 @@ function Child({ background, onClick }: ChildProps): ReactElement {
       ref={ref}
       aria-label="Click to change color"
       type="button"
+      data-testid={background}
       style={{
         background: `linear-gradient(to bottom right, ${background} 0%, purple 100%)`,
         border: 'none',
@@ -75,7 +80,7 @@ function Child({ background, onClick }: ChildProps): ReactElement {
   );
 }
 
-export const Demo = {
+export const Demo: Story = {
   render(): ReactElement {
     const [isRedVisible, setIsRedVisible] = useState(true);
 
@@ -107,9 +112,35 @@ export const Demo = {
       </>
     );
   },
+  async play({ canvasElement }) {
+    const canvas = within(canvasElement);
+
+    expect(canvas.getByTestId('red')).toBeInTheDocument();
+    expect(canvas.queryByTestId('blue')).toBeNull();
+
+    await userEvent.click(canvas.getByTestId('red'));
+
+    expect(canvas.getByTestId('red')).toBeInTheDocument();
+    expect(canvas.queryByTestId('blue')).toBeNull();
+
+    const blue = await canvas.findByTestId('blue');
+
+    expect(blue).toBeInTheDocument();
+    expect(canvas.queryByTestId('red')).toBeNull();
+
+    await userEvent.click(canvas.getByTestId('blue'));
+
+    expect(canvas.getByTestId('blue')).toBeInTheDocument();
+    expect(canvas.queryByTestId('red')).toBeNull();
+
+    const red = await canvas.findByTestId('red');
+
+    expect(red).toBeInTheDocument();
+    expect(canvas.queryByTestId('blue')).toBeNull();
+  },
 };
 
-export const DemoUsingFragment = {
+export const DemoUsingFragment: Story = {
   render(): ReactElement {
     const [isRedVisible, setIsRedVisible] = useState(true);
 
@@ -146,6 +177,32 @@ export const DemoUsingFragment = {
         </div>
       </>
     );
+  },
+  async play({ canvasElement }) {
+    const canvas = within(canvasElement);
+
+    expect(canvas.getByTestId('red')).toBeInTheDocument();
+    expect(canvas.queryByTestId('blue')).toBeNull();
+
+    await userEvent.click(canvas.getByTestId('red'));
+
+    expect(canvas.getByTestId('red')).toBeInTheDocument();
+    expect(canvas.queryByTestId('blue')).toBeNull();
+
+    const blue = await canvas.findByTestId('blue');
+
+    expect(blue).toBeInTheDocument();
+    expect(canvas.queryByTestId('red')).toBeNull();
+
+    await userEvent.click(canvas.getByTestId('blue'));
+
+    expect(canvas.getByTestId('blue')).toBeInTheDocument();
+    expect(canvas.queryByTestId('red')).toBeNull();
+
+    const red = await canvas.findByTestId('red');
+
+    expect(red).toBeInTheDocument();
+    expect(canvas.queryByTestId('blue')).toBeNull();
   },
 };
 
@@ -201,7 +258,7 @@ export const DemoWithLifecycleCallbacks = {
   },
 };
 
-export const DemoClickToHide = {
+export const DemoClickToHide: Story = {
   render(): ReactElement {
     const [isVisible, setIsVisible] = useState(true);
 
@@ -222,5 +279,13 @@ export const DemoClickToHide = {
         <div style={{ marginTop: 24 }}>Click the square (isVisible: {String(isVisible)})</div>
       </>
     );
+  },
+  async play({ canvasElement }) {
+    const canvas = within(canvasElement);
+    expect(canvas.getByTestId('red')).toBeInTheDocument();
+    await userEvent.click(canvas.getByTestId('red'), {
+      delay: 600,
+    });
+    expect(canvas.queryByTestId('red')).toBeNull();
   },
 };
