@@ -87,7 +87,7 @@
       "@mediamonks/eslint-config-typescript-react"
     ],
     "parserOptions": {
-      "project": "./tsconfig.json"
+      "project": "./tsconfig.eslint.json"
     },
     "rules": {
       "@typescript-eslint/no-redundant-type-constituents": "off"
