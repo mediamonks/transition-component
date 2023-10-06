@@ -10,3 +10,14 @@ updates:
     schedule:
       interval: 'weekly'
       day: 'sunday'
+    groups:
+      storybook:
+        patterns:
+          - 'storybook'
+          - '@storybook/*'
+      swc:
+        patterns:
+          - '@swc/*'
+      eslint-config:
+        patterns:
+          - '@mediamonks/eslint-config*'
