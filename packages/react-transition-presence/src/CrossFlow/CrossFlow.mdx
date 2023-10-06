@@ -1,0 +1,57 @@
+import { Meta, Canvas, Controls } from '@storybook/blocks';
+import * as stories from './CrossFlow.stories';
+
+<Meta title="components/CrossFlow" of={stories} />
+
+# CrossFlow
+
+`<CrossFlow />` is a component that allows you to defer the unmount lifecycle of a component.
+
+The callback function used in `useBeforeUnmount` in components that are rendered in the context of
+`<CrossFlow />` will be called just before a component is unmounted. The promises that are created
+using the callback are awaited before unmounting a component. In the CrossFlow component new
+children are immediately rendered.
+
+The most common use-case for `<CrossFlow />` is animations, but it's not limited to this use case.
+
+## Props
+
+### Children
+
+`<CrossFlow />` accepts a single child, use a `Fragment` when you want to render multiple components
+on the root level. New children are rendered when the component type for the children (`<p />` to
+`<div />`) change, or when the key of the children changes (`<p key="one" />` to `null`).
+
+```tsx
+// Transition between two instances
+<CrossFlow>
+  {myBoolean ? <MyComponent key="first-instance" /> : <MyComponent key="second-instance" />}
+</CrossFlow>
+
+// Transition between component types (new instances are automatically created)
+<CrossFlow>
+  {myBoolean ? <FirstComponent /> : <SecondComponent />}
+</CrossFlow>
+```
+
+### onChildrenMounted
+
+The `onChildrenMounted` is called when the new children are mounted.
+
+```tsx
+onChildrenMounted?: () => void;
+
+<CrossFlow onChildrenMounted={() => console.log('onChildrenMounted')}>
+  ...
+</CrossFlow>
+```
+
+## Demo
+
+### Basic
+
+<Canvas of={stories.CrossFlowExample} />
+
+### Basic with Fragments
+
+<Canvas of={stories.CrossFlowFragmentExample} />

@@ -5,7 +5,6 @@ import {
   useMemo,
   useState,
   type ReactElement,
-  type ReactFragment,
   type RefObject,
 } from 'react';
 import { childrenAreEqual } from '../_utils/childrenAreEqual.js';
@@ -17,16 +16,19 @@ import {
 import { TransitionPresenceContext } from './TransitionPresence.context.js';
 
 export type TransitionPresenceProps = {
-  children: ReactElement | ReactFragment | null;
+  children: ReactElement | null;
   onPreviousChildrenUnmounting?(
-    previousChildren: ReactElement | ReactFragment | null,
-    children: ReactElement | ReactFragment | null,
+    previousChildren: ReactElement | null,
+    children: ReactElement | null,
   ): void | Promise<void>;
   onPreviousChildrenUnmounted?(
-    previousChildren: ReactElement | ReactFragment | null,
-    children: ReactElement | ReactFragment | null,
+    previousChildren: ReactElement | null,
+    children: ReactElement | null,
   ): void | Promise<void>;
-  onChildrenMounted?(children: ReactElement | ReactFragment | null): void | Promise<void>;
+  onChildrenMounted?(
+    previousChildren: ReactElement | null,
+    children: ReactElement | null,
+  ): void | Promise<void>;
 };
 
 /**
@@ -85,7 +87,7 @@ export function TransitionPresence({
       setPreviousChildren(children);
       await tick();
 
-      onChildrenMountedRef.current?.(children);
+      onChildrenMountedRef.current?.(previousChildren, children);
     })();
 
     return () => {
