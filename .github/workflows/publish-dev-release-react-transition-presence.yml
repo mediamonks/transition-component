@@ -43,6 +43,7 @@ jobs:
         run: |
           cd packages/react-transition-presence
           npm version prerelease --preid="$(git rev-parse --short HEAD)" --no-git-tag-version
+          cd ../..
 
       - name: Publish
         run: |
