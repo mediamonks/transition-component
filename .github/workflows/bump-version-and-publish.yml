@@ -35,10 +35,10 @@ on:
 jobs:
   bump-version:
     runs-on: ubuntu-latest
+    concurrency: publish
     permissions:
       contents: read
       id-token: write
-
     steps:
       - name: Check out source
         uses: actions/checkout@v3
