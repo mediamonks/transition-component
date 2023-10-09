@@ -10,7 +10,7 @@ import {
 import { childrenAreEqual } from '../_utils/childrenAreEqual.js';
 import { tick } from '../_utils/tick.js';
 import {
-  useBeforeUnmount,
+  useTransitionPresenceBeforeUnmount,
   type BeforeUnmountCallback,
 } from '../useBeforeUnmount/useBeforeUnmount.js';
 import { TransitionPresenceContext } from './TransitionPresence.context.js';
@@ -104,7 +104,7 @@ export function TransitionPresence({
   ]);
 
   // Apply same effect when TransitionPresence in tree updates
-  useBeforeUnmount(beforeUnmountPreviousChildren);
+  useTransitionPresenceBeforeUnmount(beforeUnmountPreviousChildren);
 
   return (
     <TransitionPresenceContext.Provider value={beforeUnmountCallbacks}>

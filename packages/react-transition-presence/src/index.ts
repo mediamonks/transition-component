@@ -1,3 +1,6 @@
-export * from './TransitionPresence/TransitionPresence.js';
-export * from './TransitionPresence/TransitionPresence.context.js';
-export * from './useBeforeUnmount/useBeforeUnmount.js';
+export { TransitionPresenceContext } from './TransitionPresence/TransitionPresence.context.js';
+export { TransitionPresence } from './TransitionPresence/TransitionPresence.js';
+export {
+  type BeforeUnmountCallback,
+  useBeforeUnmount,
+} from './useBeforeUnmount/useBeforeUnmount.js';
