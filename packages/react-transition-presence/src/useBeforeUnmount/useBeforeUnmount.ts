@@ -1,6 +1,6 @@
 import { useRefValue } from '@mediamonks/react-hooks';
-import { useEffect } from 'react';
-import { useTransitionPresence } from '../TransitionPresence/TransitionPresence.context.js';
+import { useContext, useEffect } from 'react';
+import { TransitionPresenceContext } from '../index.js';
 
 export type BeforeUnmountCallback = (
   abortSignal: AbortSignal,
@@ -12,7 +12,31 @@ PromiseLike<unknown> | void;
  * TransitionPresence boundary
  */
 export function useBeforeUnmount(callback: BeforeUnmountCallback): void {
-  const transitionPresence = useTransitionPresence();
+  const transitionPresence = useContext(TransitionPresenceContext);
+  const callbackRef = useRefValue(callback);
+
+  if (transitionPresence === undefined) {
+    // eslint-disable-next-line no-console
+    console.warn('Component is not rendered in the context of a TransitionPresence');
+  }
+
+  useEffect(() => {
+    queueMicrotask(() => {
+      transitionPresence?.add(callbackRef);
+    });
+
+    return () => {
+      transitionPresence?.delete(callbackRef);
+    };
+  }, [transitionPresence, callbackRef]);
+}
+
+/**
+ * useBeforeUnmount without the warning, this should only be used within the
+ * <TransitionPresence> component in this package.
+ */
+export function useTransitionPresenceBeforeUnmount(callback: BeforeUnmountCallback): void {
+  const transitionPresence = useContext(TransitionPresenceContext);
   const callbackRef = useRefValue(callback);
 
   useEffect(() => {
