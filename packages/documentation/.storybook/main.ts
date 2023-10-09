@@ -17,20 +17,17 @@ export default {
   refs: {
     '@mediamonks/muban-transition-component': {
       title: '@mediamonks/muban-transition-component',
-      url: '/muban-transition-component',
-      // @ts-expect-error
+      url: '/transition-component/muban-transition-component',
       expanded: false,
     },
     '@mediamonks/react-animation': {
       title: '@mediamonks/react-animation',
-      url: '/react-animation',
-      // @ts-expect-error
+      url: '/transition-component/react-animation',
       expanded: false,
     },
     '@mediamonks/@react-transition-presence': {
       title: '@mediamonks/@react-transition-presence',
-      url: '/react-transition-presence',
-      // @ts-expect-error
+      url: '/transition-component/react-transition-presence',
       expanded: false,
     },
   },
