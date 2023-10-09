@@ -1,8 +1,7 @@
-import { Meta } from '@storybook/blocks';
-import { Canvas } from './../../.storybook/Canvas';
-import { Example } from './SplitTextWrapper.stories';
+import { Meta, Canvas, Controls } from '@storybook/blocks';
+import * as stories from './SplitTextWrapper.stories';
 
-<Meta title="components/SplitTextWrapper" />
+<Meta title="components/SplitTextWrapper" of={stories} />
 
 # SplitTextWrapper
 
@@ -10,55 +9,94 @@ The SplitTextWrapper creates a SplitText instance that can be retrieved using a 
 is available as soon as the just before the components is finished mounting. A new SplitText
 instance is created when the children or variables change.
 
-<Canvas>
-  <Example />
-</Canvas>
+<Canvas of={stories.Children} />
 
-## Usage
+## Rendering children
 
-The SplitTextWrapper accepts 1 child, this child is rendered to HTML inside the component to make
-sure that compnents from the vDOM are not changed on render making them untargetable in the created
-SplitText instance.
+The `SplitTextWrapper` renders to HTML inside the component to make sure that compnents from the
+vDOM are not changed on render making them untargetable in the created SplitText instance.
+
+> Warning: state inside the rendered children is lost when the children change.
 
 ```tsx
-function Example(): ReactElement {
+function Component(): ReactElement {
   const splitTextRef = useRef<SplitText>(null);
 
-  const animation = useAnimation(() => {
-    if (!splitTextRef.current) {
-      return;
-    }
+  useEffect(() => {
+    // Do something with `splitTextRef.current`
+  });
 
-    return gsap.from(splitTextRef.current.words, {
-      y: 20,
-      x: 4,
-      opacity: 0,
-      duration: 0.2,
-      stagger: 0.05,
-    });
-  }, []);
+  return (
+    <SplitTextWrapper ref={splitTextRef}>
+      Lorem ipsum dolor sit <i>amet consectetur</i>
+      <br /> adipisicing elit. <b>Tenetur perspiciatis</b> eius ea, ratione,
+      <br /> illo molestias, <code>quia sapiente</code> modi quo
+      <br /> molestiae temporibus.
+    </SplitTextWrapper>
+  );
+}
+```
 
-  const onReplay = useCallback(() => {
-    animation.current?.play(0);
-  }, [animation]);
+### Demo
+
+<Canvas of={stories.Children} />
+
+## Using dangerouslySetInnerHTML
+
+The children are rendered to a string, this is not necessary when the `dangerouslySetInnerHTML`
+property of a component is used.
+
+```tsx
+function Component(): ReactElement {
+  const splitTextRef = useRef<SplitText>(null);
+
+  useEffect(() => {
+    // Do something with `splitTextRef.current`
+  });
+
+  return (
+    <SplitTextWrapper
+      ref={splitTextRef}
+      dangerouslySetInnerHTML={{
+        __html:
+          'Lorem ipsum dolor sit <i>amet consectetur</i> <br /> adipisicing elit. <b>Tenetur perspiciatis</b> eius ea, ratione,<br /> illo molestias, <code>quia sapiente</code> modi quo<br /> molestiae temporibus.',
+      }}
+    />
+  );
+}
+```
+
+### Demo
+
+<Canvas of={stories.DangerouslySetInnerHtml} />
+
+## The `as` prop (polymorphic component)
+
+The `SplitTextWrapper` wrapper renders a `div` element by default. The `as` prop can be used to
+render the `SplitTextWrapper` as a different element.
+
+```tsx
+function Component(): ReactElement {
+  const splitTextRef1 = useRef<SplitText>(null);
+  const splitTextRef2 = useRef<SplitText>(null);
+
+  useEffect(() => {
+    // Do something with `splitTextRef1.current` or `splitTextRef2.current`
+  });
 
   return (
     <>
-      <h1>
-        <SplitTextWrapper ref={splitTextRef}>
-          <>
-            Lorem ipsum dolor sit <i>amet consectetur</i>
-            <br /> adipisicing elit. <b>Tenetur perspiciatis</b> eius ea, ratione,
-            <br /> illo molestias, <code>quia sapiente</code> modi quo
-            <br /> molestiae temporibus.
-          </>
-        </SplitTextWrapper>
-      </h1>
-
-      <button onClick={onReplay} type="button" style={{ cursor: 'pointer' }}>
-        Replay
-      </button>
+      <SplitTextWrapper ref={splitText1Ref} as="h1">
+        I'm an h1 element
+      </SplitTextWrapper>
+      <SplitTextWrapper ref={splitText2Ref} as="label" htmlFor="value">
+        I'm a code element
+      </SplitTextWrapper>
     </>
   );
 }
 ```
+
+### Demo
+
+<Canvas of={stories.AsProp} />

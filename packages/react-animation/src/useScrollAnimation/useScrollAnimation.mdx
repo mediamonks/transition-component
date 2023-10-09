@@ -1,6 +1,5 @@
-import { Meta } from '@storybook/blocks';
-import { Canvas } from './../../.storybook/Canvas';
-import { UseScrollAnimation } from './useScrollAnimation.stories';
+import { Meta, Canvas } from '@storybook/blocks';
+import * as stories from './useScrollAnimation.stories';
 
 <Meta title="hooks/useScrollAnimation" />
 
@@ -64,6 +63,4 @@ function ScrollAnimation(): ReactElement {
 
 Keep scrolling to see the animation.
 
-<Canvas>
-  <UseScrollAnimation />
-</Canvas>
+<Canvas of={stories.UseScrollAnimation} />
