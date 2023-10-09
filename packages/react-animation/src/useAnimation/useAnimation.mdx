@@ -1,6 +1,5 @@
-import { Meta } from '@storybook/blocks';
-import { Canvas } from './../../.storybook/Canvas';
-import { Tween, Timeline, OnAction } from './useAnimation.stories';
+import { Meta, Canvas } from '@storybook/blocks';
+import * as stories from './useAnimation.stories';
 
 <Meta title="hooks/useAnimation" />
 
@@ -39,9 +38,7 @@ function Component(): null {
 
 You can create a GSAP timeline in the `useAnimation` hooks callback function.
 
-<Canvas language="tsx">
-  <Timeline />
-</Canvas>
+<Canvas of={stories.Timeline} />
 
 ```tsx
 function Timeline(): ReactElement {
@@ -103,9 +100,7 @@ function Timeline(): ReactElement {
 
 You can create a GSAP tween in the `useAnimation` hooks callback function.
 
-<Canvas>
-  <Tween />
-</Canvas>
+<Canvas of={stories.Tween} />
 
 ```tsx
 function Tween(): ReactElement {
@@ -142,9 +137,7 @@ function Tween(): ReactElement {
 The `useAnimation` hooks returns the animation instance, this can be used to control the animation.
 Make sure to pause the animation if you don't want it to start on mount.
 
-<Canvas>
-  <OnAction />
-</Canvas>
+<Canvas of={stories.OnAction} />
 
 ```tsx
 function OnAction(): ReactElement {
