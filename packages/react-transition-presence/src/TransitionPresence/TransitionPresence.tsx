@@ -64,6 +64,7 @@ export function TransitionPresence({
 
   useEffect(() => {
     if (childrenAreEqual(children, previousChildren)) {
+      setPreviousChildren(children);
       return;
     }
 
