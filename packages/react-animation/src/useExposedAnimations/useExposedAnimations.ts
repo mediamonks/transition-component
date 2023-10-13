@@ -1,11 +1,12 @@
-import { useEffect, useState, type RefObject } from 'react';
+import { unref, type Unreffable } from '@mediamonks/react-hooks';
+import { useEffect, useState } from 'react';
 import { animations } from '../animations.js';
 
 /**
  * Hook to get animation from global animations map using given reference
  */
 export function useExposedAnimations(
-  arrayRef: RefObject<ReadonlyArray<unknown>>,
+  target: Unreffable<ReadonlyArray<unknown>>,
 ): ReadonlyArray<gsap.core.Animation> {
   const [exposedAnimations, setExposedAnimations] = useState<ReadonlyArray<gsap.core.Animation>>(
     [],
@@ -14,8 +15,10 @@ export function useExposedAnimations(
   useEffect(
     () =>
       animations.listen(() => {
-        if (arrayRef.current) {
-          const newAnimations = arrayRef.current.map((ref) => animations.get(ref));
+        const array = unref(target);
+
+        if (array) {
+          const newAnimations = array.map((ref) => animations.get(ref));
           // this should only be done when the refs have been updated, otherwise we're returning
           // a new array ref with the same values, which will cause a re-render
           setExposedAnimations((currentAnimations) =>
@@ -23,7 +26,8 @@ export function useExposedAnimations(
           );
         }
       }),
-    [arrayRef],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [target],
   );
 
   return exposedAnimations;

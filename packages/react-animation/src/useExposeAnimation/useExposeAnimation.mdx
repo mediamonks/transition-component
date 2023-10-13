@@ -44,17 +44,19 @@ const UseExposeAnimationForwardRef = ensuredForwardRef<HTMLDivElement, unknown>(
 );
 ```
 
-## Using a string value as reference
+## Using a value as reference
 
 ```tsx
+const value = Symbol("myRef")
+
 const UseExposeAnimationAnyValue = (): ReactElement => {
-  const ref = useRef('myRef');
+  const ref = useRef(value);
 
   const animation = useAnimation(() => gsap.from({ value: 0 }, { value: 1 }), []);
   useExposeAnimation(animation, ref);
 
   useEffect(() => {
-    console.log(getAnimation('myRef'));
+    console.log(getAnimation(value));
   }, []);
 
   ...
