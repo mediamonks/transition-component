@@ -1,3 +1,4 @@
+import { unref, type Unreffable } from '@mediamonks/react-hooks';
 import { useEffect, type RefObject } from 'react';
 import { animations } from '../animations.js';
 
@@ -6,15 +7,15 @@ import { animations } from '../animations.js';
  */
 export function useExposeAnimation(
   animation: RefObject<gsap.core.Animation | undefined>,
-  reference: RefObject<unknown>,
+  reference: Unreffable<unknown>,
 ): void {
   useEffect(() => {
     // eslint-disable-next-line no-underscore-dangle
-    const _reference = reference.current;
+    const _reference = unref(reference);
     // eslint-disable-next-line no-underscore-dangle
     const _animation = animation.current;
 
-    if (_animation) {
+    if (_animation && _reference) {
       animations.set(_reference, _animation);
     }
 
