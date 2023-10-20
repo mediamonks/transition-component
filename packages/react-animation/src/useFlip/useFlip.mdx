@@ -1,0 +1,46 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as stories from './useFlip.stories';
+
+<Meta title="components/useFlip" of={stories} />
+
+# useFlip
+
+Use to flip a components state from one value to another.
+
+```tsx
+function MyComponent(): ReactElement {
+  const [isFlipped, toggle] = useToggle(false);
+
+  const divRef = useRef<HTMLDivElement>(null);
+  useFlip(divRef, flipOptions);
+
+  useEventListener(globalThis.document, 'click', () => {
+    toggle();
+  });
+
+  return (
+    <div
+      ref={divRef}
+      style={
+        isFlipped
+          ? {
+              ...styles,
+              position: 'absolute',
+              insetBlock: 0,
+              insetInlineStart: '50%',
+              insetInlineEnd: 0,
+            }
+          : {
+              ...styles,
+              inlineSize: 150,
+              blockSize: 150,
+            }
+      }
+    />
+  );
+}
+```
+
+### Demo
+
+<Canvas of={stories.Default} />

@@ -5,3 +5,4 @@ export * from './useExposeAnimation/useExposeAnimation.js';
 export * from './useExposedAnimation/useExposedAnimation.js';
 export * from './useExposedAnimations/useExposedAnimations.js';
 export * from './useScrollAnimation/useScrollAnimation.js';
+export * from './useFlip/useFlip.js';
