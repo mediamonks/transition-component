@@ -48,7 +48,7 @@ type SplitTextWrapperProps<T extends KnownTarget> = {
   as?: T;
 
   /**
-   * Split by selector to accommodate for the SplitText limitations when splitting lines
+   * Find the deepest child for the SplitText limitations when splitting lines
    * in nested elements
    */
   splitDeep?: boolean;
