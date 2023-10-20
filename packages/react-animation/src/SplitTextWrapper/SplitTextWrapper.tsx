@@ -14,6 +14,23 @@ if (typeof window !== 'undefined') {
 }
 
 /**
+ * Find deepest child as long as there is only one
+ * @param parent
+ * @returns
+ */
+function findDeepestChild(parent: Element): Element {
+  let [child] = parent.children;
+
+  while (parent.children.length === 1) {
+    [child] = parent.children;
+    // eslint-disable-next-line no-param-reassign
+    parent = child;
+  }
+
+  return parent;
+}
+
+/**
  * Allowed as prop values
  */
 type KnownTarget = Exclude<keyof JSX.IntrinsicElements, symbol | object>;
@@ -29,6 +46,12 @@ type SplitTextWrapperProps<T extends KnownTarget> = {
    * The element type to render, the default is `div`
    */
   as?: T;
+
+  /**
+   * Split by selector to accommodate for the SplitText limitations when splitting lines
+   * in nested elements
+   */
+  splitDeep?: boolean;
 };
 
 /**
@@ -43,7 +66,7 @@ type SplitTextWrapperComponent = <T extends KnownTarget = 'div'>(
 
 // @ts-expect-error polymorphic type is not compatible with ensuredForwardRef function factory
 export const SplitTextWrapper: SplitTextWrapperComponent = ensuredForwardRef(
-  ({ variables = {}, as, children, ...props }, ref) => {
+  ({ variables = {}, as, children, splitDeep = false, ...props }, ref) => {
     /**
      * Not using useCallback on purpose so that a new SplitText instance is
      * created whenever this component rerenders the children
@@ -53,15 +76,7 @@ export const SplitTextWrapper: SplitTextWrapperComponent = ensuredForwardRef(
         return;
       }
 
-      /**
-       * Detecting the if firstChild is an element only if there is only one child
-       */
-      const content =
-        element.children.length === 1 && element.firstChild?.nodeType === Node.ELEMENT_NODE
-          ? (element.firstChild as HTMLElement)
-          : element;
-
-      ref.current = new SplitText(content, variables);
+      ref.current = new SplitText(splitDeep ? findDeepestChild(element) : element, variables);
     };
 
     const Component = (as ?? 'div') as unknown as ComponentType<unknown>;
