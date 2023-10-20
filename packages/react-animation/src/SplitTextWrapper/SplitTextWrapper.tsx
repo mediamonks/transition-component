@@ -53,10 +53,14 @@ export const SplitTextWrapper: SplitTextWrapperComponent = ensuredForwardRef(
         return;
       }
 
+      /**
+       * Detecting the if firstChild is an element only if there is only one child
+       */
       const content =
-        element.firstChild?.nodeType === Node.ELEMENT_NODE
-          ? element.querySelector((element.firstChild as HTMLElement).tagName.toLowerCase())
+        element.children.length === 1 && element.firstChild?.nodeType === Node.ELEMENT_NODE
+          ? (element.firstChild as HTMLElement)
           : element;
+
       ref.current = new SplitText(content, variables);
     };
 
