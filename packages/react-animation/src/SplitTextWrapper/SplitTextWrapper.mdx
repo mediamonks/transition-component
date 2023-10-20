@@ -41,6 +41,39 @@ function Component(): ReactElement {
 
 <Canvas of={stories.Children} />
 
+## Rendering children wraped in a parent element
+
+The `SplitTextWrapper` renders to HTML inside the component to make sure that compnents from the
+vDOM are not changed on render making them untargetable in the created SplitText instance. **_This
+time the children being wrap in another parent element_**
+
+> Warning: state inside the rendered children is lost when the children change.
+
+```tsx
+function Component(): ReactElement {
+  const splitTextRef = useRef<SplitText>(null);
+
+  useEffect(() => {
+    // Do something with `splitTextRef.current`
+  });
+
+  return (
+    <SplitTextWrapper ref={splitTextRef}>
+      <p>
+        Lorem ipsum dolor sit <i>amet consectetur</i>
+        <br /> adipisicing elit. <b>Tenetur perspiciatis</b> eius ea, ratione,
+        <br /> illo molestias, <code>quia sapiente</code> modi quo
+        <br /> molestiae temporibus.
+      </p>
+    </SplitTextWrapper>
+  );
+}
+```
+
+### Demo
+
+<Canvas of={stories.ChildrenWrap} />
+
 ## Using dangerouslySetInnerHTML
 
 The children are rendered to a string, this is not necessary when the `dangerouslySetInnerHTML`

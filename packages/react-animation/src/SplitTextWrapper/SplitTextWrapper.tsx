@@ -53,7 +53,11 @@ export const SplitTextWrapper: SplitTextWrapperComponent = ensuredForwardRef(
         return;
       }
 
-      ref.current = new SplitText(element, variables);
+      const content =
+        element.firstChild?.nodeType === Node.ELEMENT_NODE
+          ? element.querySelector((element.firstChild as HTMLElement).tagName.toLowerCase())
+          : element;
+      ref.current = new SplitText(content, variables);
     };
 
     const Component = (as ?? 'div') as unknown as ComponentType<unknown>;
