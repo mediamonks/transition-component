@@ -29,6 +29,12 @@ type SplitTextWrapperProps<T extends KnownTarget> = {
    * The element type to render, the default is `div`
    */
   as?: T;
+
+  /**
+   * Split the first element child instead of the element itself to
+   * accommodate for rich text children
+   */
+  splitFirstElementChild?: boolean;
 };
 
 /**
@@ -43,7 +49,7 @@ type SplitTextWrapperComponent = <T extends KnownTarget = 'div'>(
 
 // @ts-expect-error polymorphic type is not compatible with ensuredForwardRef function factory
 export const SplitTextWrapper: SplitTextWrapperComponent = ensuredForwardRef(
-  ({ variables = {}, as, children, ...props }, ref) => {
+  ({ variables = {}, as, children, splitFirstElementChild = false, ...props }, ref) => {
     /**
      * Not using useCallback on purpose so that a new SplitText instance is
      * created whenever this component rerenders the children
@@ -53,7 +59,17 @@ export const SplitTextWrapper: SplitTextWrapperComponent = ensuredForwardRef(
         return;
       }
 
-      ref.current = new SplitText(element, variables);
+      if (splitFirstElementChild && element.childElementCount > 1) {
+        // eslint-disable-next-line no-console
+        console.warn(
+          "Split text wrapper should only contain 1 element when 'splitFirstElementChild' is set to true",
+        );
+      }
+
+      ref.current = new SplitText(
+        splitFirstElementChild ? element.firstElementChild : element,
+        variables,
+      );
     };
 
     const Component = (as ?? 'div') as unknown as ComponentType<unknown>;

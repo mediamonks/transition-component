@@ -135,6 +135,55 @@ export const DangerouslySetInnerHtml: Story = {
   },
 };
 
+export const FirstElementChild: Story = {
+  render(): ReactElement {
+    const splitTextRef = useRef<SplitText>(null);
+
+    const animation = useAnimation(() => {
+      if (!splitTextRef.current) {
+        return;
+      }
+
+      return gsap.from(splitTextRef.current.lines, {
+        y: 20,
+        opacity: 0,
+        duration: 0.2,
+        stagger: 0.05,
+      });
+    }, []);
+
+    const onPlay = useCallback(() => {
+      animation.current?.play(0);
+    }, [animation]);
+
+    return (
+      <>
+        <SplitTextWrapper
+          ref={splitTextRef}
+          variables={{ type: 'lines' }}
+          dangerouslySetInnerHTML={{
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            __html:
+              '<div>Lorem ipsum dolor sit <i>amet consectetur</i> <br /> adipisicing elit. <b>Tenetur perspiciatis</b> eius ea, ratione,<br /> illo molestias, <code>quia sapiente</code> modi quo<br /> molestiae temporibus.</div>',
+          }}
+          splitFirstElementChild
+        />
+        <button
+          onClick={onPlay}
+          type="button"
+          style={{
+            position: 'relative',
+            marginBlockStart: 20,
+            cursor: 'pointer',
+          }}
+        >
+          Play
+        </button>
+      </>
+    );
+  },
+};
+
 export const AsProp: Story = {
   render(): ReactElement {
     const splitText1Ref = useRef<SplitText>(null);
