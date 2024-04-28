@@ -43,8 +43,8 @@
     "@storybook/components": "^7.4.5",
     "@storybook/core-events": "^7.4.6",
     "@storybook/theming": "^7.4.6",
-    "@types/react": "^18.0.26",
-    "react": "^18.2.0"
+    "@types/react": "^18.3.1",
+    "react": "^18.3.1"
   },
   "devDependencies": {
     "@mediamonks/eslint-config": "^2.0.7",
