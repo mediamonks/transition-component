@@ -92,4 +92,4 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Push latest version
-        run: git push origin main --follow-tags
+        run: git push origin $GITHUB_REF_NAME --follow-tags
