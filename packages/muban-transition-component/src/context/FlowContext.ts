@@ -1,7 +1,7 @@
 /* eslint-disable unicorn/prevent-abbreviations */
 import { AbstractFlowContext } from '@mediamonks/core-transition-component';
-import type { TransitionRefElement } from '../types/transition.types';
-import { transitionRefToElement } from '../util/transitionRefToElement';
+import type { TransitionRefElement } from '../types/transition.types.js';
+import { transitionRefToElement } from '../util/transitionRefToElement.js';
 
 export class FlowContext extends AbstractFlowContext<TransitionRefElement> {
   public async start(

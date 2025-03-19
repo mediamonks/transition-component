@@ -6,8 +6,8 @@ import type {
   SetupSignatureElements,
   TransitionRef,
   TransitionRefElement,
-} from '../types/transition.types';
-import { useTransitionController } from './useTransitionController';
+} from '../types/transition.types.js';
+import { useTransitionController } from './useTransitionController.js';
 
 export function usePageTransition<
   T extends Record<string, R>,

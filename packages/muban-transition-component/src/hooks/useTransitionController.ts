@@ -9,9 +9,9 @@ import type {
   SetupSignatureElements,
   TransitionRef,
   TransitionRefElement,
-} from '../types/transition.types';
-import { transitionRefToElement } from '../util/transitionRefToElement';
-import { useTransitionContext } from './useGlobalTransitionContext';
+} from '../types/transition.types.js';
+import { transitionRefToElement } from '../util/transitionRefToElement.js';
+import { useTransitionContext } from './useGlobalTransitionContext.js';
 
 /**
  * The core hook that can be used to create a transition timeline for a component, it returns a Ref that should be bound

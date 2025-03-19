@@ -8,7 +8,7 @@ import type {
   TransitionRef,
   TransitionRefCollection,
   TransitionRefElement,
-} from '../types/transition.types';
+} from '../types/transition.types.js';
 
 export function transitionRefToElement(ref: TransitionRefElement): SignatureRefElement;
 export function transitionRefToElement(ref: TransitionRefCollection): SignatureRefCollection;

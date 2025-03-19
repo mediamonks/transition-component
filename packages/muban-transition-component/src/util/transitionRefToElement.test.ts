@@ -7,8 +7,8 @@ import {
   refComponents,
   refElement,
 } from '@muban/muban';
-import type { TransitionRefCollection, TransitionRefElement } from '../types/transition.types';
-import { transitionRefToElement } from './transitionRefToElement';
+import type { TransitionRefCollection, TransitionRefElement } from '../types/transition.types.js';
+import { transitionRefToElement } from './transitionRefToElement.js';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const SomeComponent = defineComponent({

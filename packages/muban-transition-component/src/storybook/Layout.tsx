@@ -8,7 +8,7 @@ import {
   type ReactElement,
   type ReactNode,
 } from 'react';
-import { App as MubanApp } from './App';
+import { App as MubanApp } from './App.js';
 
 export const LayoutContext = createContext<App | undefined>(undefined);
 

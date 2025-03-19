@@ -1,5 +1,5 @@
 import { createContext } from '@muban/muban';
-import { TransitionContext } from '../context/TransitionContext';
+import { TransitionContext } from '../context/TransitionContext.js';
 
 export const [provideTransitionContext, useTransitionContext] = createContext<
   TransitionContext | undefined

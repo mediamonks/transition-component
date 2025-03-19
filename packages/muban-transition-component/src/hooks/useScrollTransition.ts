@@ -1,17 +1,18 @@
 /* eslint-disable unicorn/prevent-abbreviations */
 import { createContext } from '@muban/muban';
 import gsap from 'gsap';
-import ScrollTrigger from 'gsap/ScrollTrigger';
-import type { ScrollContext } from '../context/ScrollContext';
-import { defaultScrollTriggerVariables } from '../context/ScrollContext';
+// @ts-expect-error - ScrollTriggered is not declared for ESM import
+import ScrollTrigger from 'gsap/ScrollTrigger.js';
+import type { ScrollContext } from '../context/ScrollContext.js';
+import { defaultScrollTriggerVariables } from '../context/ScrollContext.js';
 import type {
   SetupSignatureElements,
   SetupTransitionOptions,
   TransitionRef,
   TransitionRefElement,
-} from '../types/transition.types';
-import { transitionRefToElement } from '../util/transitionRefToElement';
-import { useTransitionController } from './useTransitionController';
+} from '../types/transition.types.js';
+import { transitionRefToElement } from '../util/transitionRefToElement.js';
+import { useTransitionController } from './useTransitionController.js';
 
 gsap.registerPlugin(ScrollTrigger);
 

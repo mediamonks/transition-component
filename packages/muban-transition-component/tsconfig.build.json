@@ -4,6 +4,7 @@
     "declaration": true,
     "outDir": "./dist"
   },
+  "include": ["./src/**/*"],
   "exclude": [
     "**/*.test.ts",
     "**/*.test.tsx",

@@ -1,6 +1,6 @@
 import { createContext } from '@muban/muban';
-import { FlowContext } from '../context/FlowContext';
-import { useGlobalTransitionContext } from './useGlobalTransitionContext';
+import { FlowContext } from '../context/FlowContext.js';
+import { useGlobalTransitionContext } from './useGlobalTransitionContext.js';
 
 export const [provideFlowContext, useFlowContext] = createContext<FlowContext | undefined>(
   'flowContext',

@@ -2,10 +2,10 @@ import { type SetupTransitionSignature } from '@mediamonks/core-transition-compo
 import { bind, defineComponent, ref, refElement } from '@muban/muban';
 import { html } from '@muban/template';
 import { type StoryObj, type Meta } from '@storybook/react';
-import { layoutDecorator } from '../storybook/Layout';
-import { MubanRenderer } from '../storybook/MubanRenderer';
-import { type TransitionRefElement } from '../types/transition.types';
-import { useTransitionController } from './useTransitionController';
+import { layoutDecorator } from '../storybook/Layout.js';
+import { MubanRenderer } from '../storybook/MubanRenderer.js';
+import { type TransitionRefElement } from '../types/transition.types.js';
+import { useTransitionController } from './useTransitionController.js';
 
 export default {
   title: 'hooks/useTransitionController',

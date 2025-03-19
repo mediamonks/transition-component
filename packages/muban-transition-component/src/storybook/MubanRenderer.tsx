@@ -1,6 +1,6 @@
 import { type ComponentFactory } from '@muban/muban';
 import { useEffect, type ReactElement } from 'react';
-import { useLayoutContext } from './Layout';
+import { useLayoutContext } from './Layout.js';
 
 export type MubanRendererProps = {
   component: ComponentFactory;

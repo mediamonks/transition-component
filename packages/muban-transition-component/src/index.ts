@@ -1,17 +1,17 @@
 // Hooks
-export { useGlobalTransitionContext } from './hooks/useGlobalTransitionContext';
-export { usePageTransition } from './hooks/usePageTransition';
-export { usePageTransitioning } from './hooks/usePageTransitioning';
-export { useScrollTransition, provideScrollContext } from './hooks/useScrollTransition';
-export { useTransitionController } from './hooks/useTransitionController';
+export { useGlobalTransitionContext } from './hooks/useGlobalTransitionContext.js';
+export { usePageTransition } from './hooks/usePageTransition.js';
+export { usePageTransitioning } from './hooks/usePageTransitioning.js';
+export { useScrollTransition, provideScrollContext } from './hooks/useScrollTransition.js';
+export { useTransitionController } from './hooks/useTransitionController.js';
 
 // Context
-export { FlowContext } from './context/FlowContext';
-export { TransitionContext } from './context/TransitionContext';
-export { ScrollContext } from './context/ScrollContext';
+export { FlowContext } from './context/FlowContext.js';
+export { TransitionContext } from './context/TransitionContext.js';
+export { ScrollContext } from './context/ScrollContext.js';
 
 // Utils
-export { transitionRefToElement } from './util/transitionRefToElement';
+export { transitionRefToElement } from './util/transitionRefToElement.js';
 
 // Types
 export type {
@@ -32,4 +32,4 @@ export type {
   SetupTransitionSignature,
   SetupPageTransitionOptions,
   SetupTransitionOptions,
-} from './types/transition.types';
+} from './types/transition.types.js';
